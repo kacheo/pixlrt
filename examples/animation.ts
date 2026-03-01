@@ -4,9 +4,9 @@ const walk = sprite({
   name: 'walk-cycle',
   palette: {
     '.': 'transparent',
-    'x': '#1a1c2c',
-    's': '#f4cca1',
-    'b': '#3b5dc9',
+    x: '#1a1c2c',
+    s: '#f4cca1',
+    b: '#3b5dc9',
   },
   frameDuration: [150, 150, 150, 150],
   frames: [
@@ -55,5 +55,7 @@ const { buffer, metadata } = toSpriteSheet(walk, 'examples/walk-sheet.png', {
 });
 
 console.log(`Sprite sheet: ${buffer.length} bytes → examples/walk-sheet.png`);
-console.log(`Metadata: ${metadata.frames.length} frames, ${metadata.frameWidth}x${metadata.frameHeight} each`);
+console.log(
+  `Metadata: ${metadata.frames.length} frames, ${metadata.frameWidth}x${metadata.frameHeight} each`,
+);
 console.log('Done!');

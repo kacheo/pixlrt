@@ -1,4 +1,4 @@
-import type { RGBA, PixelGrid } from './types.js';
+import type { RGBA } from './types.js';
 import { Frame } from './frame.js';
 
 /** Flip a frame horizontally (mirror left-right) */

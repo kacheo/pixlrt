@@ -1,20 +1,22 @@
 import { describe, it, expect } from 'vitest';
-import { sprite, Sprite } from '../src/sprite.js';
+import { sprite } from '../src/sprite.js';
 
 const palette = {
   '.': 'transparent',
-  'x': '#ff0000',
-  'o': '#0000ff',
+  x: '#ff0000',
+  o: '#0000ff',
 };
 
 describe('sprite()', () => {
   it('creates a sprite from ASCII grid', () => {
     const s = sprite({
       palette,
-      frames: [`
+      frames: [
+        `
         xo
         ox
-      `],
+      `,
+      ],
     });
     expect(s.width).toBe(2);
     expect(s.height).toBe(2);
@@ -51,10 +53,12 @@ describe('sprite()', () => {
 describe('Sprite transforms', () => {
   const s = sprite({
     palette,
-    frames: [`
+    frames: [
+      `
       xo
       .x
-    `],
+    `,
+    ],
   });
 
   it('flipX returns a new sprite', () => {
@@ -104,5 +108,31 @@ describe('Sprite.recolor()', () => {
     const r = s.recolor({ x: '#00ff00', o: '#ffff00' });
     expect(r.getPixel(0, 0)).toEqual([0, 255, 0, 255]);
     expect(r.getPixel(1, 0)).toEqual([255, 255, 0, 255]);
+  });
+
+  it('ignores unknown palette keys', () => {
+    const s = sprite({ palette, frames: ['xo'] });
+    const r = s.recolor({ z: '#00ff00' });
+    // Pixels unchanged
+    expect(r.getPixel(0, 0)).toEqual([255, 0, 0, 255]);
+    expect(r.getPixel(1, 0)).toEqual([0, 0, 255, 255]);
+  });
+
+  it('handles empty mapping', () => {
+    const s = sprite({ palette, frames: ['xo'] });
+    const r = s.recolor({});
+    expect(r.getPixel(0, 0)).toEqual([255, 0, 0, 255]);
+    expect(r.getPixel(1, 0)).toEqual([0, 0, 255, 255]);
+  });
+
+  it('recolors all frames in a multi-frame sprite', () => {
+    const s = sprite({ palette, frames: ['xo', 'ox'] });
+    const r = s.recolor({ x: '#00ff00' });
+    // Frame 0: green, blue
+    expect(r.getPixel(0, 0)).toEqual([0, 255, 0, 255]);
+    expect(r.getPixel(1, 0)).toEqual([0, 0, 255, 255]);
+    // Frame 1: blue, green
+    expect(r.frame(1).getPixel(0, 0)).toEqual([0, 0, 255, 255]);
+    expect(r.frame(1).getPixel(1, 0)).toEqual([0, 255, 0, 255]);
   });
 });

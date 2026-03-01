@@ -4,13 +4,14 @@ const hero = sprite({
   name: 'hero',
   palette: {
     '.': 'transparent',
-    'x': '#1a1c2c',  // outline
-    's': '#f4cca1',  // skin
-    'h': '#5d275d',  // hair
-    'b': '#3b5dc9',  // blue clothes
-    'r': '#b13e53',  // red accent
+    x: '#1a1c2c', // outline
+    s: '#f4cca1', // skin
+    h: '#5d275d', // hair
+    b: '#3b5dc9', // blue clothes
+    r: '#b13e53', // red accent
   },
-  frames: [`
+  frames: [
+    `
     ..xhx...
     .xhhhx..
     .xsssxx.
@@ -21,7 +22,8 @@ const hero = sprite({
     ..xbbx..
     ..x..x..
     .xx..xx.
-  `],
+  `,
+  ],
 });
 
 // Export as PNG at 8x scale

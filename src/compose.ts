@@ -8,7 +8,7 @@ interface PlaceEntry {
   y: number;
 }
 
-interface ComposeOptions {
+export interface ComposeOptions {
   width?: number;
   height?: number;
   background?: ColorInput;
@@ -58,8 +58,8 @@ export class Composer {
       maxY = Math.max(maxY, entry.y + entry.source.height);
     }
 
-    const width = this.fixedWidth ?? (maxX - minX);
-    const height = this.fixedHeight ?? (maxY - minY);
+    const width = this.fixedWidth ?? maxX - minX;
+    const height = this.fixedHeight ?? maxY - minY;
 
     // Shift offset if there are negative coordinates and no fixed size
     const offsetX = this.fixedWidth ? 0 : -minX;

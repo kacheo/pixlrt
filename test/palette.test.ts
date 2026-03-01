@@ -39,13 +39,13 @@ describe('paletteFrom()', () => {
 
   it('color values match expected RGBA tuples', () => {
     const map = paletteFrom('pico8');
-    expect(map['0']).toEqual([0, 0, 0, 255]);       // black
-    expect(map['8']).toEqual([255, 0, 77, 255]);     // red
-    expect(map['f']).toEqual([255, 204, 170, 255]);  // peach
+    expect(map['0']).toEqual([0, 0, 0, 255]); // black
+    expect(map['8']).toEqual([255, 0, 77, 255]); // red
+    expect(map['f']).toEqual([255, 204, 170, 255]); // peach
 
     const gb = paletteFrom('gameboy');
-    expect(gb['0']).toEqual([15, 56, 15, 255]);      // darkest
-    expect(gb['3']).toEqual([155, 188, 15, 255]);    // lightest
+    expect(gb['0']).toEqual([15, 56, 15, 255]); // darkest
+    expect(gb['3']).toEqual([155, 188, 15, 255]); // lightest
   });
 
   it('is case-insensitive', () => {
@@ -65,7 +65,7 @@ describe('paletteFrom()', () => {
 describe('PALETTES', () => {
   it('has all four named palettes', () => {
     expect(Object.keys(PALETTES)).toEqual(
-      expect.arrayContaining(['pico8', 'gameboy', 'sweetie16', 'cga'])
+      expect.arrayContaining(['pico8', 'gameboy', 'sweetie16', 'cga']),
     );
     expect(Object.keys(PALETTES).length).toBe(4);
   });

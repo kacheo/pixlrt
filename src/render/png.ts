@@ -1,7 +1,6 @@
 import { PNG } from 'pngjs';
 import * as fs from 'node:fs';
 import type { Renderable, PNGOptions } from '../types.js';
-import { PixelCanvas } from '../canvas.js';
 
 /**
  * Render a Renderable to a scaled PNG buffer.
@@ -42,7 +41,7 @@ export function toPNG(source: Renderable, opts?: PNGOptions): Buffer;
 export function toPNG(
   source: Renderable,
   pathOrOpts?: string | PNGOptions,
-  maybeOpts?: PNGOptions
+  maybeOpts?: PNGOptions,
 ): Buffer {
   let path: string | undefined;
   let opts: PNGOptions | undefined;

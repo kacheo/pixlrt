@@ -4,12 +4,12 @@ const tiles = tileset({
   tileSize: 4,
   palette: {
     '.': 'transparent',
-    'g': '#38b764',  // grass green
-    'G': '#257953',  // dark grass
-    'w': '#41a6f6',  // water blue
-    'W': '#2971cc',  // deep water
-    's': '#a0a08b',  // stone grey
-    'S': '#696a6a',  // dark stone
+    g: '#38b764', // grass green
+    G: '#257953', // dark grass
+    w: '#41a6f6', // water blue
+    W: '#2971cc', // deep water
+    s: '#a0a08b', // stone grey
+    S: '#696a6a', // dark stone
   },
   tiles: {
     grass: `

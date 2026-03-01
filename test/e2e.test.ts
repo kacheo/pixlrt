@@ -29,7 +29,11 @@ function tmpPath(name: string): string {
 
 afterEach(() => {
   for (const f of tmpFiles) {
-    try { fs.unlinkSync(f); } catch {}
+    try {
+      fs.unlinkSync(f);
+    } catch {
+      // ignore cleanup errors
+    }
   }
   tmpFiles.length = 0;
 });
@@ -44,11 +48,13 @@ describe('E2E: full sprite workflow', () => {
     // '0' = black [0,0,0,255], '8' = red [255,0,77,255], '.' = transparent
     const s = sprite({
       palette: pico8,
-      frames: [`
+      frames: [
+        `
         080
         808
         080
-      `],
+      `,
+      ],
     });
 
     expect(s.width).toBe(3);
@@ -67,7 +73,7 @@ describe('E2E: full sprite workflow', () => {
     // After flipX of "080", first row becomes "080" (symmetric).
     // After scale(2), pixel (0,0) is the top-left of the original (0,0)='0' → black
     const idx00 = 0; // pixel (0,0)
-    expect(png.data[idx00]).toBe(0);     // r
+    expect(png.data[idx00]).toBe(0); // r
     expect(png.data[idx00 + 1]).toBe(0); // g
     expect(png.data[idx00 + 2]).toBe(0); // b
     expect(png.data[idx00 + 3]).toBe(255); // a
@@ -76,8 +82,8 @@ describe('E2E: full sprite workflow', () => {
     // But "080" is symmetric, so (0,0) is still '0'.
     // Pixel (2,0) in scaled output corresponds to original (1,0) = '8' (red)
     const idx20 = (0 * 6 + 2) * 4;
-    expect(png.data[idx20]).toBe(255);    // r
-    expect(png.data[idx20 + 1]).toBe(0);  // g
+    expect(png.data[idx20]).toBe(255); // r
+    expect(png.data[idx20 + 1]).toBe(0); // g
     expect(png.data[idx20 + 2]).toBe(77); // b
     expect(png.data[idx20 + 3]).toBe(255);
   });
@@ -85,7 +91,7 @@ describe('E2E: full sprite workflow', () => {
 
 describe('E2E: multi-frame sprite → sprite sheet', () => {
   it('produces valid sprite sheet with correct metadata', () => {
-    const palette = { '.': 'transparent', 'x': '#ff0000', 'o': '#00ff00' };
+    const palette = { '.': 'transparent', x: '#ff0000', o: '#00ff00' };
 
     const s = sprite({
       palette,
@@ -129,7 +135,7 @@ describe('E2E: multi-frame sprite → sprite sheet', () => {
 
 describe('E2E: tileset → composition → PNG', () => {
   it('composes tiles and renders correct pixels', () => {
-    const palette = { '.': 'transparent', 'r': '#ff0000', 'b': '#0000ff' };
+    const palette = { '.': 'transparent', r: '#ff0000', b: '#0000ff' };
 
     const ts = tileset({
       tileSize: 2,
@@ -150,10 +156,7 @@ describe('E2E: tileset → composition → PNG', () => {
     const blue = ts.tile('blue');
 
     // Place red at (0,0) and blue at (2,0) → 4×2 canvas
-    const canvas = compose()
-      .place(red, { x: 0, y: 0 })
-      .place(blue, { x: 2, y: 0 })
-      .render();
+    const canvas = compose().place(red, { x: 0, y: 0 }).place(blue, { x: 2, y: 0 }).render();
 
     expect(canvas.width).toBe(4);
     expect(canvas.height).toBe(2);
@@ -179,14 +182,16 @@ describe('E2E: tileset → composition → PNG', () => {
 
 describe('E2E: SVG rendering pipeline', () => {
   it('produces valid SVG with correct structure', () => {
-    const palette = { '.': 'transparent', 'x': '#ff0000' };
+    const palette = { '.': 'transparent', x: '#ff0000' };
 
     const s = sprite({
       palette,
-      frames: [`
+      frames: [
+        `
         x.
         .x
-      `],
+      `,
+      ],
     });
 
     const svg = toSVG(s, { scale: 4 });
@@ -206,14 +211,16 @@ describe('E2E: SVG rendering pipeline', () => {
 
 describe('E2E: file output round-trip', () => {
   it('writes PNG and SVG files that can be read back', () => {
-    const palette = { '.': 'transparent', 'g': '#00ff00' };
+    const palette = { '.': 'transparent', g: '#00ff00' };
 
     const s = sprite({
       palette,
-      frames: [`
+      frames: [
+        `
         gg
         gg
-      `],
+      `,
+      ],
     });
 
     // PNG round-trip

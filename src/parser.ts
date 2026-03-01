@@ -88,7 +88,7 @@ export function parseGrid(ascii: string, palette: PaletteMap): PixelGrid {
       if (!color) {
         throw new Error(
           `Unknown palette character '${char}' at row ${row + 1}, col ${col + 1}. ` +
-            `Available palette characters: ${availableChars}`
+            `Available palette characters: ${availableChars}`,
         );
       }
       pixelRow.push(color);
@@ -113,7 +113,7 @@ export function parseFrames(frames: string[], palette: PaletteMap): PixelGrid[] 
       return parseGrid(ascii, palette);
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
-      throw new Error(`Frame ${i}: ${msg}`);
+      throw new Error(`Frame ${i}: ${msg}`, { cause: e });
     }
   });
 
@@ -126,7 +126,7 @@ export function parseFrames(frames: string[], palette: PaletteMap): PixelGrid[] 
     if (g.length !== height || g[0]!.length !== width) {
       throw new Error(
         `Frame ${i} dimensions (${g[0]!.length}x${g.length}) don't match ` +
-          `frame 0 dimensions (${width}x${height}). All frames must be the same size.`
+          `frame 0 dimensions (${width}x${height}). All frames must be the same size.`,
       );
     }
   }

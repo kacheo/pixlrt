@@ -9,17 +9,19 @@ import { toPNG } from '../src/render/png.js';
 
 const palette = {
   '.': 'transparent',
-  'x': '#ff0000',
+  x: '#ff0000',
 };
 
 describe('toPNG', () => {
   it('returns a valid PNG buffer from a sprite', () => {
     const s = sprite({
       palette,
-      frames: [`
+      frames: [
+        `
         x.
         .x
-      `],
+      `,
+      ],
     });
     const buf = toPNG(s);
     expect(buf).toBeInstanceOf(Buffer);
@@ -61,7 +63,11 @@ describe('toPNG file writing', () => {
 
   afterEach(() => {
     for (const f of tmpFiles) {
-      try { fs.unlinkSync(f); } catch {}
+      try {
+        fs.unlinkSync(f);
+      } catch {
+        // ignore cleanup errors
+      }
     }
     tmpFiles = [];
   });
@@ -78,10 +84,12 @@ describe('toPNG file writing', () => {
   it('writes a valid PNG file to disk', () => {
     const s = sprite({
       palette,
-      frames: [`
+      frames: [
+        `
         x.
         .x
-      `],
+      `,
+      ],
     });
     const filePath = tmpPath('test-output.png');
     const buf = toPNG(s, filePath);
@@ -111,10 +119,12 @@ describe('toPNG file writing', () => {
   it('preserves transparent pixels in output', () => {
     const s = sprite({
       palette,
-      frames: [`
+      frames: [
+        `
         x.
         .x
-      `],
+      `,
+      ],
     });
     const buf = toPNG(s);
     const png = PNG.sync.read(buf);

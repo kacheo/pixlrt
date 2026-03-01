@@ -10,7 +10,15 @@
  *   . → transparent
  */
 
-import { sprite, tileset, compose, toPNG, toSVG, toSpriteSheet, paletteFrom } from '../src/index.js';
+import {
+  sprite,
+  tileset,
+  compose,
+  toPNG,
+  toSVG,
+  toSpriteSheet,
+  paletteFrom,
+} from '../src/index.js';
 
 const gb = paletteFrom('gameboy');
 
@@ -20,7 +28,8 @@ const gb = paletteFrom('gameboy');
 const adventurer = sprite({
   name: 'adventurer',
   palette: gb,
-  frames: [`
+  frames: [
+    `
     ....00000000....
     ...0112211120...
     ..011222221110..
@@ -37,7 +46,8 @@ const adventurer = sprite({
     ...0122222210...
     ...0110001100...
     ..011000001100..
-  `],
+  `,
+  ],
 });
 
 // ---------------------------------------------------------------------------
@@ -46,7 +56,8 @@ const adventurer = sprite({
 const creature = sprite({
   name: 'creature',
   palette: gb,
-  frames: [`
+  frames: [
+    `
     ......0000......
     ....00222200....
     ...0222222220...
@@ -63,7 +74,8 @@ const creature = sprite({
     ...0211221120...
     ....01100110....
     .....00..00.....
-  `],
+  `,
+  ],
 });
 
 // ---------------------------------------------------------------------------
@@ -197,8 +209,8 @@ console.log('Adventurer flipped → examples/gb-adventurer-flipped.png');
 
 // Recolored creature variant (swap light/dark shades for an "ice" look)
 const creatureVariant = creature.recolor({
-  '2': '#9bbc0f',  // light → lightest
-  '3': '#8bac0f',  // lightest → light (invert shading)
+  '2': '#9bbc0f', // light → lightest
+  '3': '#8bac0f', // lightest → light (invert shading)
 });
 toPNG(creatureVariant, 'examples/gb-creature-variant.png', { scale: 8 });
 console.log('Creature variant → examples/gb-creature-variant.png');
