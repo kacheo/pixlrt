@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { sprite } from '../src/sprite.js';
+import { sprite, Sprite } from '../src/sprite.js';
+import { Frame } from '../src/frame.js';
 
 const palette = {
   '.': 'transparent',
@@ -231,5 +232,21 @@ describe('Sprite.crop()', () => {
     expect(result.width).toBe(2);
     expect(result.height).toBe(2);
     expect(result.getPixel(0, 0)).toEqual([255, 0, 0, 255]);
+  });
+});
+
+describe('Sprite constructor validation', () => {
+  it('throws when frameDuration length does not match frames length', () => {
+    const frame = new Frame([[[255, 0, 0, 255]]]);
+    expect(
+      () =>
+        new Sprite({
+          name: 'test',
+          frames: [frame, frame],
+          palette: { x: '#ff0000' },
+          origin: { x: 0, y: 0 },
+          frameDuration: [100],
+        }),
+    ).toThrow('frameDuration length (1) must match frames length (2)');
   });
 });

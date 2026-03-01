@@ -2,6 +2,7 @@ import * as fs from 'node:fs';
 import type { RGBA } from '../types.js';
 import type { GIFOptions } from '../types.js';
 import { Sprite } from '../sprite.js';
+import { validateScale } from './validate.js';
 
 // ── Helpers ──────────────────────────────────────────────────────────
 
@@ -244,6 +245,7 @@ export function toGIF(
   }
 
   const scale = opts?.scale ?? 1;
+  validateScale(scale);
   const loop = opts?.loop ?? 0;
 
   const w = source.width * scale;

@@ -45,6 +45,33 @@ export class PixelCanvas implements Renderable {
     }
   }
 
+  /** Porter-Duff source-over composite of src onto (tx, ty). */
+  private _compositePixel(tx: number, ty: number, src: RGBA): void {
+    const srcA = src[3] / 255;
+
+    if (srcA === 0) return;
+    if (srcA === 1) {
+      this.setPixel(tx, ty, src);
+      return;
+    }
+
+    const dst = this.getPixel(tx, ty);
+    const dstA = dst[3] / 255;
+    const outA = srcA + dstA * (1 - srcA);
+
+    if (outA === 0) {
+      this.setPixel(tx, ty, [0, 0, 0, 0]);
+      return;
+    }
+
+    const r = Math.round((src[0] * srcA + dst[0] * dstA * (1 - srcA)) / outA);
+    const g = Math.round((src[1] * srcA + dst[1] * dstA * (1 - srcA)) / outA);
+    const b = Math.round((src[2] * srcA + dst[2] * dstA * (1 - srcA)) / outA);
+    const a = Math.round(outA * 255);
+
+    this.setPixel(tx, ty, [r, g, b, a]);
+  }
+
   /**
    * Draw a Frame onto this canvas at (dx, dy) with Porter-Duff source-over alpha compositing.
    */
@@ -54,33 +81,7 @@ export class PixelCanvas implements Renderable {
         const tx = dx + fx;
         const ty = dy + fy;
         if (tx < 0 || ty < 0 || tx >= this.width || ty >= this.height) continue;
-
-        const src = frame.getPixel(fx, fy);
-        const srcA = src[3] / 255;
-
-        if (srcA === 0) continue; // fully transparent, skip
-        if (srcA === 1) {
-          // fully opaque, no blending needed
-          this.setPixel(tx, ty, src);
-          continue;
-        }
-
-        // Porter-Duff source-over
-        const dst = this.getPixel(tx, ty);
-        const dstA = dst[3] / 255;
-        const outA = srcA + dstA * (1 - srcA);
-
-        if (outA === 0) {
-          this.setPixel(tx, ty, [0, 0, 0, 0]);
-          continue;
-        }
-
-        const r = Math.round((src[0] * srcA + dst[0] * dstA * (1 - srcA)) / outA);
-        const g = Math.round((src[1] * srcA + dst[1] * dstA * (1 - srcA)) / outA);
-        const b = Math.round((src[2] * srcA + dst[2] * dstA * (1 - srcA)) / outA);
-        const a = Math.round(outA * 255);
-
-        this.setPixel(tx, ty, [r, g, b, a]);
+        this._compositePixel(tx, ty, frame.getPixel(fx, fy));
       }
     }
   }
@@ -95,31 +96,7 @@ export class PixelCanvas implements Renderable {
         const tx = dx + sx;
         const ty = dy + sy;
         if (tx < 0 || ty < 0 || tx >= this.width || ty >= this.height) continue;
-
-        const src = source.getPixel(sx, sy);
-        const srcA = src[3] / 255;
-
-        if (srcA === 0) continue;
-        if (srcA === 1) {
-          this.setPixel(tx, ty, src);
-          continue;
-        }
-
-        const dst = this.getPixel(tx, ty);
-        const dstA = dst[3] / 255;
-        const outA = srcA + dstA * (1 - srcA);
-
-        if (outA === 0) {
-          this.setPixel(tx, ty, [0, 0, 0, 0]);
-          continue;
-        }
-
-        const r = Math.round((src[0] * srcA + dst[0] * dstA * (1 - srcA)) / outA);
-        const g = Math.round((src[1] * srcA + dst[1] * dstA * (1 - srcA)) / outA);
-        const b = Math.round((src[2] * srcA + dst[2] * dstA * (1 - srcA)) / outA);
-        const a = Math.round(outA * 255);
-
-        this.setPixel(tx, ty, [r, g, b, a]);
+        this._compositePixel(tx, ty, source.getPixel(sx, sy));
       }
     }
   }

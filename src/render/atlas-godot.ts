@@ -53,18 +53,15 @@ export function toAtlasGodot(
 
   const animEntries: string[] = [];
   for (const [name, frameIndices] of animations) {
-    const frameRefs = frameIndices
-      .map((i) => `SubResource("${i + 2}")`)
+    const frameObjects = frameIndices
+      .map((i) => `{ "texture": SubResource("${i + 2}"), "duration": 1.0 }`)
       .join(', ');
     animEntries.push(
       [
         `"name": &"${name}"`,
         `"speed": 5.0`,
         `"loop": true`,
-        `"frames": [{`,
-        `"texture": ${frameRefs}`,
-        `"duration": 1.0`,
-        `}]`,
+        `"frames": [${frameObjects}]`,
       ].join(', '),
     );
   }
