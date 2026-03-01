@@ -1,4 +1,7 @@
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 import type { PaletteMap, RGBA } from './types.js';
+import { parseColor } from './color.js';
 
 /** PICO-8 16-color palette */
 const PICO8: RGBA[] = [
@@ -57,6 +60,7 @@ const CGA: RGBA[] = [
 ];
 
 const PALETTE_CHARS = '.0123456789abcdef';
+const HEX_KEYS = '0123456789abcdefghijklmnopqrstuvwxyz';
 
 /** All built-in palettes */
 export const PALETTES: Record<string, RGBA[]> = {
@@ -84,4 +88,74 @@ export function paletteFrom(name: string): PaletteMap {
     }
   }
   return map;
+}
+
+/**
+ * Create a PaletteMap from an array of hex color strings.
+ * Auto-assigns single-char keys: '.' → transparent, '0'-'9', 'a'-'z' for up to 36 colors.
+ */
+export function paletteFromHex(hexColors: string[]): PaletteMap {
+  if (hexColors.length > 36) {
+    throw new Error(
+      `paletteFromHex supports at most 36 colors (0-9, a-z), got ${hexColors.length}`,
+    );
+  }
+
+  const map: PaletteMap = { '.': 'transparent' };
+  for (let i = 0; i < hexColors.length; i++) {
+    const hex = hexColors[i]!;
+    const color = parseColor(hex.startsWith('#') ? hex : `#${hex}`);
+    map[HEX_KEYS[i]!] = color;
+  }
+  return map;
+}
+
+/**
+ * Parse a palette file (.hex or .gpl format) into a PaletteMap.
+ * - `.hex`: one 6-digit hex color per line (no '#' prefix)
+ * - `.gpl`: GIMP Palette format (header, optional comments, R G B per line)
+ */
+export function paletteFromFile(filePath: string): PaletteMap {
+  const ext = path.extname(filePath).toLowerCase();
+  const content = fs.readFileSync(filePath, 'utf-8');
+
+  if (ext === '.hex') {
+    const hexColors = content
+      .split('\n')
+      .map((line) => line.trim())
+      .filter((line) => line.length > 0);
+    return paletteFromHex(hexColors);
+  }
+
+  if (ext === '.gpl') {
+    const lines = content.split('\n');
+    const hexColors: string[] = [];
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (
+        !trimmed ||
+        trimmed === 'GIMP Palette' ||
+        trimmed.startsWith('#') ||
+        trimmed.startsWith('Name:') ||
+        trimmed.startsWith('Columns:')
+      ) {
+        continue;
+      }
+      const parts = trimmed.split(/\s+/);
+      const r = parseInt(parts[0]!, 10);
+      const g = parseInt(parts[1]!, 10);
+      const b = parseInt(parts[2]!, 10);
+      if (isNaN(r) || isNaN(g) || isNaN(b)) continue;
+      const hex =
+        r.toString(16).padStart(2, '0') +
+        g.toString(16).padStart(2, '0') +
+        b.toString(16).padStart(2, '0');
+      hexColors.push(hex);
+    }
+    return paletteFromHex(hexColors);
+  }
+
+  throw new Error(
+    `Unsupported palette file extension: "${ext}". Expected .hex or .gpl`,
+  );
 }
