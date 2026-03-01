@@ -17,6 +17,12 @@ export type {
   NinePatchEdges,
   NinePatchMeta,
   Rect,
+  AtlasEntry,
+  AtlasOptions,
+  AtlasFrame,
+  AtlasMeta,
+  MultiScaleOptions,
+  CollisionMaskOptions,
 } from './types.js';
 
 // Color utilities
@@ -69,6 +75,16 @@ export { toSpriteSheet } from './render/spritesheet.js';
 export { toGIF } from './render/gif.js';
 export { toTiled } from './render/tiled.js';
 export type { TiledMap, TiledTileLayer, TiledTilesetRef, TiledExportOptions } from './render/tiled.js';
+export { toAtlas } from './render/atlas.js';
+export { toAtlasPhaser } from './render/atlas-phaser.js';
+export type { PhaserHashOutput, PhaserArrayOutput } from './render/atlas-phaser.js';
+export { toAtlasUnity } from './render/atlas-unity.js';
+export type { UnityOutput } from './render/atlas-unity.js';
+export { toAtlasGodot } from './render/atlas-godot.js';
+export { toMultiScale } from './render/multiscale.js';
+export type { MultiScaleResult } from './render/multiscale.js';
+export { toCollisionMask } from './render/collision-mask.js';
+export type { CollisionMaskResult } from './render/collision-mask.js';
 
 // Import
 export { fromPNG } from './import/png.js';

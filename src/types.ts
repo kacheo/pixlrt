@@ -115,3 +115,49 @@ export interface Renderable {
   readonly height: number;
   getPixel(x: number, y: number): RGBA;
 }
+
+/** A named renderable entry for texture atlas packing */
+export interface AtlasEntry {
+  name: string;
+  source: Renderable;
+}
+
+/** Options for texture atlas generation */
+export interface AtlasOptions {
+  padding?: number;
+  scale?: number;
+  maxWidth?: number;
+  maxHeight?: number;
+  pot?: boolean;
+}
+
+/** A single frame's placement within a texture atlas */
+export interface AtlasFrame {
+  name: string;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  sourceW: number;
+  sourceH: number;
+}
+
+/** Metadata describing a packed texture atlas */
+export interface AtlasMeta {
+  image: string;
+  width: number;
+  height: number;
+  scale: number;
+  frames: AtlasFrame[];
+}
+
+/** Options for multi-scale PNG output */
+export interface MultiScaleOptions {
+  scales?: number[];
+  suffix?: (scale: number) => string;
+}
+
+/** Options for collision mask generation */
+export interface CollisionMaskOptions {
+  threshold?: number;
+}
