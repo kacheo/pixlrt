@@ -3,6 +3,7 @@ import * as zlib from 'node:zlib';
 import { PNG } from 'pngjs';
 import type { APNGOptions } from '../types.js';
 import { Sprite } from '../sprite.js';
+import { validateScale } from './validate.js';
 
 // ── Helpers ──────────────────────────────────────────────────────────
 
@@ -123,6 +124,7 @@ export function toAPNG(
   }
 
   const scale = opts?.scale ?? 1;
+  validateScale(scale);
   const loop = opts?.loop ?? 0;
   const numFrames = source.frames.length;
 

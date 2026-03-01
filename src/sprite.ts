@@ -34,6 +34,11 @@ export class Sprite implements Renderable {
     if (this.frames.length === 0) {
       throw new Error('Sprite must have at least one frame');
     }
+    if (config.frameDuration.length !== config.frames.length) {
+      throw new Error(
+        `frameDuration length (${config.frameDuration.length}) must match frames length (${config.frames.length})`,
+      );
+    }
     this.width = this.frames[0]!.width;
     this.height = this.frames[0]!.height;
   }

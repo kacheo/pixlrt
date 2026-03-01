@@ -3,6 +3,7 @@ import type { SpriteSheetOptions, SpriteSheetMeta, TaggedSpriteSheetOptions, Tag
 import { PixelCanvas } from '../canvas.js';
 import { Sprite } from '../sprite.js';
 import { toPNG } from './png.js';
+import { validateScale } from './validate.js';
 
 /**
  * Render a multi-frame Sprite to a sprite sheet.
@@ -34,6 +35,7 @@ export function toSpriteSheet(
   }
 
   const scale = opts?.scale ?? 1;
+  validateScale(scale);
   const padding = opts?.padding ?? 0;
   const columns = opts?.columns ?? Math.ceil(Math.sqrt(source.frames.length));
   const rows = Math.ceil(source.frames.length / columns);
@@ -146,6 +148,7 @@ export function toTaggedSpriteSheet(
   }
 
   const scale = opts?.scale ?? 1;
+  validateScale(scale);
   const padding = opts?.padding ?? 0;
   const totalFrames = allFrames.length;
   const columns = opts?.columns ?? Math.ceil(Math.sqrt(totalFrames));

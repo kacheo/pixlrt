@@ -15,6 +15,10 @@ export function quantize(frame: Frame, palette: PaletteMap): Frame {
     colors.push(rgba);
   }
 
+  if (colors.length === 0) {
+    throw new Error('Palette must contain at least one opaque color for quantization');
+  }
+
   const pixels: RGBA[][] = [];
   for (let y = 0; y < frame.height; y++) {
     const row: RGBA[] = [];

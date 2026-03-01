@@ -47,6 +47,25 @@ describe('toAtlasGodot', () => {
     expect(result).toContain('"name": &"enemy"');
   });
 
+  it('outputs separate frame objects for multi-frame animations', () => {
+    const multiFrameMeta: AtlasMeta = {
+      image: 'atlas.png',
+      width: 48,
+      height: 16,
+      scale: 1,
+      frames: [
+        { name: 'walk', x: 0, y: 0, w: 16, h: 16, sourceW: 16, sourceH: 16 },
+        { name: 'walk', x: 16, y: 0, w: 16, h: 16, sourceW: 16, sourceH: 16 },
+        { name: 'walk', x: 32, y: 0, w: 16, h: 16, sourceW: 16, sourceH: 16 },
+      ],
+    };
+    const result = toAtlasGodot(multiFrameMeta);
+    // Each frame should be its own object with texture and duration
+    expect(result).toContain('{ "texture": SubResource("2"), "duration": 1.0 }');
+    expect(result).toContain('{ "texture": SubResource("3"), "duration": 1.0 }');
+    expect(result).toContain('{ "texture": SubResource("4"), "duration": 1.0 }');
+  });
+
   it('includes resource block with animations', () => {
     const result = toAtlasGodot(sampleMeta);
     expect(result).toContain('[resource]');

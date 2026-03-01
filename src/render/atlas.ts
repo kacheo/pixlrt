@@ -3,6 +3,7 @@ import type { AtlasEntry, AtlasOptions, AtlasMeta, AtlasFrame, Renderable } from
 import { Sprite } from '../sprite.js';
 import { PixelCanvas } from '../canvas.js';
 import { toPNG } from './png.js';
+import { validateScale } from './validate.js';
 
 interface Shelf {
   y: number;
@@ -61,6 +62,7 @@ export function toAtlas(
 
   const padding = opts?.padding ?? 1;
   const scale = opts?.scale ?? 1;
+  validateScale(scale);
   const maxWidth = opts?.maxWidth ?? 4096;
   const maxHeight = opts?.maxHeight ?? 4096;
   const pot = opts?.pot ?? false;

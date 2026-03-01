@@ -1,13 +1,14 @@
 import * as fs from 'node:fs';
 import type { Renderable, SVGOptions } from '../types.js';
+import { validateScale } from './validate.js';
 
 /**
  * Render a Renderable to an SVG string.
  * Uses run-length encoding per row to minimize rect count.
  * Transparent pixels are skipped entirely.
  */
-export function toSVG(source: Renderable, opts?: SVGOptions): string;
 export function toSVG(source: Renderable, path: string, opts?: SVGOptions): string;
+export function toSVG(source: Renderable, opts?: SVGOptions): string;
 export function toSVG(
   source: Renderable,
   pathOrOpts?: string | SVGOptions,
@@ -24,6 +25,7 @@ export function toSVG(
   }
 
   const scale = opts?.scale ?? 1;
+  validateScale(scale);
   const w = source.width * scale;
   const h = source.height * scale;
 

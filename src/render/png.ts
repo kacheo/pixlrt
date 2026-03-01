@@ -1,6 +1,7 @@
 import { PNG } from 'pngjs';
 import * as fs from 'node:fs';
 import type { Renderable, PNGOptions } from '../types.js';
+import { validateScale } from './validate.js';
 
 /**
  * Render a Renderable to a scaled PNG buffer.
@@ -54,6 +55,7 @@ export function toPNG(
   }
 
   const scale = opts?.scale ?? 1;
+  validateScale(scale);
   const buf = renderToPNGBuffer(source, scale);
 
   if (path) {

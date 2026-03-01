@@ -46,6 +46,13 @@ describe('toPNG', () => {
     expect(png.height).toBe(4);
   });
 
+  it('throws on invalid scale values', () => {
+    const s = sprite({ palette, frames: ['x'] });
+    expect(() => toPNG(s, { scale: 0 })).toThrow('Scale must be a positive integer, got 0');
+    expect(() => toPNG(s, { scale: -1 })).toThrow('Scale must be a positive integer, got -1');
+    expect(() => toPNG(s, { scale: 0.5 })).toThrow('Scale must be a positive integer, got 0.5');
+  });
+
   it('renders from PixelCanvas', () => {
     const canvas = new PixelCanvas(2, 2);
     canvas.setPixel(0, 0, [0, 255, 0, 255]);

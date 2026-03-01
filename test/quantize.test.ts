@@ -47,6 +47,19 @@ describe('quantize()', () => {
     expect(result.getPixel(1, 0)).toEqual([0, 255, 0, 255]);
   });
 
+  it('throws when palette has no opaque colors', () => {
+    const red: RGBA = [255, 0, 0, 255];
+    const frame = new Frame([[red]]);
+    const palette: PaletteMap = {
+      '.': 'transparent',
+      '0': [0, 0, 0, 0] as RGBA,
+    };
+
+    expect(() => quantize(frame, palette)).toThrow(
+      'Palette must contain at least one opaque color for quantization',
+    );
+  });
+
   it('handles mid-value gray snapping to closest', () => {
     const gray: RGBA = [128, 128, 128, 255];
     const frame = new Frame([[gray]]);
