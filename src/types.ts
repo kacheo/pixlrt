@@ -36,6 +36,12 @@ export interface SVGOptions {
   scale?: number;
 }
 
+/** Render options for GIF output */
+export interface GIFOptions {
+  scale?: number;   // integer upscale (default 1)
+  loop?: number;    // 0 = infinite (default), n = loop n times
+}
+
 /** Render options for sprite sheet output */
 export interface SpriteSheetOptions {
   columns?: number;
