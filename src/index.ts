@@ -22,7 +22,7 @@ export type {
 export { parseColor, lighten, darken, lerp } from './color.js';
 
 // Palettes
-export { PALETTES, paletteFrom } from './palette.js';
+export { PALETTES, paletteFrom, paletteFromHex, paletteFromFile } from './palette.js';
 
 // Parser
 export { parseGrid, parseFrames } from './parser.js';
@@ -64,3 +64,10 @@ export { toSVG } from './render/svg.js';
 export { toSpriteSheet } from './render/spritesheet.js';
 export { toTiled } from './render/tiled.js';
 export type { TiledMap, TiledTileLayer, TiledTilesetRef, TiledExportOptions } from './render/tiled.js';
+
+// Import
+export { fromPNG } from './import/png.js';
+export { fromSpriteSheet } from './import/spritesheet.js';
+
+// Quantize
+export { quantize } from './quantize.js';
