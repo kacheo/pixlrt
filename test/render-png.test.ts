@@ -1,5 +1,8 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, afterEach } from 'vitest';
 import { PNG } from 'pngjs';
+import * as fs from 'node:fs';
+import * as os from 'node:os';
+import * as path from 'node:path';
 import { sprite } from '../src/sprite.js';
 import { PixelCanvas } from '../src/canvas.js';
 import { toPNG } from '../src/render/png.js';
@@ -49,5 +52,75 @@ describe('toPNG', () => {
     expect(png.width).toBe(2);
     expect(png.data[0]).toBe(0);
     expect(png.data[1]).toBe(255);
+  });
+});
+
+describe('toPNG file writing', () => {
+  let tmpDir: string;
+  let tmpFiles: string[] = [];
+
+  afterEach(() => {
+    for (const f of tmpFiles) {
+      try { fs.unlinkSync(f); } catch {}
+    }
+    tmpFiles = [];
+  });
+
+  function tmpPath(name: string): string {
+    if (!tmpDir) {
+      tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'pixlrt-test-'));
+    }
+    const p = path.join(tmpDir, name);
+    tmpFiles.push(p);
+    return p;
+  }
+
+  it('writes a valid PNG file to disk', () => {
+    const s = sprite({
+      palette,
+      frames: [`
+        x.
+        .x
+      `],
+    });
+    const filePath = tmpPath('test-output.png');
+    const buf = toPNG(s, filePath);
+
+    // Returns a buffer
+    expect(buf).toBeInstanceOf(Buffer);
+
+    // File exists and is valid PNG
+    expect(fs.existsSync(filePath)).toBe(true);
+    const fileData = fs.readFileSync(filePath);
+    const png = PNG.sync.read(fileData);
+    expect(png.width).toBe(2);
+    expect(png.height).toBe(2);
+  });
+
+  it('writes a scaled PNG file to disk', () => {
+    const s = sprite({ palette, frames: ['x'] });
+    const filePath = tmpPath('test-scaled.png');
+    toPNG(s, filePath, { scale: 2 });
+
+    const fileData = fs.readFileSync(filePath);
+    const png = PNG.sync.read(fileData);
+    expect(png.width).toBe(2);
+    expect(png.height).toBe(2);
+  });
+
+  it('preserves transparent pixels in output', () => {
+    const s = sprite({
+      palette,
+      frames: [`
+        x.
+        .x
+      `],
+    });
+    const buf = toPNG(s);
+    const png = PNG.sync.read(buf);
+
+    // Top-right pixel (index 1,0) should be transparent
+    const idx = (0 * png.width + 1) * 4; // x=1, y=0
+    expect(png.data[idx + 3]).toBe(0); // alpha = 0
   });
 });
