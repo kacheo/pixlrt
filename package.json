@@ -29,7 +29,7 @@
     "svg",
     "game-assets"
   ],
-  "license": "MIT",
+  "license": "Apache-2.0",
   "dependencies": {
     "pngjs": "^7.0.0"
   },
