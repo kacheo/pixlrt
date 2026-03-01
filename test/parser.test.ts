@@ -3,8 +3,8 @@ import { parseGrid, parseFrames } from '../src/parser.js';
 
 const palette = {
   '.': 'transparent',
-  'x': '#ff0000',
-  'o': '#0000ff',
+  x: '#ff0000',
+  o: '#0000ff',
 };
 
 describe('parseGrid', () => {
@@ -19,10 +19,13 @@ describe('parseGrid', () => {
   });
 
   it('handles template literal with leading/trailing blank lines', () => {
-    const grid = parseGrid(`
+    const grid = parseGrid(
+      `
       x.
       .x
-    `, palette);
+    `,
+      palette,
+    );
     expect(grid.length).toBe(2);
     expect(grid[0]![0]).toEqual([255, 0, 0, 255]);
     expect(grid[0]![1]).toEqual([0, 0, 0, 0]); // transparent

@@ -33,7 +33,7 @@ export { flipX, flipY, rotate, rotate90, rotate180, rotate270, scale } from './t
 export { Sprite, sprite } from './sprite.js';
 
 // Composition
-export { Composer, compose } from './compose.js';
+export { Composer, compose, type ComposeOptions } from './compose.js';
 
 // Tileset
 export { Tileset, tileset } from './tileset.js';

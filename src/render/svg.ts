@@ -11,7 +11,7 @@ export function toSVG(source: Renderable, path: string, opts?: SVGOptions): stri
 export function toSVG(
   source: Renderable,
   pathOrOpts?: string | SVGOptions,
-  maybeOpts?: SVGOptions
+  maybeOpts?: SVGOptions,
 ): string {
   let path: string | undefined;
   let opts: SVGOptions | undefined;
@@ -55,7 +55,7 @@ export function toSVG(
       const opacity = a < 255 ? ` opacity="${(a / 255).toFixed(3)}"` : '';
 
       rects.push(
-        `  <rect x="${x * scale}" y="${y * scale}" width="${runLen * scale}" height="${scale}" fill="${hex}"${opacity}/>`
+        `  <rect x="${x * scale}" y="${y * scale}" width="${runLen * scale}" height="${scale}" fill="${hex}"${opacity}/>`,
       );
 
       x += runLen;

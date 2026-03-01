@@ -1,21 +1,26 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, afterEach } from 'vitest';
+import * as fs from 'node:fs';
+import * as os from 'node:os';
+import * as path from 'node:path';
 import { sprite } from '../src/sprite.js';
 import { toSVG } from '../src/render/svg.js';
 
 const palette = {
   '.': 'transparent',
-  'x': '#ff0000',
-  'o': '#0000ff',
+  x: '#ff0000',
+  o: '#0000ff',
 };
 
 describe('toSVG', () => {
   it('returns a valid SVG string', () => {
     const s = sprite({
       palette,
-      frames: [`
+      frames: [
+        `
         xo
         .x
-      `],
+      `,
+      ],
     });
     const svg = toSVG(s);
     expect(svg).toContain('<svg');
@@ -27,10 +32,12 @@ describe('toSVG', () => {
   it('skips transparent pixels', () => {
     const s = sprite({
       palette,
-      frames: [`
+      frames: [
+        `
         x.
         .x
-      `],
+      `,
+      ],
     });
     const svg = toSVG(s);
     // Should have 2 rects (one per red pixel), no rect for transparent
@@ -61,5 +68,32 @@ describe('toSVG', () => {
     const s = sprite({ palette, frames: ['x'] });
     const svg = toSVG(s);
     expect(svg).toContain('fill="#ff0000"');
+  });
+
+  describe('file write', () => {
+    let tmpFile: string | undefined;
+
+    afterEach(() => {
+      if (tmpFile) {
+        try {
+          fs.unlinkSync(tmpFile);
+        } catch {
+          // ignore cleanup errors
+        }
+        tmpFile = undefined;
+      }
+    });
+
+    it('writes SVG to file and returns matching string', () => {
+      const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'pixlrt-svg-'));
+      tmpFile = path.join(tmpDir, 'test.svg');
+
+      const s = sprite({ palette, frames: ['xo'] });
+      const svg = toSVG(s, tmpFile);
+
+      expect(fs.existsSync(tmpFile)).toBe(true);
+      const written = fs.readFileSync(tmpFile, 'utf-8');
+      expect(written).toBe(svg);
+    });
   });
 });

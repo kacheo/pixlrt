@@ -12,16 +12,16 @@ import { toPNG } from './png.js';
 export function toSpriteSheet(
   source: Sprite,
   path?: string,
-  opts?: SpriteSheetOptions
+  opts?: SpriteSheetOptions,
 ): { buffer: Buffer; metadata: SpriteSheetMeta };
 export function toSpriteSheet(
   source: Sprite,
-  opts?: SpriteSheetOptions
+  opts?: SpriteSheetOptions,
 ): { buffer: Buffer; metadata: SpriteSheetMeta };
 export function toSpriteSheet(
   source: Sprite,
   pathOrOpts?: string | SpriteSheetOptions,
-  maybeOpts?: SpriteSheetOptions
+  maybeOpts?: SpriteSheetOptions,
 ): { buffer: Buffer; metadata: SpriteSheetMeta } {
   let path: string | undefined;
   let opts: SpriteSheetOptions | undefined;

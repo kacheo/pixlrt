@@ -3,9 +3,9 @@ import { tileset } from '../src/tileset.js';
 
 const palette = {
   '.': 'transparent',
-  'g': '#00ff00',
-  'b': '#0000ff',
-  'w': '#808080',
+  g: '#00ff00',
+  b: '#0000ff',
+  w: '#808080',
 };
 
 describe('tileset', () => {
@@ -51,7 +51,7 @@ describe('tileset', () => {
         tileSize: 2,
         palette,
         tiles: { bad: 'g' },
-      })
+      }),
     ).toThrow('dimensions');
   });
 

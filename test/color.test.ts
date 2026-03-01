@@ -37,6 +37,7 @@ describe('parseColor', () => {
   });
 
   it('throws on wrong tuple length', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expect(() => parseColor([1, 2, 3] as any)).toThrow('4 elements');
   });
 });

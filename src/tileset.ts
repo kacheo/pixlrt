@@ -1,8 +1,7 @@
 import type { PaletteMap, TilesetConfig, Renderable, RGBA } from './types.js';
 import { Frame } from './frame.js';
-import { PixelCanvas } from './canvas.js';
 import { parseGrid } from './parser.js';
-import { Sprite, sprite } from './sprite.js';
+import { Sprite } from './sprite.js';
 
 /**
  * A Tileset groups multiple named tiles with a shared palette and uniform tile size.
@@ -30,7 +29,7 @@ export class Tileset implements Renderable {
       if (grid.length !== config.tileSize || grid[0]!.length !== config.tileSize) {
         throw new Error(
           `Tile "${name}" has dimensions ${grid[0]!.length}x${grid.length}, ` +
-            `expected ${config.tileSize}x${config.tileSize}`
+            `expected ${config.tileSize}x${config.tileSize}`,
         );
       }
 
@@ -47,9 +46,7 @@ export class Tileset implements Renderable {
   tile(name: string): Sprite {
     const frame = this.tileFrames.get(name);
     if (!frame) {
-      throw new Error(
-        `Unknown tile "${name}". Available tiles: ${this.tileNames.join(', ')}`
-      );
+      throw new Error(`Unknown tile "${name}". Available tiles: ${this.tileNames.join(', ')}`);
     }
     return new Sprite({
       name,

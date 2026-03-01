@@ -70,7 +70,7 @@ export function parseColor(input: ColorInput): RGBA {
   }
 
   throw new Error(
-    `Unknown color: "${input}". Use a hex value (#rgb, #rrggbb), named color (${Object.keys(NAMED_COLORS).slice(0, 5).join(', ')}...), or RGBA tuple.`
+    `Unknown color: "${input}". Use a hex value (#rgb, #rrggbb), named color (${Object.keys(NAMED_COLORS).slice(0, 5).join(', ')}...), or RGBA tuple.`,
   );
 }
 
@@ -93,12 +93,7 @@ export function lighten(color: ColorInput, amount: number): RGBA {
 /** Darken a color by an amount (0-1) */
 export function darken(color: ColorInput, amount: number): RGBA {
   const [r, g, b, a] = parseColor(color);
-  return [
-    clamp(r * (1 - amount)),
-    clamp(g * (1 - amount)),
-    clamp(b * (1 - amount)),
-    a,
-  ];
+  return [clamp(r * (1 - amount)), clamp(g * (1 - amount)), clamp(b * (1 - amount)), a];
 }
 
 /** Linearly interpolate between two colors */

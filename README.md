@@ -29,18 +29,20 @@ const hero = sprite({
   name: 'hero',
   palette: {
     '.': 'transparent',
-    'x': '#1a1c2c',
-    's': '#f4cca1',
-    'b': '#3b5dc9',
+    x: '#1a1c2c',
+    s: '#f4cca1',
+    b: '#3b5dc9',
   },
-  frames: [`
+  frames: [
+    `
     ..xx..
     .xssx.
     ..xx..
     .xbbx.
     .xbbx.
     .x..x.
-  `],
+  `,
+  ],
 });
 
 toPNG(hero, 'hero.png', { scale: 8 });
@@ -50,33 +52,33 @@ toPNG(hero, 'hero.png', { scale: 8 });
 
 ### Factory Functions
 
-| Function | Description |
-|---|---|
-| `sprite(config)` | Create a sprite from ASCII grid frames |
-| `tileset(config)` | Create a tileset from named tile definitions |
-| `compose()` | Create a composer for layering renderables |
+| Function            | Description                                    |
+| ------------------- | ---------------------------------------------- |
+| `sprite(config)`    | Create a sprite from ASCII grid frames         |
+| `tileset(config)`   | Create a tileset from named tile definitions   |
+| `compose()`         | Create a composer for layering renderables     |
 | `paletteFrom(name)` | Get a palette map from a built-in palette name |
 
 ### Renderers
 
-| Function | Description |
-|---|---|
-| `toPNG(renderable, path, opts?)` | Render to PNG file, returns Buffer |
-| `toSVG(renderable, path, opts?)` | Render to SVG file, returns string |
+| Function                             | Description                                             |
+| ------------------------------------ | ------------------------------------------------------- |
+| `toPNG(renderable, path, opts?)`     | Render to PNG file, returns Buffer                      |
+| `toSVG(renderable, path, opts?)`     | Render to SVG file, returns string                      |
 | `toSpriteSheet(sprite, path, opts?)` | Render animation frames to sprite sheet + JSON metadata |
 
 ### Sprite Methods
 
 All transforms return new `Sprite` instances (immutable).
 
-| Method | Description |
-|---|---|
-| `.flipX()` | Flip horizontally |
-| `.flipY()` | Flip vertically |
-| `.rotate(degrees)` | Rotate 90, 180, or 270 degrees clockwise |
-| `.scale(factor)` | Scale by integer factor |
-| `.recolor(mapping)` | Palette swap using `{ key: newColor }` |
-| `.frame(index)` | Get a specific frame |
+| Method              | Description                              |
+| ------------------- | ---------------------------------------- |
+| `.flipX()`          | Flip horizontally                        |
+| `.flipY()`          | Flip vertically                          |
+| `.rotate(degrees)`  | Rotate 90, 180, or 270 degrees clockwise |
+| `.scale(factor)`    | Scale by integer factor                  |
+| `.recolor(mapping)` | Palette swap using `{ key: newColor }`   |
+| `.frame(index)`     | Get a specific frame                     |
 
 ### Color Utilities
 
@@ -84,12 +86,12 @@ All transforms return new `Sprite` instances (immutable).
 
 ## Built-in Palettes
 
-| Name | Colors | Description |
-|---|---|---|
-| `pico8` | 16 | PICO-8 fantasy console palette |
-| `gameboy` | 4 | Classic Game Boy greens |
-| `sweetie16` | 16 | Sweetie-16 palette |
-| `cga` | 4 | CGA mode 4 palette |
+| Name        | Colors | Description                    |
+| ----------- | ------ | ------------------------------ |
+| `pico8`     | 16     | PICO-8 fantasy console palette |
+| `gameboy`   | 4      | Classic Game Boy greens        |
+| `sweetie16` | 16     | Sweetie-16 palette             |
+| `cga`       | 4      | CGA mode 4 palette             |
 
 ```ts
 import { paletteFrom } from 'pixlrt';

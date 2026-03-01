@@ -1,9 +1,5 @@
-node_modules/
 dist/
-*.tgz
-.DS_Store
+node_modules/
 examples/*.png
 examples/*.svg
 examples/*.json
-coverage/
-.claude/
