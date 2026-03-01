@@ -12,6 +12,10 @@ export type {
   SpriteSheetMeta,
   Renderable,
   SceneOptions,
+  LayerConfig,
+  NinePatchEdges,
+  NinePatchMeta,
+  Rect,
 } from './types.js';
 
 // Color utilities
@@ -38,7 +42,12 @@ export {
   scale,
   pad,
   crop,
+  opacity,
+  outline,
 } from './transform.js';
+
+// Nine-patch
+export { ninePatchMeta, ninePatchResize } from './nine-patch.js';
 
 // Sprite
 export { Sprite, sprite } from './sprite.js';
@@ -53,3 +62,5 @@ export { Tileset, tileset } from './tileset.js';
 export { toPNG } from './render/png.js';
 export { toSVG } from './render/svg.js';
 export { toSpriteSheet } from './render/spritesheet.js';
+export { toTiled } from './render/tiled.js';
+export type { TiledMap, TiledTileLayer, TiledTilesetRef, TiledExportOptions } from './render/tiled.js';

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { Frame } from '../src/frame.js';
-import { flipX, flipY, rotate, scale, pad, crop } from '../src/transform.js';
+import { flipX, flipY, rotate, scale, pad, crop, opacity, outline } from '../src/transform.js';
 import type { RGBA } from '../src/types.js';
 
 const R: RGBA = [255, 0, 0, 255];
@@ -203,5 +203,109 @@ describe('crop', () => {
 
   it('throws on negative dimensions', () => {
     expect(() => crop(frame2x2, 0, 0, -1, 1)).toThrow('positive');
+  });
+});
+
+describe('opacity', () => {
+  it('halves alpha at 0.5', () => {
+    const f = opacity(frame2x2, 0.5);
+    expect(f.getPixel(0, 0)).toEqual([255, 0, 0, 128]);
+    expect(f.getPixel(1, 0)).toEqual([0, 255, 0, 128]);
+  });
+
+  it('makes fully transparent at 0', () => {
+    const f = opacity(frame2x2, 0);
+    expect(f.getPixel(0, 0)).toEqual([255, 0, 0, 0]);
+    expect(f.getPixel(1, 1)).toEqual([255, 255, 255, 0]);
+  });
+
+  it('returns same frame at 1 (identity)', () => {
+    const f = opacity(frame2x2, 1);
+    expect(f).toBe(frame2x2);
+  });
+
+  it('preserves RGB channels', () => {
+    const f = opacity(frame2x2, 0.5);
+    const px = f.getPixel(0, 0);
+    expect(px[0]).toBe(255);
+    expect(px[1]).toBe(0);
+    expect(px[2]).toBe(0);
+  });
+
+  it('already-transparent pixels stay transparent', () => {
+    const frameWithTransparent = new Frame([
+      [R, T],
+      [T, G],
+    ]);
+    const f = opacity(frameWithTransparent, 0.5);
+    expect(f.getPixel(1, 0)).toEqual([0, 0, 0, 0]);
+    expect(f.getPixel(0, 1)).toEqual([0, 0, 0, 0]);
+  });
+
+  it('throws on alpha < 0', () => {
+    expect(() => opacity(frame2x2, -0.1)).toThrow('between 0 and 1');
+  });
+
+  it('throws on alpha > 1', () => {
+    expect(() => opacity(frame2x2, 1.5)).toThrow('between 0 and 1');
+  });
+});
+
+describe('outline', () => {
+  const outlineColor: RGBA = [255, 255, 0, 255];
+
+  it('2x2 opaque frame + thickness=1 → 4x4 output with outline ring', () => {
+    const f = outline(frame2x2, outlineColor, 1);
+    expect(f.width).toBe(4);
+    expect(f.height).toBe(4);
+    // Corners should be outline color (adjacent to opaque pixels)
+    expect(f.getPixel(0, 0)).toEqual(outlineColor);
+    expect(f.getPixel(3, 3)).toEqual(outlineColor);
+    // Original pixels preserved at offset (1,1)
+    expect(f.getPixel(1, 1)).toEqual(R);
+    expect(f.getPixel(2, 1)).toEqual(G);
+    expect(f.getPixel(1, 2)).toEqual(B);
+    expect(f.getPixel(2, 2)).toEqual(W);
+  });
+
+  it('uses custom outline color', () => {
+    const pink: RGBA = [255, 0, 255, 255];
+    const f = outline(frame2x2, pink, 1);
+    expect(f.getPixel(0, 0)).toEqual(pink);
+  });
+
+  it('thickness=2 expands by 4 in each dimension', () => {
+    const f = outline(frame2x2, outlineColor, 2);
+    expect(f.width).toBe(6);
+    expect(f.height).toBe(6);
+    // Original pixels at offset (2,2)
+    expect(f.getPixel(2, 2)).toEqual(R);
+    expect(f.getPixel(3, 2)).toEqual(G);
+  });
+
+  it('throws on non-integer thickness', () => {
+    expect(() => outline(frame2x2, outlineColor, 1.5)).toThrow('positive integer');
+  });
+
+  it('throws on zero thickness', () => {
+    expect(() => outline(frame2x2, outlineColor, 0)).toThrow('positive integer');
+  });
+
+  it('only outlines around non-transparent pixels', () => {
+    const sparseFrame = new Frame([
+      [R, T],
+      [T, T],
+    ]);
+    const f = outline(sparseFrame, outlineColor, 1);
+    expect(f.width).toBe(4);
+    expect(f.height).toBe(4);
+    // (1,1) is original R pixel
+    expect(f.getPixel(1, 1)).toEqual(R);
+    // Neighbors of R should be outline
+    expect(f.getPixel(0, 0)).toEqual(outlineColor);
+    expect(f.getPixel(1, 0)).toEqual(outlineColor);
+    expect(f.getPixel(2, 0)).toEqual(outlineColor);
+    // Far from any opaque pixel should be transparent
+    expect(f.getPixel(3, 3)).toEqual(T);
   });
 });

@@ -146,6 +146,142 @@ describe('tileset', () => {
     expect(canvas.getPixel(2, 2)).toEqual([0, 0, 0, 0]);
   });
 
+  it('resolves tile by numeric index in scene', () => {
+    const ts = tileset({
+      tileSize: 2,
+      palette,
+      tiles: {
+        grass: 'gg\ngg',
+        water: 'bb\nbb',
+      },
+    });
+    const canvas = ts.scene('0 1\n1 0');
+    expect(canvas.width).toBe(4);
+    expect(canvas.height).toBe(4);
+    // Index 0 = grass, index 1 = water
+    expect(canvas.getPixel(0, 0)).toEqual([0, 255, 0, 255]);
+    expect(canvas.getPixel(2, 0)).toEqual([0, 0, 255, 255]);
+    expect(canvas.getPixel(0, 2)).toEqual([0, 0, 255, 255]);
+    expect(canvas.getPixel(2, 2)).toEqual([0, 255, 0, 255]);
+  });
+
+  it('mixes names and indices in scene', () => {
+    const ts = tileset({
+      tileSize: 2,
+      palette,
+      tiles: {
+        grass: 'gg\ngg',
+        water: 'bb\nbb',
+      },
+    });
+    const canvas = ts.scene('grass 1');
+    expect(canvas.getPixel(0, 0)).toEqual([0, 255, 0, 255]);
+    expect(canvas.getPixel(2, 0)).toEqual([0, 0, 255, 255]);
+  });
+
+  it('throws on invalid index/name with helpful message', () => {
+    const ts = tileset({
+      tileSize: 2,
+      palette,
+      tiles: { grass: 'gg\ngg' },
+    });
+    expect(() => ts.scene('5')).toThrow('indices');
+    expect(() => ts.scene('lava')).toThrow('Available tiles');
+  });
+
+  it('tileIndex returns 0-based index by name', () => {
+    const ts = tileset({
+      tileSize: 2,
+      palette,
+      tiles: {
+        grass: 'gg\ngg',
+        water: 'bb\nbb',
+      },
+    });
+    expect(ts.tileIndex('grass')).toBe(0);
+    expect(ts.tileIndex('water')).toBe(1);
+  });
+
+  it('tileIndex resolves numeric string', () => {
+    const ts = tileset({
+      tileSize: 2,
+      palette,
+      tiles: {
+        grass: 'gg\ngg',
+        water: 'bb\nbb',
+      },
+    });
+    expect(ts.tileIndex('0')).toBe(0);
+    expect(ts.tileIndex('1')).toBe(1);
+  });
+
+  it('builds scene with layers', () => {
+    const ts = tileset({
+      tileSize: 2,
+      palette,
+      tiles: {
+        grass: 'gg\ngg',
+        water: 'bb\nbb',
+        wall: 'ww\nww',
+      },
+    });
+    const canvas = ts.scene({
+      layers: [
+        { layout: 'grass grass\ngrass grass' },
+        { layout: '. wall\n. .' },
+      ],
+    });
+    expect(canvas.width).toBe(4);
+    expect(canvas.height).toBe(4);
+    // Bottom layer: all grass
+    expect(canvas.getPixel(0, 0)).toEqual([0, 255, 0, 255]);
+    expect(canvas.getPixel(0, 2)).toEqual([0, 255, 0, 255]);
+    // Upper layer: wall at (1,0), rest is . (transparent, shows grass through)
+    expect(canvas.getPixel(2, 0)).toEqual([128, 128, 128, 255]);
+  });
+
+  it('. in upper layer does not overwrite lower layer', () => {
+    const ts = tileset({
+      tileSize: 2,
+      palette,
+      tiles: {
+        grass: 'gg\ngg',
+        water: 'bb\nbb',
+      },
+    });
+    const canvas = ts.scene({
+      layers: [
+        { layout: 'grass grass' },
+        { layout: '. water' },
+      ],
+    });
+    // First cell: . in upper layer, grass shows through
+    expect(canvas.getPixel(0, 0)).toEqual([0, 255, 0, 255]);
+    // Second cell: water in upper layer
+    expect(canvas.getPixel(2, 0)).toEqual([0, 0, 255, 255]);
+  });
+
+  it('single-element layers array matches direct layout result', () => {
+    const ts = tileset({
+      tileSize: 2,
+      palette,
+      tiles: {
+        grass: 'gg\ngg',
+        water: 'bb\nbb',
+      },
+    });
+    const direct = ts.scene('grass water\nwater grass');
+    const layered = ts.scene({
+      layers: [{ layout: 'grass water\nwater grass' }],
+    });
+    // Should produce identical results
+    for (let x = 0; x < 4; x++) {
+      for (let y = 0; y < 4; y++) {
+        expect(layered.getPixel(x, y)).toEqual(direct.getPixel(x, y));
+      }
+    }
+  });
+
   it('implements Renderable for full sheet', () => {
     const ts = tileset({
       tileSize: 2,

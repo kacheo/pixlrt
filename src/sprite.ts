@@ -1,8 +1,9 @@
-import type { RGBA, ColorInput, PaletteMap, SpriteConfig, Renderable } from './types.js';
+import type { RGBA, ColorInput, PaletteMap, SpriteConfig, NinePatchEdges, Renderable } from './types.js';
 import { Frame } from './frame.js';
 import { parseColor } from './color.js';
 import { parseFrames } from './parser.js';
 import * as transform from './transform.js';
+import { ninePatchResize } from './nine-patch.js';
 
 /**
  * A Sprite is a named collection of immutable frames with shared palette and metadata.
@@ -81,6 +82,22 @@ export class Sprite implements Renderable {
   /** Crop a sub-region from all frames */
   crop(x: number, y: number, w: number, h: number): Sprite {
     return this._withFrames(this.frames.map((f) => transform.crop(f, x, y, w, h)));
+  }
+
+  /** Adjust opacity of all frames */
+  opacity(alpha: number): Sprite {
+    return this._withFrames(this.frames.map((f) => transform.opacity(f, alpha)));
+  }
+
+  /** Add an outline around non-transparent pixels */
+  outline(color: ColorInput, thickness?: number): Sprite {
+    const rgba = parseColor(color);
+    return this._withFrames(this.frames.map((f) => transform.outline(f, rgba, thickness)));
+  }
+
+  /** Resize using nine-patch rules */
+  ninePatch(edges: NinePatchEdges, width: number, height: number): Sprite {
+    return this._withFrames(this.frames.map((f) => ninePatchResize(f, edges, width, height)));
   }
 
   /** Create a palette-swapped copy */

@@ -59,10 +59,48 @@ export interface SpriteSheetMeta {
   }>;
 }
 
+/** A single layer in a multi-layer scene */
+export interface LayerConfig {
+  layout: string;
+}
+
 /** Options for Tileset.scene() */
 export interface SceneOptions {
   background?: ColorInput;
   scale?: number;
+  layers?: LayerConfig[];
+}
+
+/** Edge sizes for nine-patch slicing */
+export interface NinePatchEdges {
+  top: number;
+  right: number;
+  bottom: number;
+  left: number;
+}
+
+/** Region rect within a frame */
+export interface Rect {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+/** Metadata describing the 9 regions of a nine-patch */
+export interface NinePatchMeta {
+  topLeft: Rect;
+  topCenter: Rect;
+  topRight: Rect;
+  middleLeft: Rect;
+  center: Rect;
+  middleRight: Rect;
+  bottomLeft: Rect;
+  bottomCenter: Rect;
+  bottomRight: Rect;
+  sourceWidth: number;
+  sourceHeight: number;
+  edges: NinePatchEdges;
 }
 
 /** Anything that can be rendered: has width, height, and pixel data */
