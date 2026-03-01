@@ -23,6 +23,11 @@ export type {
   AtlasMeta,
   MultiScaleOptions,
   CollisionMaskOptions,
+  AnimationMode,
+  AnimationTag,
+  TaggedSpriteSheetOptions,
+  TaggedSpriteSheetMeta,
+  APNGOptions,
 } from './types.js';
 
 // Color utilities
@@ -85,6 +90,8 @@ export { toMultiScale } from './render/multiscale.js';
 export type { MultiScaleResult } from './render/multiscale.js';
 export { toCollisionMask } from './render/collision-mask.js';
 export type { CollisionMaskResult } from './render/collision-mask.js';
+export { toAPNG } from './render/apng.js';
+export { toTaggedSpriteSheet } from './render/spritesheet.js';
 
 // Import
 export { fromPNG } from './import/png.js';

@@ -161,3 +161,44 @@ export interface MultiScaleOptions {
 export interface CollisionMaskOptions {
   threshold?: number;
 }
+
+/** Animation playback mode */
+export type AnimationMode = 'loop' | 'pingpong' | 'once';
+
+/** A named animation range within a tagged sprite sheet */
+export interface AnimationTag {
+  name: string;
+  from: number;  // start frame index in sheet
+  to: number;    // end frame index (inclusive)
+  direction: 'forward' | 'reverse' | 'pingpong';
+}
+
+/** Options for tagged sprite sheet output */
+export interface TaggedSpriteSheetOptions {
+  columns?: number;
+  padding?: number;
+  scale?: number;
+}
+
+/** Metadata for a tagged sprite sheet */
+export interface TaggedSpriteSheetMeta {
+  image: string;
+  frameWidth: number;
+  frameHeight: number;
+  scale: number;
+  frames: Array<{
+    index: number;
+    x: number;
+    y: number;
+    w: number;
+    h: number;
+    duration?: number;
+  }>;
+  tags: AnimationTag[];
+}
+
+/** Render options for APNG output */
+export interface APNGOptions {
+  scale?: number;
+  loop?: number;  // 0 = infinite (default)
+}

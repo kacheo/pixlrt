@@ -1,4 +1,4 @@
-import type { RGBA, ColorInput, PaletteMap, SpriteConfig, NinePatchEdges, Renderable } from './types.js';
+import type { RGBA, ColorInput, PaletteMap, SpriteConfig, NinePatchEdges, Renderable, AnimationMode } from './types.js';
 import { Frame } from './frame.js';
 import { parseColor } from './color.js';
 import { parseFrames } from './parser.js';
@@ -49,6 +49,51 @@ export class Sprite implements Renderable {
   /** Get pixel from frame 0 (for Renderable interface) */
   getPixel(x: number, y: number): RGBA {
     return this.frames[0]!.getPixel(x, y);
+  }
+
+  /** Get the frame visible at a given time in milliseconds */
+  frameAt(timeMs: number, mode: AnimationMode = 'loop'): Frame {
+    if (this.frames.length === 1) return this.frames[0]!;
+
+    const t = Math.max(0, timeMs);
+    const totalDuration = this.frameDuration.reduce((a, b) => a + b, 0);
+
+    if (mode === 'once') {
+      if (t >= totalDuration) return this.frames[this.frames.length - 1]!;
+      let elapsed = t;
+      for (let i = 0; i < this.frames.length; i++) {
+        elapsed -= this.frameDuration[i]!;
+        if (elapsed < 0) return this.frames[i]!;
+      }
+      return this.frames[this.frames.length - 1]!;
+    }
+
+    if (mode === 'pingpong') {
+      const n = this.frames.length;
+      const reverseDurations = this.frameDuration.slice(1, -1).reverse();
+      const pingPongTotal = totalDuration + reverseDurations.reduce((a, b) => a + b, 0);
+      let elapsed = t % pingPongTotal;
+
+      // Forward pass
+      for (let i = 0; i < n; i++) {
+        elapsed -= this.frameDuration[i]!;
+        if (elapsed < 0) return this.frames[i]!;
+      }
+      // Reverse pass (frames n-2 down to 1)
+      for (let i = n - 2; i >= 1; i--) {
+        elapsed -= this.frameDuration[i]!;
+        if (elapsed < 0) return this.frames[i]!;
+      }
+      return this.frames[0]!;
+    }
+
+    // mode === 'loop'
+    let elapsed = t % totalDuration;
+    for (let i = 0; i < this.frames.length; i++) {
+      elapsed -= this.frameDuration[i]!;
+      if (elapsed < 0) return this.frames[i]!;
+    }
+    return this.frames[this.frames.length - 1]!;
   }
 
   /** Flip all frames horizontally */

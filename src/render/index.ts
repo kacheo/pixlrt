@@ -8,3 +8,5 @@ export { toAtlasUnity } from './atlas-unity.js';
 export { toAtlasGodot } from './atlas-godot.js';
 export { toMultiScale } from './multiscale.js';
 export { toCollisionMask } from './collision-mask.js';
+export { toAPNG } from './apng.js';
+export { toTaggedSpriteSheet } from './spritesheet.js';
