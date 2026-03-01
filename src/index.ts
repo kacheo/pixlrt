@@ -8,6 +8,7 @@ export type {
   TilesetConfig,
   PNGOptions,
   SVGOptions,
+  GIFOptions,
   SpriteSheetOptions,
   SpriteSheetMeta,
   Renderable,
@@ -46,6 +47,9 @@ export {
   outline,
 } from './transform.js';
 
+// Animation
+export { reverseFrames, pingPong, pickFrames, setDuration } from './animation.js';
+
 // Nine-patch
 export { ninePatchMeta, ninePatchResize } from './nine-patch.js';
 
@@ -62,6 +66,7 @@ export { Tileset, tileset } from './tileset.js';
 export { toPNG } from './render/png.js';
 export { toSVG } from './render/svg.js';
 export { toSpriteSheet } from './render/spritesheet.js';
+export { toGIF } from './render/gif.js';
 export { toTiled } from './render/tiled.js';
 export type { TiledMap, TiledTileLayer, TiledTilesetRef, TiledExportOptions } from './render/tiled.js';
 

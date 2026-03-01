@@ -11,6 +11,9 @@ import {
   toPNG,
   toSVG,
   toSpriteSheet,
+  toGIF,
+  pingPong,
+  setDuration,
 } from '../src/index.js';
 
 // ── Helpers ──────────────────────────────────────────────────────────────
@@ -366,5 +369,77 @@ describe('E2E: file output round-trip', () => {
     expect(svgContent).toContain('<svg');
     expect(svgContent).toContain('fill="#00ff00"');
     expect(svgContent).toContain('</svg>');
+  });
+});
+
+describe('E2E: animation → GIF export', () => {
+  function readU16LE(buf: Buffer, offset: number): number {
+    return buf[offset]! | (buf[offset + 1]! << 8);
+  }
+
+  it('multi-frame sprite → pingPong → setDuration → toGIF', () => {
+    const palette = { '.': 'transparent', r: '#ff0000', g: '#00ff00', b: '#0000ff' };
+
+    const s = sprite({
+      palette,
+      frames: [
+        `
+        rr
+        rr
+      `,
+        `
+        gg
+        gg
+      `,
+        `
+        bb
+        bb
+      `,
+      ],
+      frameDuration: [100, 100, 100],
+    });
+
+    expect(s.frames.length).toBe(3);
+
+    // pingPong: [r, g, b] → [r, g, b, g]
+    const pp = pingPong(s);
+    expect(pp.frames.length).toBe(4);
+
+    // setDuration: all frames to 150ms
+    const timed = setDuration(pp, 150);
+    expect(timed.frameDuration).toEqual([150, 150, 150, 150]);
+
+    // Export to GIF
+    const buf = toGIF(timed, { scale: 2 });
+
+    // Verify GIF89a header
+    expect(buf.subarray(0, 6).toString('ascii')).toBe('GIF89a');
+
+    // Verify scaled dimensions (2×2 sprite × scale 2 = 4×4)
+    expect(readU16LE(buf, 6)).toBe(4);
+    expect(readU16LE(buf, 8)).toBe(4);
+
+    // Verify trailer
+    expect(buf[buf.length - 1]).toBe(0x3b);
+
+    // Count GCE blocks — should be 4 (one per frame after pingPong)
+    let gceCount = 0;
+    const delays: number[] = [];
+    for (let i = 0; i < buf.length - 5; i++) {
+      if (buf[i] === 0x21 && buf[i + 1] === 0xf9 && buf[i + 2] === 0x04) {
+        gceCount++;
+        delays.push(readU16LE(buf, i + 4));
+      }
+    }
+    expect(gceCount).toBe(4);
+
+    // All delays should be 15 centiseconds (150ms / 10)
+    expect(delays).toEqual([15, 15, 15, 15]);
+
+    // Verify file write round-trip
+    const gifPath = tmpPath('animation.gif');
+    const buf2 = toGIF(timed, gifPath, { scale: 2 });
+    expect(fs.existsSync(gifPath)).toBe(true);
+    expect(buf2.subarray(0, 6).toString('ascii')).toBe('GIF89a');
   });
 });
