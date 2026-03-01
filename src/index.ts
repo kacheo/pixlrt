@@ -11,6 +11,7 @@ export type {
   SpriteSheetOptions,
   SpriteSheetMeta,
   Renderable,
+  SceneOptions,
 } from './types.js';
 
 // Color utilities
@@ -27,7 +28,17 @@ export { Frame } from './frame.js';
 export { PixelCanvas } from './canvas.js';
 
 // Transforms
-export { flipX, flipY, rotate, rotate90, rotate180, rotate270, scale } from './transform.js';
+export {
+  flipX,
+  flipY,
+  rotate,
+  rotate90,
+  rotate180,
+  rotate270,
+  scale,
+  pad,
+  crop,
+} from './transform.js';
 
 // Sprite
 export { Sprite, sprite } from './sprite.js';

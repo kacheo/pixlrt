@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { Frame } from '../src/frame.js';
-import { flipX, flipY, rotate, scale } from '../src/transform.js';
+import { flipX, flipY, rotate, scale, pad, crop } from '../src/transform.js';
 import type { RGBA } from '../src/types.js';
 
 const R: RGBA = [255, 0, 0, 255];
@@ -116,5 +116,92 @@ describe('scale', () => {
 
   it('throws on factor < 1', () => {
     expect(() => scale(frame2x2, 0)).toThrow('positive integer');
+  });
+});
+
+const T: RGBA = [0, 0, 0, 0];
+
+describe('pad', () => {
+  it('adds uniform padding', () => {
+    const f = pad(frame2x2, 1, 1, 1, 1);
+    expect(f.width).toBe(4);
+    expect(f.height).toBe(4);
+    // Corners are transparent (default)
+    expect(f.getPixel(0, 0)).toEqual(T);
+    expect(f.getPixel(3, 3)).toEqual(T);
+    // Original content shifted by (1,1)
+    expect(f.getPixel(1, 1)).toEqual(R);
+    expect(f.getPixel(2, 1)).toEqual(G);
+    expect(f.getPixel(1, 2)).toEqual(B);
+    expect(f.getPixel(2, 2)).toEqual(W);
+  });
+
+  it('adds asymmetric padding', () => {
+    const f = pad(frame2x2, 0, 2, 1, 0);
+    expect(f.width).toBe(4); // 2 + 0 + 2
+    expect(f.height).toBe(3); // 2 + 0 + 1
+    expect(f.getPixel(0, 0)).toEqual(R);
+    expect(f.getPixel(1, 0)).toEqual(G);
+    expect(f.getPixel(2, 0)).toEqual(T);
+  });
+
+  it('uses custom fill color', () => {
+    const fill: RGBA = [128, 128, 128, 255];
+    const f = pad(frame2x2, 1, 0, 0, 0, fill);
+    expect(f.getPixel(0, 0)).toEqual(fill);
+    expect(f.getPixel(1, 0)).toEqual(fill);
+  });
+
+  it('zero padding returns same dimensions', () => {
+    const f = pad(frame2x2, 0, 0, 0, 0);
+    expect(f.width).toBe(2);
+    expect(f.height).toBe(2);
+    expect(f.getPixel(0, 0)).toEqual(R);
+  });
+
+  it('throws on negative padding', () => {
+    expect(() => pad(frame2x2, -1, 0, 0, 0)).toThrow('non-negative');
+  });
+
+  it('throws on non-integer padding', () => {
+    expect(() => pad(frame2x2, 1.5, 0, 0, 0)).toThrow('integers');
+  });
+});
+
+describe('crop', () => {
+  it('extracts a sub-region', () => {
+    const f = crop(frame2x2, 1, 0, 1, 2);
+    expect(f.width).toBe(1);
+    expect(f.height).toBe(2);
+    expect(f.getPixel(0, 0)).toEqual(G);
+    expect(f.getPixel(0, 1)).toEqual(W);
+  });
+
+  it('full-frame crop returns same content', () => {
+    const f = crop(frame2x2, 0, 0, 2, 2);
+    expect(f.width).toBe(2);
+    expect(f.height).toBe(2);
+    expect(f.getPixel(0, 0)).toEqual(R);
+    expect(f.getPixel(1, 1)).toEqual(W);
+  });
+
+  it('throws on out-of-bounds region', () => {
+    expect(() => crop(frame2x2, 1, 1, 2, 2)).toThrow('extends beyond');
+  });
+
+  it('throws on negative x/y', () => {
+    expect(() => crop(frame2x2, -1, 0, 1, 1)).toThrow('extends beyond');
+  });
+
+  it('throws on non-integer parameters', () => {
+    expect(() => crop(frame2x2, 0.5, 0, 1, 1)).toThrow('integers');
+  });
+
+  it('throws on zero dimensions', () => {
+    expect(() => crop(frame2x2, 0, 0, 0, 1)).toThrow('positive');
+  });
+
+  it('throws on negative dimensions', () => {
+    expect(() => crop(frame2x2, 0, 0, -1, 1)).toThrow('positive');
   });
 });
