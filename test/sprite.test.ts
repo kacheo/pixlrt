@@ -125,6 +125,12 @@ describe('Sprite.recolor()', () => {
     expect(r.getPixel(1, 0)).toEqual([0, 0, 255, 255]);
   });
 
+  it('accepts RGBA tuple', () => {
+    const s = sprite({ palette, frames: ['xo'] });
+    const r = s.recolor({ x: [0, 255, 0, 255] as [number, number, number, number] });
+    expect(r.getPixel(0, 0)).toEqual([0, 255, 0, 255]);
+  });
+
   it('recolors all frames in a multi-frame sprite', () => {
     const s = sprite({ palette, frames: ['xo', 'ox'] });
     const r = s.recolor({ x: '#00ff00' });
@@ -134,5 +140,65 @@ describe('Sprite.recolor()', () => {
     // Frame 1: blue, green
     expect(r.frame(1).getPixel(0, 0)).toEqual([0, 0, 255, 255]);
     expect(r.frame(1).getPixel(1, 0)).toEqual([0, 255, 0, 255]);
+  });
+});
+
+describe('Sprite.pad()', () => {
+  const s = sprite({
+    palette,
+    frames: [`xo\nox`],
+  });
+
+  it('returns new sprite with increased dimensions', () => {
+    const p = s.pad(1, 1, 1, 1);
+    expect(p).not.toBe(s);
+    expect(p.width).toBe(4);
+    expect(p.height).toBe(4);
+    // Original content at (1,1)
+    expect(p.getPixel(1, 1)).toEqual([255, 0, 0, 255]);
+  });
+
+  it('accepts ColorInput (hex string)', () => {
+    const p = s.pad(1, 0, 0, 0, '#ff00ff');
+    expect(p.getPixel(0, 0)).toEqual([255, 0, 255, 255]);
+  });
+
+  it('transforms all frames in multi-frame sprite', () => {
+    const ms = sprite({ palette, frames: ['xo\nox', 'ox\nxo'] });
+    const p = ms.pad(1, 0, 0, 0);
+    expect(p.frames.length).toBe(2);
+    expect(p.width).toBe(2);
+    expect(p.height).toBe(3);
+  });
+});
+
+describe('Sprite.crop()', () => {
+  const s = sprite({
+    palette,
+    frames: [`xo\nox`],
+  });
+
+  it('returns new sprite with decreased dimensions', () => {
+    const c = s.crop(0, 0, 1, 2);
+    expect(c).not.toBe(s);
+    expect(c.width).toBe(1);
+    expect(c.height).toBe(2);
+    expect(c.getPixel(0, 0)).toEqual([255, 0, 0, 255]);
+    expect(c.getPixel(0, 1)).toEqual([0, 0, 255, 255]);
+  });
+
+  it('transforms all frames in multi-frame sprite', () => {
+    const ms = sprite({ palette, frames: ['xo\nox', 'ox\nxo'] });
+    const c = ms.crop(0, 0, 1, 2);
+    expect(c.frames.length).toBe(2);
+    expect(c.frame(0).getPixel(0, 0)).toEqual([255, 0, 0, 255]);
+    expect(c.frame(1).getPixel(0, 0)).toEqual([0, 0, 255, 255]);
+  });
+
+  it('chains with pad', () => {
+    const result = s.pad(1, 1, 1, 1).crop(1, 1, 2, 2);
+    expect(result.width).toBe(2);
+    expect(result.height).toBe(2);
+    expect(result.getPixel(0, 0)).toEqual([255, 0, 0, 255]);
   });
 });

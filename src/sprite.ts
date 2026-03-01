@@ -70,6 +70,19 @@ export class Sprite implements Renderable {
     return this._withFrames(this.frames.map((f) => transform.scale(f, factor)));
   }
 
+  /** Pad all frames with extra pixels on each side */
+  pad(top: number, right: number, bottom: number, left: number, color?: ColorInput): Sprite {
+    const fill: RGBA = color ? parseColor(color) : [0, 0, 0, 0];
+    return this._withFrames(
+      this.frames.map((f) => transform.pad(f, top, right, bottom, left, fill)),
+    );
+  }
+
+  /** Crop a sub-region from all frames */
+  crop(x: number, y: number, w: number, h: number): Sprite {
+    return this._withFrames(this.frames.map((f) => transform.crop(f, x, y, w, h)));
+  }
+
   /** Create a palette-swapped copy */
   recolor(mapping: Record<string, ColorInput>): Sprite {
     // Build old→new RGBA mapping

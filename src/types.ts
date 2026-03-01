@@ -59,6 +59,12 @@ export interface SpriteSheetMeta {
   }>;
 }
 
+/** Options for Tileset.scene() */
+export interface SceneOptions {
+  background?: ColorInput;
+  scale?: number;
+}
+
 /** Anything that can be rendered: has width, height, and pixel data */
 export interface Renderable {
   readonly width: number;

@@ -1,6 +1,9 @@
-import type { PaletteMap, TilesetConfig, Renderable, RGBA } from './types.js';
+import type { PaletteMap, TilesetConfig, Renderable, RGBA, SceneOptions } from './types.js';
 import { Frame } from './frame.js';
+import { PixelCanvas } from './canvas.js';
+import { parseColor } from './color.js';
 import { parseGrid } from './parser.js';
+import { scale as scaleFrame } from './transform.js';
 import { Sprite } from './sprite.js';
 
 /**
@@ -75,6 +78,48 @@ export class Tileset implements Renderable {
     const localX = x % this.tileSize;
     const localY = y % this.tileSize;
     return frame.getPixel(localX, localY);
+  }
+  /** Build a scene from a text layout of tile names */
+  scene(layout: string, options?: SceneOptions): PixelCanvas {
+    const rows = layout
+      .split('\n')
+      .map((r) => r.trim())
+      .filter((r) => r.length > 0);
+
+    if (rows.length === 0) {
+      throw new Error('Scene layout must not be empty');
+    }
+
+    const grid = rows.map((r) => r.split(/\s+/));
+    const gridRows = grid.length;
+    const gridCols = Math.max(...grid.map((r) => r.length));
+    const scaleFactor = options?.scale ?? 1;
+    const tileDrawSize = this.tileSize * scaleFactor;
+
+    const canvas = new PixelCanvas(gridCols * tileDrawSize, gridRows * tileDrawSize);
+
+    if (options?.background) {
+      canvas.fill(parseColor(options.background));
+    }
+
+    for (let r = 0; r < gridRows; r++) {
+      for (let c = 0; c < grid[r]!.length; c++) {
+        const name = grid[r]![c]!;
+        if (name === '.') continue;
+
+        const frame = this.tileFrames.get(name);
+        if (!frame) {
+          throw new Error(
+            `Unknown tile "${name}" in scene layout. Available tiles: ${this.tileNames.join(', ')}`,
+          );
+        }
+
+        const drawFrame = scaleFactor > 1 ? scaleFrame(frame, scaleFactor) : frame;
+        canvas.drawFrame(drawFrame, c * tileDrawSize, r * tileDrawSize);
+      }
+    }
+
+    return canvas;
   }
 }
 
