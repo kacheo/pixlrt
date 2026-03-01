@@ -1,4 +1,4 @@
-import type { PaletteMap, TilesetConfig, Renderable, RGBA, SceneOptions } from './types.js';
+import type { PaletteMap, TilesetConfig, Renderable, RGBA, SceneOptions, LayerConfig } from './types.js';
 import { Frame } from './frame.js';
 import { PixelCanvas } from './canvas.js';
 import { parseColor } from './color.js';
@@ -79,8 +79,48 @@ export class Tileset implements Renderable {
     const localY = y % this.tileSize;
     return frame.getPixel(localX, localY);
   }
-  /** Build a scene from a text layout of tile names */
-  scene(layout: string, options?: SceneOptions): PixelCanvas {
+  /** Resolve a cell string (name or numeric index) to its Frame. */
+  private _resolveFrame(cell: string): Frame {
+    // Try name lookup first
+    const byName = this.tileFrames.get(cell);
+    if (byName) return byName;
+
+    // Fall back to numeric index
+    if (/^\d+$/.test(cell)) {
+      const idx = parseInt(cell, 10);
+      if (idx >= 0 && idx < this.tileNames.length) {
+        return this.tileFrames.get(this.tileNames[idx]!)!;
+      }
+    }
+
+    const validRange = this.tileNames.length > 0 ? `0-${this.tileNames.length - 1}` : 'none';
+    throw new Error(
+      `Unknown tile "${cell}" in scene layout. Available tiles: ${this.tileNames.join(', ')} (indices: ${validRange})`,
+    );
+  }
+
+  /** Get the 0-based index for a tile cell string (name or numeric index). */
+  tileIndex(cell: string): number {
+    // Try name lookup first
+    const nameIdx = this.tileNames.indexOf(cell);
+    if (nameIdx !== -1) return nameIdx;
+
+    // Fall back to numeric index
+    if (/^\d+$/.test(cell)) {
+      const idx = parseInt(cell, 10);
+      if (idx >= 0 && idx < this.tileNames.length) {
+        return idx;
+      }
+    }
+
+    const validRange = this.tileNames.length > 0 ? `0-${this.tileNames.length - 1}` : 'none';
+    throw new Error(
+      `Unknown tile "${cell}". Available tiles: ${this.tileNames.join(', ')} (indices: ${validRange})`,
+    );
+  }
+
+  /** Parse a layout string into a 2D grid of cell strings. */
+  private _parseGrid(layout: string): string[][] {
     const rows = layout
       .split('\n')
       .map((r) => r.trim())
@@ -90,33 +130,61 @@ export class Tileset implements Renderable {
       throw new Error('Scene layout must not be empty');
     }
 
-    const grid = rows.map((r) => r.split(/\s+/));
-    const gridRows = grid.length;
-    const gridCols = Math.max(...grid.map((r) => r.length));
+    return rows.map((r) => r.split(/\s+/));
+  }
+
+  /** Draw a single layer onto a canvas. */
+  private _drawLayer(canvas: PixelCanvas, layout: string, scaleFactor: number): void {
+    const grid = this._parseGrid(layout);
+    const tileDrawSize = this.tileSize * scaleFactor;
+
+    for (let r = 0; r < grid.length; r++) {
+      for (let c = 0; c < grid[r]!.length; c++) {
+        const cell = grid[r]![c]!;
+        if (cell === '.') continue;
+
+        const frame = this._resolveFrame(cell);
+        const drawFrame = scaleFactor > 1 ? scaleFrame(frame, scaleFactor) : frame;
+        canvas.drawFrame(drawFrame, c * tileDrawSize, r * tileDrawSize);
+      }
+    }
+  }
+
+  /** Build a scene from a text layout of tile names */
+  scene(layout: string, options?: SceneOptions): PixelCanvas;
+  scene(options: SceneOptions & { layers: LayerConfig[] }): PixelCanvas;
+  scene(layoutOrOptions: string | (SceneOptions & { layers: LayerConfig[] }), maybeOptions?: SceneOptions): PixelCanvas {
+    let layouts: string[];
+    let options: SceneOptions | undefined;
+
+    if (typeof layoutOrOptions === 'string') {
+      layouts = [layoutOrOptions];
+      options = maybeOptions;
+    } else {
+      layouts = layoutOrOptions.layers.map((l) => l.layout);
+      options = layoutOrOptions;
+    }
+
+    if (layouts.length === 0) {
+      throw new Error('Scene must have at least one layer');
+    }
+
+    // Compute max grid dimensions across all layers
+    const allGrids = layouts.map((l) => this._parseGrid(l));
+    const maxRows = Math.max(...allGrids.map((g) => g.length));
+    const maxCols = Math.max(...allGrids.map((g) => Math.max(...g.map((r) => r.length))));
+
     const scaleFactor = options?.scale ?? 1;
     const tileDrawSize = this.tileSize * scaleFactor;
 
-    const canvas = new PixelCanvas(gridCols * tileDrawSize, gridRows * tileDrawSize);
+    const canvas = new PixelCanvas(maxCols * tileDrawSize, maxRows * tileDrawSize);
 
     if (options?.background) {
       canvas.fill(parseColor(options.background));
     }
 
-    for (let r = 0; r < gridRows; r++) {
-      for (let c = 0; c < grid[r]!.length; c++) {
-        const name = grid[r]![c]!;
-        if (name === '.') continue;
-
-        const frame = this.tileFrames.get(name);
-        if (!frame) {
-          throw new Error(
-            `Unknown tile "${name}" in scene layout. Available tiles: ${this.tileNames.join(', ')}`,
-          );
-        }
-
-        const drawFrame = scaleFactor > 1 ? scaleFrame(frame, scaleFactor) : frame;
-        canvas.drawFrame(drawFrame, c * tileDrawSize, r * tileDrawSize);
-      }
+    for (const layout of layouts) {
+      this._drawLayer(canvas, layout, scaleFactor);
     }
 
     return canvas;

@@ -143,6 +143,37 @@ describe('Sprite.recolor()', () => {
   });
 });
 
+describe('Sprite.opacity()', () => {
+  const s = sprite({
+    palette,
+    frames: [`xo\nox`],
+  });
+
+  it('halves alpha of all pixels', () => {
+    const o = s.opacity(0.5);
+    expect(o).not.toBe(s);
+    expect(o.getPixel(0, 0)).toEqual([255, 0, 0, 128]);
+    expect(o.getPixel(1, 0)).toEqual([0, 0, 255, 128]);
+  });
+});
+
+describe('Sprite.outline()', () => {
+  const s = sprite({
+    palette,
+    frames: [`x`],
+  });
+
+  it('adds outline with ColorInput string', () => {
+    const o = s.outline('#ffff00');
+    expect(o.width).toBe(3);
+    expect(o.height).toBe(3);
+    // Center pixel preserved
+    expect(o.getPixel(1, 1)).toEqual([255, 0, 0, 255]);
+    // Outline pixels
+    expect(o.getPixel(0, 0)).toEqual([255, 255, 0, 255]);
+  });
+});
+
 describe('Sprite.pad()', () => {
   const s = sprite({
     palette,

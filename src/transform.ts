@@ -149,6 +149,72 @@ export function crop(frame: Frame, x: number, y: number, w: number, h: number): 
   return new Frame(pixels);
 }
 
+/** Adjust the opacity of all pixels by multiplying their alpha channel. */
+export function opacity(frame: Frame, alpha: number): Frame {
+  if (alpha < 0 || alpha > 1) {
+    throw new Error(`Opacity alpha must be between 0 and 1, got ${alpha}`);
+  }
+  if (alpha === 1) return frame;
+
+  const pixels: RGBA[][] = [];
+  for (let r = 0; r < frame.height; r++) {
+    const row: RGBA[] = [];
+    for (let c = 0; c < frame.width; c++) {
+      const [pr, pg, pb, pa] = frame.getPixel(c, r);
+      row.push([pr, pg, pb, Math.round(pa * alpha)]);
+    }
+    pixels.push(row);
+  }
+  return new Frame(pixels);
+}
+
+/** Add an outline around non-transparent pixels, expanding the frame. */
+export function outline(frame: Frame, color: RGBA, thickness: number = 1): Frame {
+  if (!Number.isInteger(thickness) || thickness < 1) {
+    throw new Error(`Outline thickness must be a positive integer, got ${thickness}`);
+  }
+
+  const t = thickness;
+  const newW = frame.width + 2 * t;
+  const newH = frame.height + 2 * t;
+  const pixels: RGBA[][] = [];
+
+  for (let r = 0; r < newH; r++) {
+    const row: RGBA[] = [];
+    for (let c = 0; c < newW; c++) {
+      const srcX = c - t;
+      const srcY = r - t;
+
+      // If source pixel is non-transparent, keep it
+      if (srcX >= 0 && srcX < frame.width && srcY >= 0 && srcY < frame.height) {
+        const px = frame.getPixel(srcX, srcY);
+        if (px[3] > 0) {
+          row.push(px);
+          continue;
+        }
+      }
+
+      // Check if any non-transparent source pixel is within Chebyshev distance t
+      let hasNeighbor = false;
+      for (let dy = -t; dy <= t && !hasNeighbor; dy++) {
+        for (let dx = -t; dx <= t && !hasNeighbor; dx++) {
+          const nx = srcX + dx;
+          const ny = srcY + dy;
+          if (nx >= 0 && nx < frame.width && ny >= 0 && ny < frame.height) {
+            if (frame.getPixel(nx, ny)[3] > 0) {
+              hasNeighbor = true;
+            }
+          }
+        }
+      }
+
+      row.push(hasNeighbor ? color : [0, 0, 0, 0]);
+    }
+    pixels.push(row);
+  }
+  return new Frame(pixels);
+}
+
 /** Scale a frame by an integer factor using nearest-neighbor interpolation. */
 export function scale(frame: Frame, factor: number): Frame {
   if (factor < 1 || !Number.isInteger(factor)) {
