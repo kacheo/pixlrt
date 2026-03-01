@@ -209,6 +209,122 @@ describe('E2E: SVG rendering pipeline', () => {
   });
 });
 
+describe('E2E: new transforms → PNG', () => {
+  it('chains outline → opacity and renders correct pixels', () => {
+    const palette = { '.': 'transparent', x: '#ff0000' };
+
+    // 2×2 sprite: one opaque red pixel, rest transparent
+    const s = sprite({
+      palette,
+      frames: [
+        `
+        x.
+        ..
+      `,
+      ],
+    });
+
+    expect(s.width).toBe(2);
+    expect(s.height).toBe(2);
+
+    // Chain: outline (expands by 1 on each side) → opacity(0.5)
+    const transformed = s.outline('#ffff00').opacity(0.5);
+
+    // Outline with thickness=1 expands 2×2 → 4×4
+    expect(transformed.width).toBe(4);
+    expect(transformed.height).toBe(4);
+
+    const buf = toPNG(transformed);
+    const png = PNG.sync.read(buf);
+    expect(png.width).toBe(4);
+    expect(png.height).toBe(4);
+
+    // Helper to read pixel at (x, y)
+    const px = (x: number, y: number) => {
+      const idx = (y * 4 + x) * 4;
+      return [png.data[idx], png.data[idx + 1], png.data[idx + 2], png.data[idx + 3]];
+    };
+
+    // The original red pixel at (0,0) maps to (1,1) after outline expansion
+    // After opacity(0.5): alpha = round(255 * 0.5) = 128
+    const origPixel = px(1, 1);
+    expect(origPixel[0]).toBe(255); // r
+    expect(origPixel[1]).toBe(0);   // g
+    expect(origPixel[2]).toBe(0);   // b
+    expect(origPixel[3]).toBe(128); // a (0.5 of 255)
+
+    // Outline pixel: yellow at (0,0) — adjacent to original (0,0) which is at (1,1)
+    // The outline goes around the non-transparent pixel, so (0,0) should be yellow outline
+    const outlinePixel = px(0, 0);
+    expect(outlinePixel[0]).toBe(255); // r (yellow)
+    expect(outlinePixel[1]).toBe(255); // g (yellow)
+    expect(outlinePixel[2]).toBe(0);   // b (yellow)
+    expect(outlinePixel[3]).toBe(128); // a (0.5 of 255)
+
+    // A corner pixel far from any content should remain fully transparent
+    const emptyPixel = px(3, 3);
+    expect(emptyPixel).toEqual([0, 0, 0, 0]);
+  });
+});
+
+describe('E2E: tileset layers + indices → PNG', () => {
+  it('composes multi-layer scene with numeric indices', () => {
+    const palette = { '.': 'transparent', r: '#ff0000', b: '#0000ff' };
+
+    const ts = tileset({
+      tileSize: 2,
+      palette,
+      tiles: {
+        red: `
+          rr
+          rr
+        `,
+        blue: `
+          bb
+          bb
+        `,
+      },
+    });
+
+    // Build scene with layers using numeric indices
+    // Layer 1 (background): all red (index 0)
+    // Layer 2 (foreground): blue (index 1) top-right only
+    const canvas = ts.scene({
+      layers: [
+        { layout: '0 0\n0 0' },
+        { layout: '. 1\n. .' },
+      ],
+    });
+
+    // 2 columns × 2 rows of 2×2 tiles = 4×4 canvas
+    expect(canvas.width).toBe(4);
+    expect(canvas.height).toBe(4);
+
+    const buf = toPNG(canvas);
+    const png = PNG.sync.read(buf);
+    expect(png.width).toBe(4);
+    expect(png.height).toBe(4);
+
+    // Helper to read pixel at (x, y)
+    const px = (x: number, y: number) => {
+      const idx = (y * 4 + x) * 4;
+      return [png.data[idx], png.data[idx + 1], png.data[idx + 2], png.data[idx + 3]];
+    };
+
+    // Top-left pixel (0,0) — red from background, no foreground override
+    expect(px(0, 0)).toEqual([255, 0, 0, 255]);
+
+    // Top-right tile starts at (2,0) — blue from foreground overrides red
+    expect(px(2, 0)).toEqual([0, 0, 255, 255]);
+
+    // Bottom-left pixel (0,2) — red from background, foreground is '.'
+    expect(px(0, 2)).toEqual([255, 0, 0, 255]);
+
+    // Bottom-right tile (2,2) — red from background, foreground is '.'
+    expect(px(2, 2)).toEqual([255, 0, 0, 255]);
+  });
+});
+
 describe('E2E: file output round-trip', () => {
   it('writes PNG and SVG files that can be read back', () => {
     const palette = { '.': 'transparent', g: '#00ff00' };
