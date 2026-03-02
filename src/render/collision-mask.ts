@@ -4,7 +4,7 @@ export interface CollisionMaskResult {
   width: number;
   height: number;
   data: boolean[][];
-  packed: Buffer;
+  packed: Uint8Array;
 }
 
 /**
@@ -30,7 +30,7 @@ export function toCollisionMask(
 
   // Pack to 1 bit per pixel, row-major, MSB-first per byte
   const bytesPerRow = Math.ceil(width / 8);
-  const packed = Buffer.alloc(bytesPerRow * height);
+  const packed = new Uint8Array(bytesPerRow * height);
 
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
