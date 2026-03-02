@@ -9,7 +9,7 @@ export type {
 } from './types.js';
 
 // Color utilities
-export { parseColor, lighten, darken, lerp } from './color.js';
+export { parseColor, lighten, darken, lerp, toHex, mix, saturate, desaturate } from './color.js';
 
 // Palettes (pure computation only — no paletteFromFile)
 export { PALETTES, paletteFrom, paletteFromHex } from './palette.js';
@@ -50,3 +50,4 @@ export { toImageData } from './render/imagedata.js';
 export type { ImageDataResult } from './render/imagedata.js';
 export { toArrayBuffer } from './render/arraybuffer.js';
 export { toDataURL } from './render/dataurl.js';
+export { paletteSwatch } from './render/palette-preview.js';

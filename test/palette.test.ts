@@ -66,11 +66,69 @@ describe('paletteFrom()', () => {
 });
 
 describe('PALETTES', () => {
-  it('has all four named palettes', () => {
+  it('has all ten named palettes', () => {
     expect(Object.keys(PALETTES)).toEqual(
-      expect.arrayContaining(['pico8', 'gameboy', 'sweetie16', 'cga']),
+      expect.arrayContaining([
+        'pico8', 'gameboy', 'sweetie16', 'cga',
+        'c64', 'zxspectrum', 'nes', 'endesga32', 'apollo', 'resurrect64',
+      ]),
     );
-    expect(Object.keys(PALETTES).length).toBe(4);
+    expect(Object.keys(PALETTES).length).toBe(10);
+  });
+
+  it('each palette has the correct color count', () => {
+    expect(PALETTES['c64']!.length).toBe(16);
+    expect(PALETTES['zxspectrum']!.length).toBe(15);
+    expect(PALETTES['nes']!.length).toBe(55);
+    expect(PALETTES['endesga32']!.length).toBe(32);
+    expect(PALETTES['apollo']!.length).toBe(16);
+    expect(PALETTES['resurrect64']!.length).toBe(64);
+  });
+
+  it('spot-check known color values', () => {
+    // C64 black
+    expect(PALETTES['c64']![0]).toEqual([0, 0, 0, 255]);
+    // C64 white
+    expect(PALETTES['c64']![1]).toEqual([255, 255, 255, 255]);
+    // ZX Spectrum bright blue
+    expect(PALETTES['zxspectrum']![8]).toEqual([0, 0, 255, 255]);
+    // Apollo first color
+    expect(PALETTES['apollo']![0]).toEqual([23, 14, 25, 255]);
+  });
+});
+
+describe('paletteFrom() with new palettes', () => {
+  it('c64 returns 17 entries (. + 16 colors)', () => {
+    const map = paletteFrom('c64');
+    expect(Object.keys(map).length).toBe(17);
+  });
+
+  it('zxspectrum returns 16 entries (. + 15 colors)', () => {
+    const map = paletteFrom('zxspectrum');
+    expect(Object.keys(map).length).toBe(16);
+  });
+
+  it('nes uses hex keys and maps up to 36 colors', () => {
+    const map = paletteFrom('nes');
+    // '.' + 36 mapped colors (55 total but only 36 keys available)
+    expect(Object.keys(map).length).toBe(37);
+    expect(map['0']).toEqual([101, 101, 101, 255]);
+    expect(map['z']).toBeDefined();
+  });
+
+  it('endesga32 uses hex keys for 32 colors', () => {
+    const map = paletteFrom('endesga32');
+    expect(Object.keys(map).length).toBe(33); // '.' + 32
+  });
+
+  it('resurrect64 maps first 36 colors', () => {
+    const map = paletteFrom('resurrect64');
+    expect(Object.keys(map).length).toBe(37); // '.' + 36
+  });
+
+  it('apollo returns 17 entries (. + 16 colors)', () => {
+    const map = paletteFrom('apollo');
+    expect(Object.keys(map).length).toBe(17);
   });
 });
 
