@@ -9,7 +9,7 @@ export {
   type TaggedSpriteSheetMeta, type APNGOptions,
 
   // Color
-  parseColor, lighten, darken, lerp,
+  parseColor, lighten, darken, lerp, toHex, mix, saturate, desaturate,
 
   // Palettes
   PALETTES, paletteFrom, paletteFromHex,
@@ -46,6 +46,7 @@ export {
   toImageData, type ImageDataResult,
   toArrayBuffer,
   toDataURL,
+  paletteSwatch,
 } from './core.js';
 
 // Re-export everything from node (file I/O, pngjs, etc.)

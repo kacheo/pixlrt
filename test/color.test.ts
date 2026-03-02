@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { parseColor, lighten, darken, lerp } from '../src/color.js';
+import { parseColor, lighten, darken, lerp, toHex, mix, saturate, desaturate } from '../src/color.js';
 
 describe('parseColor', () => {
   it('parses #rgb shorthand', () => {
@@ -75,5 +75,87 @@ describe('lerp', () => {
 
   it('returns second color at t=1', () => {
     expect(lerp('#ff0000', '#0000ff', 1)).toEqual([0, 0, 255, 255]);
+  });
+});
+
+describe('toHex', () => {
+  it('converts opaque color to #rrggbb', () => {
+    expect(toHex([255, 0, 0, 255])).toBe('#ff0000');
+    expect(toHex([0, 0, 0, 255])).toBe('#000000');
+    expect(toHex([255, 255, 255, 255])).toBe('#ffffff');
+  });
+
+  it('includes alpha when < 255', () => {
+    expect(toHex([255, 0, 0, 128])).toBe('#ff000080');
+    expect(toHex([0, 0, 0, 0])).toBe('#00000000');
+  });
+
+  it('accepts string input via parseColor', () => {
+    expect(toHex('red')).toBe('#ff0000');
+    expect(toHex('#0f0')).toBe('#00ff00');
+  });
+
+  it('pads single-digit hex values', () => {
+    expect(toHex([1, 2, 3, 255])).toBe('#010203');
+  });
+});
+
+describe('mix', () => {
+  it('blends equally by default (ratio=0.5)', () => {
+    expect(mix('#000000', '#ffffff')).toEqual([128, 128, 128, 255]);
+  });
+
+  it('supports custom ratio', () => {
+    expect(mix('#000000', '#ffffff', 0.25)).toEqual([64, 64, 64, 255]);
+  });
+
+  it('matches lerp behavior', () => {
+    expect(mix('#ff0000', '#0000ff', 0.3)).toEqual(lerp('#ff0000', '#0000ff', 0.3));
+  });
+});
+
+describe('saturate', () => {
+  it('has no effect on fully saturated color', () => {
+    const result = saturate([255, 0, 0, 255], 0.5);
+    expect(result).toEqual([255, 0, 0, 255]);
+  });
+
+  it('has no effect at amount=0', () => {
+    expect(saturate([128, 100, 80, 255], 0)).toEqual([128, 100, 80, 255]);
+  });
+
+  it('increases saturation of a muted color', () => {
+    const muted: [number, number, number, number] = [150, 120, 120, 255];
+    const result = saturate(muted, 0.5);
+    // Red channel should increase, others should decrease (more saturated)
+    expect(result[0]).toBeGreaterThan(muted[0]);
+    expect(result[1]).toBeLessThan(muted[1]);
+  });
+
+  it('preserves alpha', () => {
+    const result = saturate([150, 120, 120, 100], 0.5);
+    expect(result[3]).toBe(100);
+  });
+});
+
+describe('desaturate', () => {
+  it('fully desaturates at amount=1', () => {
+    const result = desaturate([255, 0, 0, 255], 1);
+    // All channels should be equal (gray)
+    expect(result[0]).toBe(result[1]);
+    expect(result[1]).toBe(result[2]);
+  });
+
+  it('has no effect on gray', () => {
+    expect(desaturate([128, 128, 128, 255], 0.5)).toEqual([128, 128, 128, 255]);
+  });
+
+  it('has no effect at amount=0', () => {
+    expect(desaturate([255, 0, 0, 255], 0)).toEqual([255, 0, 0, 255]);
+  });
+
+  it('preserves alpha', () => {
+    const result = desaturate([255, 0, 0, 80], 0.5);
+    expect(result[3]).toBe(80);
   });
 });
