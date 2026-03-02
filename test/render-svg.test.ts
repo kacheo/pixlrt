@@ -4,6 +4,7 @@ import * as os from 'node:os';
 import * as path from 'node:path';
 import { sprite } from '../src/sprite.js';
 import { toSVG } from '../src/render/svg.js';
+import { toSVG as toSVGNode } from '../src/render/svg-node.js';
 
 const palette = {
   '.': 'transparent',
@@ -70,7 +71,7 @@ describe('toSVG', () => {
     expect(svg).toContain('fill="#ff0000"');
   });
 
-  describe('file write', () => {
+  describe('file write (node wrapper)', () => {
     let tmpFile: string | undefined;
 
     afterEach(() => {
@@ -89,7 +90,7 @@ describe('toSVG', () => {
       tmpFile = path.join(tmpDir, 'test.svg');
 
       const s = sprite({ palette, frames: ['xo'] });
-      const svg = toSVG(s, tmpFile);
+      const svg = toSVGNode(s, tmpFile);
 
       expect(fs.existsSync(tmpFile)).toBe(true);
       const written = fs.readFileSync(tmpFile, 'utf-8');

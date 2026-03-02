@@ -1,29 +1,7 @@
-import * as fs from 'node:fs';
 import type { Renderable, SVGOptions } from '../types.js';
 import { validateScale } from './validate.js';
 
-/**
- * Render a Renderable to an SVG string.
- * Uses run-length encoding per row to minimize rect count.
- * Transparent pixels are skipped entirely.
- */
-export function toSVG(source: Renderable, path: string, opts?: SVGOptions): string;
-export function toSVG(source: Renderable, opts?: SVGOptions): string;
-export function toSVG(
-  source: Renderable,
-  pathOrOpts?: string | SVGOptions,
-  maybeOpts?: SVGOptions,
-): string {
-  let path: string | undefined;
-  let opts: SVGOptions | undefined;
-
-  if (typeof pathOrOpts === 'string') {
-    path = pathOrOpts;
-    opts = maybeOpts;
-  } else {
-    opts = pathOrOpts;
-  }
-
+export function toSVG(source: Renderable, opts?: SVGOptions): string {
   const scale = opts?.scale ?? 1;
   validateScale(scale);
   const w = source.width * scale;
@@ -69,10 +47,6 @@ export function toSVG(
     ...rects,
     '</svg>',
   ].join('\n');
-
-  if (path) {
-    fs.writeFileSync(path, svg, 'utf-8');
-  }
 
   return svg;
 }

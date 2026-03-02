@@ -1,101 +1,68 @@
-// Core types
-export type {
-  RGBA,
-  ColorInput,
-  PaletteMap,
-  PixelGrid,
-  SpriteConfig,
-  TilesetConfig,
-  PNGOptions,
-  SVGOptions,
-  GIFOptions,
-  SpriteSheetOptions,
-  SpriteSheetMeta,
-  Renderable,
-  SceneOptions,
-  LayerConfig,
-  NinePatchEdges,
-  NinePatchMeta,
-  Rect,
-  AtlasEntry,
-  AtlasOptions,
-  AtlasFrame,
-  AtlasMeta,
-  MultiScaleOptions,
-  CollisionMaskOptions,
-  AnimationMode,
-  AnimationTag,
-  TaggedSpriteSheetOptions,
-  TaggedSpriteSheetMeta,
-  APNGOptions,
-} from './types.js';
-
-// Color utilities
-export { parseColor, lighten, darken, lerp } from './color.js';
-
-// Palettes
-export { PALETTES, paletteFrom, paletteFromHex, paletteFromFile } from './palette.js';
-
-// Parser
-export { parseGrid, parseFrames } from './parser.js';
-
-// Frame & Canvas
-export { Frame } from './frame.js';
-export { PixelCanvas } from './canvas.js';
-
-// Transforms
+// Re-export everything from core (pure computation, no Node deps)
 export {
-  flipX,
-  flipY,
-  rotate,
-  rotate90,
-  rotate180,
-  rotate270,
-  scale,
-  pad,
-  crop,
-  opacity,
-  outline,
-} from './transform.js';
+  // Types
+  type RGBA, type ColorInput, type PaletteMap, type PixelGrid, type SpriteConfig, type TilesetConfig,
+  type PNGOptions, type SVGOptions, type GIFOptions, type SpriteSheetOptions, type SpriteSheetMeta,
+  type Renderable, type SceneOptions, type LayerConfig, type NinePatchEdges, type NinePatchMeta, type Rect,
+  type AtlasEntry, type AtlasOptions, type AtlasFrame, type AtlasMeta, type MultiScaleOptions,
+  type CollisionMaskOptions, type AnimationMode, type AnimationTag, type TaggedSpriteSheetOptions,
+  type TaggedSpriteSheetMeta, type APNGOptions,
 
-// Animation
-export { reverseFrames, pingPong, pickFrames, setDuration } from './animation.js';
+  // Color
+  parseColor, lighten, darken, lerp,
 
-// Nine-patch
-export { ninePatchMeta, ninePatchResize } from './nine-patch.js';
+  // Palettes
+  PALETTES, paletteFrom, paletteFromHex,
 
-// Sprite
-export { Sprite, sprite } from './sprite.js';
+  // Parser
+  parseGrid, parseFrames,
 
-// Composition
-export { Composer, compose, type ComposeOptions } from './compose.js';
+  // Frame & Canvas
+  Frame, PixelCanvas,
 
-// Tileset
-export { Tileset, tileset } from './tileset.js';
+  // Transforms
+  flipX, flipY, rotate, rotate90, rotate180, rotate270, scale, pad, crop, opacity, outline,
 
-// Renderers
-export { toPNG } from './render/png.js';
-export { toSVG } from './render/svg.js';
-export { toSpriteSheet } from './render/spritesheet.js';
-export { toGIF } from './render/gif.js';
-export { toTiled } from './render/tiled.js';
-export type { TiledMap, TiledTileLayer, TiledTilesetRef, TiledExportOptions } from './render/tiled.js';
-export { toAtlas } from './render/atlas.js';
-export { toAtlasPhaser } from './render/atlas-phaser.js';
-export type { PhaserHashOutput, PhaserArrayOutput } from './render/atlas-phaser.js';
-export { toAtlasUnity } from './render/atlas-unity.js';
-export type { UnityOutput } from './render/atlas-unity.js';
-export { toAtlasGodot } from './render/atlas-godot.js';
-export { toMultiScale } from './render/multiscale.js';
-export type { MultiScaleResult } from './render/multiscale.js';
-export { toCollisionMask } from './render/collision-mask.js';
-export type { CollisionMaskResult } from './render/collision-mask.js';
-export { toAPNG } from './render/apng.js';
-export { toTaggedSpriteSheet } from './render/spritesheet.js';
+  // Animation
+  reverseFrames, pingPong, pickFrames, setDuration,
 
-// Import
-export { fromPNG } from './import/png.js';
-export { fromSpriteSheet } from './import/spritesheet.js';
+  // Nine-patch
+  ninePatchMeta, ninePatchResize,
 
-// Quantize
-export { quantize } from './quantize.js';
+  // Sprite
+  Sprite, sprite,
+
+  // Composition
+  Composer, compose, type ComposeOptions,
+
+  // Tileset
+  Tileset, tileset,
+
+  // Quantize
+  quantize,
+
+  // Pure renderers
+  toCollisionMask, type CollisionMaskResult,
+  toImageData, type ImageDataResult,
+  toArrayBuffer,
+  toDataURL,
+} from './core.js';
+
+// Re-export everything from node (file I/O, pngjs, etc.)
+// Note: node's toSVG (with file-write overload) overrides core's toSVG
+export {
+  paletteFromFile,
+  toPNG,
+  toGIF,
+  toAPNG,
+  toSpriteSheet, toTaggedSpriteSheet,
+  toAtlas,
+  toAtlasPhaser, type PhaserHashOutput, type PhaserArrayOutput,
+  toAtlasUnity, type UnityOutput,
+  toAtlasGodot,
+  toTiled, type TiledMap, type TiledTileLayer, type TiledTilesetRef, type TiledExportOptions,
+  toMultiScale, type MultiScaleResult,
+  toSVG,
+  fromPNG,
+  fromSpriteSheet,
+} from './node.js';
