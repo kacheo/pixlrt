@@ -7,7 +7,7 @@ Define sprites as ASCII grids, apply transforms, and export to PNG, SVG, GIF, AP
 ## Features
 
 - **ASCII grid sprites** — define pixel art with text using single-character palettes
-- **Built-in palettes** — pico8, gameboy, sweetie16, cga
+- **Built-in palettes** — pico8, gameboy, sweetie16, cga, c64, zxspectrum, nes, endesga32, apollo, resurrect64
 - **PNG & SVG export** — render at any integer scale
 - **GIF & APNG animation export** — animated sprites with configurable frame timing
 - **Sprite sheets** — combine animation frames with JSON metadata; tagged sprite sheets for animation grouping
@@ -130,9 +130,13 @@ Standalone functions for manipulating sprite frame sequences.
 | Function | Description |
 | --- | --- |
 | `parseColor(input)` | Parse a hex string or named color to RGBA |
-| `lighten(color, amount)` | Lighten a color by a factor |
-| `darken(color, amount)` | Darken a color by a factor |
+| `toHex(color)` | Convert RGBA to hex string (`#rrggbb` or `#rrggbbaa`) |
+| `lighten(color, amount)` | Lighten a color by a factor (0–1) |
+| `darken(color, amount)` | Darken a color by a factor (0–1) |
 | `lerp(a, b, t)` | Linear interpolation between two colors |
+| `mix(a, b, ratio?)` | Mix two colors (defaults to equal 50/50 blend) |
+| `saturate(color, amount)` | Increase saturation by amount (0–1) |
+| `desaturate(color, amount)` | Decrease saturation by amount (0–1) |
 
 ### Quantization
 
@@ -144,14 +148,37 @@ const reduced = quantize(spriteOrFrame, maxColors);
 
 `quantize()` reduces the number of distinct colors in a renderable. Useful before GIF export (which is limited to 256 colors) or for a deliberate low-color aesthetic.
 
+### Palette Preview
+
+| Function | Description |
+| --- | --- |
+| `paletteSwatch(palette, opts?)` | Create a Renderable grid of color swatches from a palette |
+
+```ts
+import { paletteFrom, paletteSwatch, toPNG } from 'pixlrt';
+
+const swatch = paletteSwatch(paletteFrom('pico8'), { scale: 16, columns: 8 });
+toPNG(swatch, 'pico8-preview.png');
+```
+
+Options: `scale` (pixels per swatch, default 1), `columns` (grid width, default auto square-ish layout).
+
 ## Built-in Palettes
 
-| Name        | Colors | Description                    |
-| ----------- | ------ | ------------------------------ |
-| `pico8`     | 16     | PICO-8 fantasy console palette |
-| `gameboy`   | 4      | Classic Game Boy greens        |
-| `sweetie16` | 16     | Sweetie-16 palette             |
-| `cga`       | 4      | CGA mode 4 palette             |
+| Name          | Colors | Description                         |
+| ------------- | ------ | ----------------------------------- |
+| `pico8`       | 16     | PICO-8 fantasy console palette      |
+| `gameboy`     | 4      | Classic Game Boy greens             |
+| `sweetie16`   | 16     | Sweetie-16 palette                  |
+| `cga`         | 4      | CGA mode 4 palette                  |
+| `c64`         | 16     | Commodore 64 VIC-II chip palette    |
+| `zxspectrum`  | 15     | ZX Spectrum normal + bright colors  |
+| `nes`         | 55     | NES PPU standard palette            |
+| `endesga32`   | 32     | Endesga 32 pixel art palette        |
+| `apollo`      | 16     | Apollo palette by AdamCYounis       |
+| `resurrect64` | 64     | Resurrect 64 palette by Kerrie Lake |
+
+Palettes with ≤16 colors map to keys `0`–`f`. Palettes with >16 colors use extended keys `0`–`9`, `a`–`z` (up to 36 mappable characters).
 
 ```ts
 import { paletteFrom } from 'pixlrt';
