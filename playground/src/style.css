@@ -243,14 +243,16 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100px;
-  /* subtle grid for previews */
+  min-height: 120px;
+  /* dark checkerboard (default) */
+  background-color: #1e2030;
   background-image:
-    linear-gradient(45deg, rgba(0, 0, 0, 0.1) 25%, transparent 25%),
-    linear-gradient(-45deg, rgba(0, 0, 0, 0.1) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, rgba(0, 0, 0, 0.1) 75%),
-    linear-gradient(-45deg, transparent 75%, rgba(0, 0, 0, 0.1) 75%);
+    linear-gradient(45deg, #161822 25%, transparent 25%),
+    linear-gradient(-45deg, #161822 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #161822 75%),
+    linear-gradient(-45deg, transparent 75%, #161822 75%);
   background-size: 10px 10px;
+  background-position: 0 0, 0 5px, 5px -5px, -5px 0;
 }
 
 .card-swatches {
@@ -266,10 +268,10 @@ header {
 }
 
 .swatch {
-  width: 14px;
-  height: 14px;
+  width: 20px;
+  height: 20px;
   border-radius: 3px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.25);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
@@ -383,4 +385,23 @@ select {
 .toast-visible {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
+}
+
+/* Light background mode */
+body.bg-light .card-content {
+  background-color: #e8e8e8;
+  background-image:
+    linear-gradient(45deg, #d0d0d0 25%, transparent 25%),
+    linear-gradient(-45deg, #d0d0d0 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #d0d0d0 75%),
+    linear-gradient(-45deg, transparent 75%, #d0d0d0 75%);
+}
+
+body.bg-light .preview-container {
+  background-color: #e8e8e8;
+  background-image:
+    linear-gradient(45deg, #d0d0d0 25%, transparent 25%),
+    linear-gradient(-45deg, #d0d0d0 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #d0d0d0 75%),
+    linear-gradient(-45deg, transparent 75%, #d0d0d0 75%);
 }

@@ -98,6 +98,19 @@ function updatePreview() {
 editor.addEventListener('input', updatePreview);
 scaleSelect.addEventListener('change', updatePreview);
 
+// ---- Background mode toggle ----
+const bgToggle = document.getElementById('bg-toggle') as HTMLButtonElement;
+const storedMode = localStorage.getItem('pixlrt-bg-mode');
+if (storedMode === 'light') {
+  document.body.classList.add('bg-light');
+  bgToggle.textContent = 'Light';
+}
+bgToggle.addEventListener('click', () => {
+  const isLight = document.body.classList.toggle('bg-light');
+  bgToggle.textContent = isLight ? 'Light' : 'Dark';
+  localStorage.setItem('pixlrt-bg-mode', isLight ? 'light' : 'dark');
+});
+
 // Initialize
 editor.value = DEFAULT_CODE;
 updatePreview();
