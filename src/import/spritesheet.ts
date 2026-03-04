@@ -25,7 +25,12 @@ export function fromSpriteSheet(png: Buffer | string, meta: SpriteSheetMeta): Sp
         const px = (frameMeta.x + x) * scale;
         const py = (frameMeta.y + y) * scale;
         const i = (py * decoded.width + px) * 4;
-        row.push([decoded.data[i]!, decoded.data[i + 1]!, decoded.data[i + 2]!, decoded.data[i + 3]!]);
+        row.push([
+          decoded.data[i]!,
+          decoded.data[i + 1]!,
+          decoded.data[i + 2]!,
+          decoded.data[i + 3]!,
+        ]);
       }
       pixels.push(row);
     }

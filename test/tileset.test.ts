@@ -226,10 +226,7 @@ describe('tileset', () => {
       },
     });
     const canvas = ts.scene({
-      layers: [
-        { layout: 'grass grass\ngrass grass' },
-        { layout: '. wall\n. .' },
-      ],
+      layers: [{ layout: 'grass grass\ngrass grass' }, { layout: '. wall\n. .' }],
     });
     expect(canvas.width).toBe(4);
     expect(canvas.height).toBe(4);
@@ -250,10 +247,7 @@ describe('tileset', () => {
       },
     });
     const canvas = ts.scene({
-      layers: [
-        { layout: 'grass grass' },
-        { layout: '. water' },
-      ],
+      layers: [{ layout: 'grass grass' }, { layout: '. water' }],
     });
     // First cell: . in upper layer, grass shows through
     expect(canvas.getPixel(0, 0)).toEqual([0, 255, 0, 255]);

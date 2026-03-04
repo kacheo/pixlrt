@@ -35,9 +35,7 @@ describe('toAtlasUnity', () => {
   it('includes smartupdate hash in meta', () => {
     const result = toAtlasUnity(sampleMeta);
 
-    expect(result.meta.smartupdate).toMatch(
-      /^\$TexturePacker:SmartUpdate:[a-f0-9]+\$$/,
-    );
+    expect(result.meta.smartupdate).toMatch(/^\$TexturePacker:SmartUpdate:[a-f0-9]+\$$/);
   });
 
   it('includes correct meta fields', () => {

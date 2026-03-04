@@ -16,10 +16,7 @@ export function toMultiScale(
   path_: string,
   opts?: MultiScaleOptions,
 ): MultiScaleResult;
-export function toMultiScale(
-  source: Renderable,
-  opts?: MultiScaleOptions,
-): MultiScaleResult;
+export function toMultiScale(source: Renderable, opts?: MultiScaleOptions): MultiScaleResult;
 export function toMultiScale(
   source: Renderable,
   pathOrOpts?: string | MultiScaleOptions,

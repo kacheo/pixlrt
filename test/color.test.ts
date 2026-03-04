@@ -1,5 +1,14 @@
 import { describe, it, expect } from 'vitest';
-import { parseColor, lighten, darken, lerp, toHex, mix, saturate, desaturate } from '../src/color.js';
+import {
+  parseColor,
+  lighten,
+  darken,
+  lerp,
+  toHex,
+  mix,
+  saturate,
+  desaturate,
+} from '../src/color.js';
 
 describe('parseColor', () => {
   it('parses #rgb shorthand', () => {

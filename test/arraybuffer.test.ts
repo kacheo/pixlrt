@@ -26,8 +26,8 @@ describe('toArrayBuffer', () => {
     const result = toArrayBuffer(s);
     const view = new Uint8Array(result);
     expect(view[0]).toBe(255); // R
-    expect(view[1]).toBe(0);   // G
-    expect(view[2]).toBe(0);   // B
+    expect(view[1]).toBe(0); // G
+    expect(view[2]).toBe(0); // B
     expect(view[3]).toBe(255); // A
   });
 

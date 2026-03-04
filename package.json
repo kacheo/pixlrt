@@ -27,6 +27,8 @@
     "dist"
   ],
   "scripts": {
+    "dev:playground": "npm run dev --prefix playground",
+    "build:playground": "npm run build --prefix playground",
     "build": "tsup",
     "test": "vitest run",
     "test:watch": "vitest",

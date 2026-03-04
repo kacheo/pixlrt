@@ -1,8 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import * as fs from 'node:fs';
-import * as os from 'node:os';
-import * as path from 'node:path';
-import { paletteFrom, paletteFromHex, paletteFromFile, PALETTES } from '../src/palette.js';
+import * as fs from 'fs';
+import * as os from 'os';
+import * as path from 'path';
+import { paletteFrom, paletteFromHex, PALETTES } from '../src/palette.js';
+import { paletteFromFile } from '../src/node.js';
 
 describe('paletteFrom()', () => {
   it('pico8 returns 17 entries (. + 0-f)', () => {
@@ -69,8 +70,16 @@ describe('PALETTES', () => {
   it('has all ten named palettes', () => {
     expect(Object.keys(PALETTES)).toEqual(
       expect.arrayContaining([
-        'pico8', 'gameboy', 'sweetie16', 'cga',
-        'c64', 'zxspectrum', 'nes', 'endesga32', 'apollo', 'resurrect64',
+        'pico8',
+        'gameboy',
+        'sweetie16',
+        'cga',
+        'c64',
+        'zxspectrum',
+        'nes',
+        'endesga32',
+        'apollo',
+        'resurrect64',
       ]),
     );
     expect(Object.keys(PALETTES).length).toBe(10);
@@ -147,9 +156,7 @@ describe('paletteFromHex()', () => {
   });
 
   it('assigns keys 0-9 then a-z', () => {
-    const colors = Array.from({ length: 12 }, (_, i) =>
-      i.toString(16).padStart(2, '0').repeat(3),
-    );
+    const colors = Array.from({ length: 12 }, (_, i) => i.toString(16).padStart(2, '0').repeat(3));
     const map = paletteFromHex(colors);
     expect(map).toHaveProperty('0');
     expect(map).toHaveProperty('9');

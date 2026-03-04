@@ -65,82 +65,82 @@ For complete API documentation with full type signatures, see **[API.md](./API.m
 
 ### Factory Functions
 
-| Function            | Description                                    |
-| ------------------- | ---------------------------------------------- |
-| `sprite(config)`    | Create a sprite from ASCII grid frames         |
-| `tileset(config)`   | Create a tileset from named tile definitions   |
-| `compose()`         | Create a composer for layering renderables      |
-| `paletteFrom(name)` | Get a palette map from a built-in palette name |
-| `paletteFromHex(map)` | Create a palette map from hex color strings  |
+| Function                | Description                                     |
+| ----------------------- | ----------------------------------------------- |
+| `sprite(config)`        | Create a sprite from ASCII grid frames          |
+| `tileset(config)`       | Create a tileset from named tile definitions    |
+| `compose()`             | Create a composer for layering renderables      |
+| `paletteFrom(name)`     | Get a palette map from a built-in palette name  |
+| `paletteFromHex(map)`   | Create a palette map from hex color strings     |
 | `paletteFromFile(path)` | Load a palette map from a `.hex` or `.gpl` file |
 
 ### Renderers
 
-| Function | Description |
-| --- | --- |
-| `toPNG(renderable, path, opts?)` | Render to PNG file |
-| `toSVG(renderable, path, opts?)` | Render to SVG file |
-| `toSpriteSheet(sprite, path, opts?)` | Render animation frames to sprite sheet + JSON metadata |
-| `toTaggedSpriteSheet(sprite, path, opts?)` | Sprite sheet with animation tag groups |
-| `toGIF(sprite, path, opts?)` | Export animated GIF |
-| `toAPNG(sprite, path, opts?)` | Export animated PNG |
-| `toAtlas(entries, path, opts?)` | Pack multiple sprites into a texture atlas |
-| `toAtlasPhaser(entries, path, opts?)` | Texture atlas in Phaser/PixiJS JSON hash or array format |
-| `toAtlasUnity(entries, path, opts?)` | Texture atlas for Unity |
-| `toAtlasGodot(entries, path, opts?)` | Texture atlas for Godot 4.x |
-| `toTiled(tileset, grid, path, opts?)` | Export a Tiled-compatible map |
-| `toMultiScale(renderable, path, opts?)` | Export PNG at multiple scales (@1x, @2x, @3x) |
-| `toCollisionMask(renderable, path, opts?)` | Generate a binary collision mask from alpha data |
+| Function                                   | Description                                              |
+| ------------------------------------------ | -------------------------------------------------------- |
+| `toPNG(renderable, path, opts?)`           | Render to PNG file                                       |
+| `toSVG(renderable, path, opts?)`           | Render to SVG file                                       |
+| `toSpriteSheet(sprite, path, opts?)`       | Render animation frames to sprite sheet + JSON metadata  |
+| `toTaggedSpriteSheet(sprite, path, opts?)` | Sprite sheet with animation tag groups                   |
+| `toGIF(sprite, path, opts?)`               | Export animated GIF                                      |
+| `toAPNG(sprite, path, opts?)`              | Export animated PNG                                      |
+| `toAtlas(entries, path, opts?)`            | Pack multiple sprites into a texture atlas               |
+| `toAtlasPhaser(entries, path, opts?)`      | Texture atlas in Phaser/PixiJS JSON hash or array format |
+| `toAtlasUnity(entries, path, opts?)`       | Texture atlas for Unity                                  |
+| `toAtlasGodot(entries, path, opts?)`       | Texture atlas for Godot 4.x                              |
+| `toTiled(tileset, grid, path, opts?)`      | Export a Tiled-compatible map                            |
+| `toMultiScale(renderable, path, opts?)`    | Export PNG at multiple scales (@1x, @2x, @3x)            |
+| `toCollisionMask(renderable, path, opts?)` | Generate a binary collision mask from alpha data         |
 
 ### Sprite Methods
 
 All transforms return new `Sprite` instances (immutable).
 
-| Method | Description |
-| --- | --- |
-| `.flipX()` | Flip horizontally |
-| `.flipY()` | Flip vertically |
-| `.rotate(degrees)` | Rotate 90, 180, or 270 degrees clockwise |
-| `.scale(factor)` | Scale by integer factor |
-| `.recolor(mapping)` | Palette swap using `{ key: newColor }` |
-| `.pad(top, right, bottom, left, color?)` | Add padding around the sprite |
-| `.crop(x, y, w, h)` | Crop to a rectangular region |
-| `.opacity(alpha)` | Adjust alpha (0–1) |
-| `.outline(color, thickness?)` | Add an outline around opaque pixels |
-| `.ninePatch(edges, width, height)` | Nine-patch resize with defined edge/corner regions |
-| `.frame(index)` | Get a specific frame |
-| `.frameAt(timeMs, mode?)` | Get a frame at a given time (loop or clamp) |
+| Method                                   | Description                                        |
+| ---------------------------------------- | -------------------------------------------------- |
+| `.flipX()`                               | Flip horizontally                                  |
+| `.flipY()`                               | Flip vertically                                    |
+| `.rotate(degrees)`                       | Rotate 90, 180, or 270 degrees clockwise           |
+| `.scale(factor)`                         | Scale by integer factor                            |
+| `.recolor(mapping)`                      | Palette swap using `{ key: newColor }`             |
+| `.pad(top, right, bottom, left, color?)` | Add padding around the sprite                      |
+| `.crop(x, y, w, h)`                      | Crop to a rectangular region                       |
+| `.opacity(alpha)`                        | Adjust alpha (0–1)                                 |
+| `.outline(color, thickness?)`            | Add an outline around opaque pixels                |
+| `.ninePatch(edges, width, height)`       | Nine-patch resize with defined edge/corner regions |
+| `.frame(index)`                          | Get a specific frame                               |
+| `.frameAt(timeMs, mode?)`                | Get a frame at a given time (loop or clamp)        |
 
 ### Animation Utilities
 
 Standalone functions for manipulating sprite frame sequences.
 
-| Function | Description |
-| --- | --- |
-| `reverseFrames(sprite)` | Reverse the order of animation frames |
-| `pingPong(sprite)` | Append reversed frames for a ping-pong loop |
-| `pickFrames(sprite, indices)` | Select specific frames by index |
-| `setDuration(sprite, durations)` | Set per-frame durations in milliseconds |
+| Function                         | Description                                 |
+| -------------------------------- | ------------------------------------------- |
+| `reverseFrames(sprite)`          | Reverse the order of animation frames       |
+| `pingPong(sprite)`               | Append reversed frames for a ping-pong loop |
+| `pickFrames(sprite, indices)`    | Select specific frames by index             |
+| `setDuration(sprite, durations)` | Set per-frame durations in milliseconds     |
 
 ### Import Functions
 
-| Function | Description |
-| --- | --- |
-| `fromPNG(path)` | Load a PNG file as a Sprite |
+| Function                      | Description                                   |
+| ----------------------------- | --------------------------------------------- |
+| `fromPNG(path)`               | Load a PNG file as a Sprite                   |
 | `fromSpriteSheet(path, meta)` | Import a sprite sheet using its JSON metadata |
 
 ### Color Utilities
 
-| Function | Description |
-| --- | --- |
-| `parseColor(input)` | Parse a hex string or named color to RGBA |
-| `toHex(color)` | Convert RGBA to hex string (`#rrggbb` or `#rrggbbaa`) |
-| `lighten(color, amount)` | Lighten a color by a factor (0–1) |
-| `darken(color, amount)` | Darken a color by a factor (0–1) |
-| `lerp(a, b, t)` | Linear interpolation between two colors |
-| `mix(a, b, ratio?)` | Mix two colors (defaults to equal 50/50 blend) |
-| `saturate(color, amount)` | Increase saturation by amount (0–1) |
-| `desaturate(color, amount)` | Decrease saturation by amount (0–1) |
+| Function                    | Description                                           |
+| --------------------------- | ----------------------------------------------------- |
+| `parseColor(input)`         | Parse a hex string or named color to RGBA             |
+| `toHex(color)`              | Convert RGBA to hex string (`#rrggbb` or `#rrggbbaa`) |
+| `lighten(color, amount)`    | Lighten a color by a factor (0–1)                     |
+| `darken(color, amount)`     | Darken a color by a factor (0–1)                      |
+| `lerp(a, b, t)`             | Linear interpolation between two colors               |
+| `mix(a, b, ratio?)`         | Mix two colors (defaults to equal 50/50 blend)        |
+| `saturate(color, amount)`   | Increase saturation by amount (0–1)                   |
+| `desaturate(color, amount)` | Decrease saturation by amount (0–1)                   |
 
 ### Quantization
 
@@ -154,8 +154,8 @@ const reduced = quantize(spriteOrFrame, maxColors);
 
 ### Palette Preview
 
-| Function | Description |
-| --- | --- |
+| Function                        | Description                                               |
+| ------------------------------- | --------------------------------------------------------- |
 | `paletteSwatch(palette, opts?)` | Create a Renderable grid of color swatches from a palette |
 
 ```ts

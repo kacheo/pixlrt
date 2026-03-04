@@ -8,11 +8,13 @@ describe('template()', () => {
   it('creates a SpriteTemplate from config', () => {
     const t = template({
       slots: { B: 'body', L: 'light' },
-      frames: [`
+      frames: [
+        `
         . B .
         B L B
         . B .
-      `],
+      `,
+      ],
     });
     expect(t).toBeInstanceOf(SpriteTemplate);
     expect(t.width).toBe(3);
@@ -47,15 +49,11 @@ describe('template()', () => {
   });
 
   it('throws on multi-char slot key', () => {
-    expect(() =>
-      template({ slots: { BB: 'body' }, frames: ['BB'] }),
-    ).toThrow('single character');
+    expect(() => template({ slots: { BB: 'body' }, frames: ['BB'] })).toThrow('single character');
   });
 
   it('throws on unknown slot key in frame', () => {
-    expect(() =>
-      template({ slots: { B: 'body' }, frames: ['X'] }),
-    ).toThrow("unknown slot key 'X'");
+    expect(() => template({ slots: { B: 'body' }, frames: ['X'] })).toThrow("unknown slot key 'X'");
   });
 
   it('throws on mismatched frame dimensions', () => {
@@ -71,11 +69,13 @@ describe('template()', () => {
 describe('SpriteTemplate.fill()', () => {
   const t = template({
     slots: { B: 'body', L: 'light' },
-    frames: [`
+    frames: [
+      `
       . B .
       B L B
       . B .
-    `],
+    `,
+    ],
   });
 
   it('produces a Sprite with correct colors', () => {
@@ -122,11 +122,13 @@ describe('SpriteTemplate.fill()', () => {
 describe('SpriteTemplate.patchRows()', () => {
   const t = template({
     slots: { B: 'body', L: 'light' },
-    frames: [`
+    frames: [
+      `
       B B B
       L L L
       B B B
-    `],
+    `,
+    ],
   });
 
   it('replaces specified rows', () => {
@@ -174,20 +176,18 @@ describe('SpriteTemplate.patchRows()', () => {
 describe('SpriteTemplate.animateSlots()', () => {
   const t = template({
     slots: { C: 'core', G: 'glow', B: 'body' },
-    frames: [`
+    frames: [
+      `
       B C B
       C G C
       B C B
-    `],
+    `,
+    ],
   });
 
   it('generates multi-frame sprite from keyframes', () => {
     const s = t.animateSlots({
-      keyframes: [
-        { core: '#ff0000' },
-        { core: '#00ff00' },
-        { core: '#0000ff' },
-      ],
+      keyframes: [{ core: '#ff0000' }, { core: '#00ff00' }, { core: '#0000ff' }],
       base: { core: '#ff0000', glow: '#ffff00', body: '#880000' },
     });
     expect(s.frames.length).toBe(3);

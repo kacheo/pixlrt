@@ -1,11 +1,33 @@
 // Core types
 export type {
-  RGBA, ColorInput, PaletteMap, PixelGrid, SpriteConfig, TilesetConfig,
-  PNGOptions, SVGOptions, GIFOptions, SpriteSheetOptions, SpriteSheetMeta,
-  Renderable, SceneOptions, LayerConfig, NinePatchEdges, NinePatchMeta, Rect,
-  AtlasEntry, AtlasOptions, AtlasFrame, AtlasMeta, MultiScaleOptions,
-  CollisionMaskOptions, AnimationMode, AnimationTag, TaggedSpriteSheetOptions,
-  TaggedSpriteSheetMeta, APNGOptions,
+  RGBA,
+  ColorInput,
+  PaletteMap,
+  PixelGrid,
+  SpriteConfig,
+  TilesetConfig,
+  PNGOptions,
+  SVGOptions,
+  GIFOptions,
+  SpriteSheetOptions,
+  SpriteSheetMeta,
+  Renderable,
+  SceneOptions,
+  LayerConfig,
+  NinePatchEdges,
+  NinePatchMeta,
+  Rect,
+  AtlasEntry,
+  AtlasOptions,
+  AtlasFrame,
+  AtlasMeta,
+  MultiScaleOptions,
+  CollisionMaskOptions,
+  AnimationMode,
+  AnimationTag,
+  TaggedSpriteSheetOptions,
+  TaggedSpriteSheetMeta,
+  APNGOptions,
 } from './types.js';
 
 // Color utilities
@@ -23,7 +45,21 @@ export { Frame } from './frame.js';
 export { PixelCanvas } from './canvas.js';
 
 // Transforms
-export { flipX, flipY, rotate, rotate90, rotate180, rotate270, scale, pad, crop, opacity, outline, silhouette, shiftRows } from './transform.js';
+export {
+  flipX,
+  flipY,
+  rotate,
+  rotate90,
+  rotate180,
+  rotate270,
+  scale,
+  pad,
+  crop,
+  opacity,
+  outline,
+  silhouette,
+  shiftRows,
+} from './transform.js';
 
 // Animation
 export { reverseFrames, pingPong, pickFrames, setDuration } from './animation.js';

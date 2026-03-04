@@ -27,10 +27,7 @@ export interface UnityOutput {
  * Convert AtlasMeta to TexturePacker-compatible Unity JSON format.
  * Adds pivot points and smartupdate hash.
  */
-export function toAtlasUnity(
-  metadata: AtlasMeta,
-  path?: string,
-): UnityOutput {
+export function toAtlasUnity(metadata: AtlasMeta, path?: string): UnityOutput {
   const frames: Record<string, UnityFrame> = {};
 
   for (const f of metadata.frames) {

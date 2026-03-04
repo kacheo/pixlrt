@@ -92,7 +92,15 @@ export function ninePatchResize(
   // Top row of regions
   if (top > 0) {
     const tlRows = tileRegion(frame, meta.topLeft.x, meta.topLeft.y, left, top, left, top);
-    const tcRows = tileRegion(frame, meta.topCenter.x, meta.topCenter.y, meta.topCenter.w, top, midW, top);
+    const tcRows = tileRegion(
+      frame,
+      meta.topCenter.x,
+      meta.topCenter.y,
+      meta.topCenter.w,
+      top,
+      midW,
+      top,
+    );
     const trRows = tileRegion(frame, meta.topRight.x, meta.topRight.y, right, top, right, top);
     for (let r = 0; r < top; r++) {
       pixels.push([...tlRows[r]!, ...tcRows[r]!, ...trRows[r]!]);
@@ -101,9 +109,33 @@ export function ninePatchResize(
 
   // Middle row of regions
   if (midH > 0) {
-    const mlRows = tileRegion(frame, meta.middleLeft.x, meta.middleLeft.y, left, meta.middleLeft.h, left, midH);
-    const cRows = tileRegion(frame, meta.center.x, meta.center.y, meta.center.w, meta.center.h, midW, midH);
-    const mrRows = tileRegion(frame, meta.middleRight.x, meta.middleRight.y, right, meta.middleRight.h, right, midH);
+    const mlRows = tileRegion(
+      frame,
+      meta.middleLeft.x,
+      meta.middleLeft.y,
+      left,
+      meta.middleLeft.h,
+      left,
+      midH,
+    );
+    const cRows = tileRegion(
+      frame,
+      meta.center.x,
+      meta.center.y,
+      meta.center.w,
+      meta.center.h,
+      midW,
+      midH,
+    );
+    const mrRows = tileRegion(
+      frame,
+      meta.middleRight.x,
+      meta.middleRight.y,
+      right,
+      meta.middleRight.h,
+      right,
+      midH,
+    );
     for (let r = 0; r < midH; r++) {
       pixels.push([...mlRows[r]!, ...cRows[r]!, ...mrRows[r]!]);
     }
@@ -111,9 +143,33 @@ export function ninePatchResize(
 
   // Bottom row of regions
   if (bottom > 0) {
-    const blRows = tileRegion(frame, meta.bottomLeft.x, meta.bottomLeft.y, left, bottom, left, bottom);
-    const bcRows = tileRegion(frame, meta.bottomCenter.x, meta.bottomCenter.y, meta.bottomCenter.w, bottom, midW, bottom);
-    const brRows = tileRegion(frame, meta.bottomRight.x, meta.bottomRight.y, right, bottom, right, bottom);
+    const blRows = tileRegion(
+      frame,
+      meta.bottomLeft.x,
+      meta.bottomLeft.y,
+      left,
+      bottom,
+      left,
+      bottom,
+    );
+    const bcRows = tileRegion(
+      frame,
+      meta.bottomCenter.x,
+      meta.bottomCenter.y,
+      meta.bottomCenter.w,
+      bottom,
+      midW,
+      bottom,
+    );
+    const brRows = tileRegion(
+      frame,
+      meta.bottomRight.x,
+      meta.bottomRight.y,
+      right,
+      bottom,
+      right,
+      bottom,
+    );
     for (let r = 0; r < bottom; r++) {
       pixels.push([...blRows[r]!, ...bcRows[r]!, ...brRows[r]!]);
     }

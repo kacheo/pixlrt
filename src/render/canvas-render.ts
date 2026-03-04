@@ -11,17 +11,18 @@ export interface CanvasOptions {
  * Render a Renderable to an OffscreenCanvas.
  * Browser-only — requires OffscreenCanvas and ImageData globals.
  */
-export function toCanvas(
-  source: Renderable,
-  opts?: CanvasOptions,
-): OffscreenCanvas {
+export function toCanvas(source: Renderable, opts?: CanvasOptions): OffscreenCanvas {
   const scale = opts?.scale ?? 1;
   validateScale(scale);
 
   const { width, height, data } = toImageData(source, { scale });
   const canvas = new OffscreenCanvas(width, height);
   const ctx = canvas.getContext('2d')!;
-  ctx.putImageData(new ImageData(data as unknown as Uint8ClampedArray<ArrayBuffer>, width, height), 0, 0);
+  ctx.putImageData(
+    new ImageData(data as unknown as Uint8ClampedArray<ArrayBuffer>, width, height),
+    0,
+    0,
+  );
 
   return canvas;
 }

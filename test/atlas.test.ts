@@ -58,10 +58,12 @@ describe('toAtlas', () => {
   });
 
   it('supports AtlasEntry input', () => {
-    const frame = new Frame([[
-      [255, 0, 0, 255],
-      [0, 255, 0, 255],
-    ]]);
+    const frame = new Frame([
+      [
+        [255, 0, 0, 255],
+        [0, 255, 0, 255],
+      ],
+    ]);
     const entry: AtlasEntry = { name: 'custom', source: frame };
     const { metadata } = toAtlas([entry]);
 
@@ -119,12 +121,12 @@ describe('toAtlas', () => {
     for (const frame of metadata.frames) {
       const i = (frame.y * png.width + frame.x) * 4;
       if (frame.name === 'red') {
-        expect(png.data[i]).toBe(255);     // R
-        expect(png.data[i + 1]).toBe(0);   // G
-        expect(png.data[i + 2]).toBe(0);   // B
+        expect(png.data[i]).toBe(255); // R
+        expect(png.data[i + 1]).toBe(0); // G
+        expect(png.data[i + 2]).toBe(0); // B
       } else {
-        expect(png.data[i]).toBe(0);       // R
-        expect(png.data[i + 1]).toBe(0);   // G
+        expect(png.data[i]).toBe(0); // R
+        expect(png.data[i + 1]).toBe(0); // G
         expect(png.data[i + 2]).toBe(255); // B
       }
     }

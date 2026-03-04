@@ -30,7 +30,10 @@ describe('silhouette (transform)', () => {
   });
 
   it('returns all transparent for fully transparent frame', () => {
-    const frame = new Frame([[T, T], [T, T]]);
+    const frame = new Frame([
+      [T, T],
+      [T, T],
+    ]);
     const result = silhouette(frame, W);
     expect(result.getPixel(0, 0)).toEqual(T);
     expect(result.getPixel(1, 1)).toEqual(T);

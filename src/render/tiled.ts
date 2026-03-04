@@ -59,8 +59,17 @@ function parseGrid(layout: string): string[][] {
  * - String array = multiple layers
  * - If path is provided, writes the JSON file
  */
-export function toTiled(tileset: Tileset, layout: string | string[], path: string, options?: TiledExportOptions): TiledMap;
-export function toTiled(tileset: Tileset, layout: string | string[], options?: TiledExportOptions): TiledMap;
+export function toTiled(
+  tileset: Tileset,
+  layout: string | string[],
+  path: string,
+  options?: TiledExportOptions,
+): TiledMap;
+export function toTiled(
+  tileset: Tileset,
+  layout: string | string[],
+  options?: TiledExportOptions,
+): TiledMap;
 export function toTiled(
   tileset: Tileset,
   layout: string | string[],
