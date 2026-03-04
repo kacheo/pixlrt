@@ -67,7 +67,7 @@ describe('paletteFrom()', () => {
 });
 
 describe('PALETTES', () => {
-  it('has all ten named palettes', () => {
+  it('has all 24 named palettes', () => {
     expect(Object.keys(PALETTES)).toEqual(
       expect.arrayContaining([
         'pico8',
@@ -80,9 +80,23 @@ describe('PALETTES', () => {
         'endesga32',
         'apollo',
         'resurrect64',
+        'virtualboy',
+        'msx',
+        'endesga16',
+        'dawnbringer16',
+        'dawnbringer32',
+        'bubblegum16',
+        'oil6',
+        'slso8',
+        'ammo8',
+        '1bit',
+        'nord',
+        'gruvbox',
+        'solarized',
+        'dracula',
       ]),
     );
-    expect(Object.keys(PALETTES).length).toBe(10);
+    expect(Object.keys(PALETTES).length).toBe(24);
   });
 
   it('each palette has the correct color count', () => {
@@ -92,6 +106,20 @@ describe('PALETTES', () => {
     expect(PALETTES['endesga32']!.length).toBe(32);
     expect(PALETTES['apollo']!.length).toBe(16);
     expect(PALETTES['resurrect64']!.length).toBe(64);
+    expect(PALETTES['virtualboy']!.length).toBe(4);
+    expect(PALETTES['msx']!.length).toBe(15);
+    expect(PALETTES['endesga16']!.length).toBe(16);
+    expect(PALETTES['dawnbringer16']!.length).toBe(16);
+    expect(PALETTES['dawnbringer32']!.length).toBe(32);
+    expect(PALETTES['bubblegum16']!.length).toBe(16);
+    expect(PALETTES['oil6']!.length).toBe(6);
+    expect(PALETTES['slso8']!.length).toBe(8);
+    expect(PALETTES['ammo8']!.length).toBe(8);
+    expect(PALETTES['1bit']!.length).toBe(2);
+    expect(PALETTES['nord']!.length).toBe(16);
+    expect(PALETTES['gruvbox']!.length).toBe(16);
+    expect(PALETTES['solarized']!.length).toBe(16);
+    expect(PALETTES['dracula']!.length).toBe(8);
   });
 
   it('spot-check known color values', () => {
@@ -103,6 +131,18 @@ describe('PALETTES', () => {
     expect(PALETTES['zxspectrum']![8]).toEqual([0, 0, 255, 255]);
     // Apollo first color
     expect(PALETTES['apollo']![0]).toEqual([23, 14, 25, 255]);
+    // Virtual Boy bright red
+    expect(PALETTES['virtualboy']![3]).toEqual([255, 0, 0, 255]);
+    // 1-bit phosphor green
+    expect(PALETTES['1bit']![1]).toEqual([31, 255, 48, 255]);
+    // Nord polar night
+    expect(PALETTES['nord']![0]).toEqual([46, 52, 64, 255]);
+    // Dracula background
+    expect(PALETTES['dracula']![0]).toEqual([40, 42, 54, 255]);
+    // Solarized base03
+    expect(PALETTES['solarized']![0]).toEqual([0, 43, 54, 255]);
+    // Gruvbox bg
+    expect(PALETTES['gruvbox']![0]).toEqual([40, 40, 40, 255]);
   });
 });
 
