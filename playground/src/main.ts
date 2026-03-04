@@ -191,24 +191,33 @@ interface Example {
 
 const examples: Example[] = [
   {
-    name: 'Basic Hero',
-    description: 'Simple sprite with inline palette',
+    name: 'Armored Knight',
+    description: 'Character with sword, shield, and armor',
     code: `sprite({
-  name: 'hero',
+  name: 'knight',
   palette: {
     '.': 'transparent',
     'x': '#1a1c2c',
-    's': '#f4f4f4',
-    'h': '#b13e53',
-    'b': '#3b5dc9',
+    'h': '#5d275d',
+    'f': '#f4f4f4',
+    'a': '#94a3b8',
+    's': '#3b5dc9',
+    'w': '#e2e8f0',
+    'g': '#b13e53',
   },
   frames: [\`
-    ..xx..
-    .xhhx.
-    xhsshx
-    .xhhx.
-    .xbbx.
-    xb..bx
+    ...xhhx...
+    ..xhhhhx..
+    ..xfxxfx..
+    ...xffx...
+    .xxaaaxx..
+    xssxaaxwx.
+    xssxaaxwx.
+    .xxaaaxxgx
+    ...xaax...
+    ..xx..xx..
+    ..xa..ax..
+    ..xx..xx..
   \`]
 })`,
   },
