@@ -217,4 +217,4 @@ See the [`examples/`](./examples) directory:
 
 ## License
 
-MIT
+Apache-2.0
