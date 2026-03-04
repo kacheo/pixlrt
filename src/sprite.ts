@@ -150,6 +150,73 @@ export class Sprite implements Renderable {
     return this._withFrames(this.frames.map((f) => ninePatchResize(f, edges, width, height)));
   }
 
+  /** Replace all non-transparent pixels with a single color, preserving alpha */
+  silhouette(color: ColorInput): Sprite {
+    const rgba = parseColor(color);
+    return this._withFrames(this.frames.map((f) => transform.silhouette(f, rgba)));
+  }
+
+  /** Shift a range of rows laterally by dx pixels */
+  shiftRows(opts: { from: number; to: number; dx: number }): Sprite {
+    return this._withFrames(this.frames.map((f) => transform.shiftRows(f, opts)));
+  }
+
+  /** Replace specific rows by index, returning a new Sprite */
+  patchRows(patches: Record<number, string>, frameIndex: number = 0): Sprite {
+    if (frameIndex < 0 || frameIndex >= this.frames.length) {
+      throw new Error(
+        `Frame index ${frameIndex} out of range (0-${this.frames.length - 1})`,
+      );
+    }
+
+    const newFrames = this.frames.map((frame, i) => {
+      if (i !== frameIndex) return frame;
+
+      const pixels: RGBA[][] = [];
+      for (let r = 0; r < frame.height; r++) {
+        if (r in patches) {
+          const rowStr = patches[r]!;
+          const tokens = rowStr.trim().includes(' ')
+            ? rowStr.trim().split(/\s+/).filter((t) => t.length > 0)
+            : [...rowStr.trim()];
+
+          if (tokens.length !== frame.width) {
+            throw new Error(
+              `Patch row ${r} width (${tokens.length}) doesn't match sprite width (${frame.width})`,
+            );
+          }
+
+          const row: RGBA[] = tokens.map((ch) => {
+            if (ch === '.') return [0, 0, 0, 0] as RGBA;
+            const color = this.palette[ch];
+            if (color === undefined) {
+              throw new Error(
+                `Unknown palette character '${ch}' in patch row ${r}`,
+              );
+            }
+            return parseColor(color);
+          });
+          pixels.push(row);
+        } else {
+          const row: RGBA[] = [];
+          for (let c = 0; c < frame.width; c++) {
+            row.push(frame.getPixel(c, r));
+          }
+          pixels.push(row);
+        }
+      }
+      return new Frame(pixels);
+    });
+
+    return new Sprite({
+      name: this.name,
+      frames: newFrames,
+      palette: this.palette,
+      origin: this.origin,
+      frameDuration: this.frameDuration,
+    });
+  }
+
   /** Create a palette-swapped copy */
   recolor(mapping: Record<string, ColorInput>): Sprite {
     // Build old→new RGBA mapping

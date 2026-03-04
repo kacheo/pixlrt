@@ -12,7 +12,7 @@ export {
   parseColor, lighten, darken, lerp, toHex, mix, saturate, desaturate,
 
   // Palettes
-  PALETTES, paletteFrom, paletteFromHex,
+  PALETTES, paletteFrom, paletteFromHex, paletteSchema, type PaletteSchema,
 
   // Parser
   parseGrid, parseFrames,
@@ -21,7 +21,7 @@ export {
   Frame, PixelCanvas,
 
   // Transforms
-  flipX, flipY, rotate, rotate90, rotate180, rotate270, scale, pad, crop, opacity, outline,
+  flipX, flipY, rotate, rotate90, rotate180, rotate270, scale, pad, crop, opacity, outline, silhouette, shiftRows,
 
   // Animation
   reverseFrames, pingPong, pickFrames, setDuration,
@@ -31,6 +31,10 @@ export {
 
   // Sprite
   Sprite, sprite,
+
+  // Templates
+  SpriteTemplate, template,
+  type SlotMap, type SlotFill, type SpriteTemplateConfig, type AnimateSlotsOptions,
 
   // Composition
   Composer, compose, type ComposeOptions,
