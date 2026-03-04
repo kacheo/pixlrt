@@ -1,6 +1,6 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import type { PaletteMap, RGBA } from './types.js';
+import type { ColorInput, PaletteMap, RGBA } from './types.js';
 import { parseColor } from './color.js';
 
 /** PICO-8 16-color palette */
@@ -225,6 +225,50 @@ export function paletteFromHex(hexColors: string[]): PaletteMap {
     map[HEX_KEYS[i]!] = color;
   }
   return map;
+}
+
+/** A validated palette with named roles */
+export interface PaletteSchema<R extends string = string> {
+  /** The role names in this schema */
+  readonly roles: readonly R[];
+  /** Create a validated PaletteMap from a mapping of role → color. Throws if any role is missing or extra. */
+  create(mapping: Record<R, ColorInput>): PaletteMap;
+}
+
+/**
+ * Create a PaletteSchema that validates all named roles are present when creating palettes.
+ * Useful for ensuring consistent color sets across related sprites.
+ */
+export function paletteSchema<R extends string>(roles: readonly R[]): PaletteSchema<R> {
+  if (roles.length === 0) {
+    throw new Error('paletteSchema requires at least one role');
+  }
+  const uniqueRoles = [...new Set(roles)];
+  if (uniqueRoles.length !== roles.length) {
+    throw new Error('paletteSchema roles must be unique');
+  }
+
+  return {
+    roles,
+    create(mapping: Record<R, ColorInput>): PaletteMap {
+      const provided = Object.keys(mapping);
+      const missing = uniqueRoles.filter((r) => !(r in mapping));
+      if (missing.length > 0) {
+        throw new Error(`Missing palette roles: ${missing.join(', ')}`);
+      }
+      const extra = provided.filter((k) => !uniqueRoles.includes(k as R));
+      if (extra.length > 0) {
+        throw new Error(`Unknown palette roles: ${extra.join(', ')}`);
+      }
+
+      // Return a PaletteMap keyed by role names
+      const map: PaletteMap = {};
+      for (const role of uniqueRoles) {
+        map[role] = mapping[role];
+      }
+      return map;
+    },
+  };
 }
 
 /**

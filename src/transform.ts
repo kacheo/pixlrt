@@ -215,6 +215,62 @@ export function outline(frame: Frame, color: RGBA, thickness: number = 1): Frame
   return new Frame(pixels);
 }
 
+/** Replace all non-transparent pixels with a single color, preserving alpha. */
+export function silhouette(frame: Frame, color: RGBA): Frame {
+  const pixels: RGBA[][] = [];
+  for (let r = 0; r < frame.height; r++) {
+    const row: RGBA[] = [];
+    for (let c = 0; c < frame.width; c++) {
+      const [, , , a] = frame.getPixel(c, r);
+      if (a > 0) {
+        row.push([color[0], color[1], color[2], a]);
+      } else {
+        row.push([0, 0, 0, 0]);
+      }
+    }
+    pixels.push(row);
+  }
+  return new Frame(pixels);
+}
+
+/** Shift a range of rows laterally by dx pixels. Exposed pixels become transparent. */
+export function shiftRows(
+  frame: Frame,
+  opts: { from: number; to: number; dx: number },
+): Frame {
+  const { from, to, dx } = opts;
+  if (!Number.isInteger(from) || !Number.isInteger(to) || !Number.isInteger(dx)) {
+    throw new Error('shiftRows parameters must be integers');
+  }
+  if (from < 0 || to >= frame.height || from > to) {
+    throw new Error(
+      `Row range ${from}-${to} is invalid for frame height ${frame.height}`,
+    );
+  }
+  if (dx === 0) return frame;
+
+  const pixels: RGBA[][] = [];
+  for (let r = 0; r < frame.height; r++) {
+    const row: RGBA[] = [];
+    if (r >= from && r <= to) {
+      for (let c = 0; c < frame.width; c++) {
+        const srcX = c - dx;
+        if (srcX >= 0 && srcX < frame.width) {
+          row.push(frame.getPixel(srcX, r));
+        } else {
+          row.push([0, 0, 0, 0]);
+        }
+      }
+    } else {
+      for (let c = 0; c < frame.width; c++) {
+        row.push(frame.getPixel(c, r));
+      }
+    }
+    pixels.push(row);
+  }
+  return new Frame(pixels);
+}
+
 /** Scale a frame by an integer factor using nearest-neighbor interpolation. */
 export function scale(frame: Frame, factor: number): Frame {
   if (factor < 1 || !Number.isInteger(factor)) {

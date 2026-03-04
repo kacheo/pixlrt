@@ -12,7 +12,8 @@ export type {
 export { parseColor, lighten, darken, lerp, toHex, mix, saturate, desaturate } from './color.js';
 
 // Palettes (pure computation only — no paletteFromFile)
-export { PALETTES, paletteFrom, paletteFromHex } from './palette.js';
+export { PALETTES, paletteFrom, paletteFromHex, paletteSchema } from './palette.js';
+export type { PaletteSchema } from './palette.js';
 
 // Parser
 export { parseGrid, parseFrames } from './parser.js';
@@ -22,7 +23,7 @@ export { Frame } from './frame.js';
 export { PixelCanvas } from './canvas.js';
 
 // Transforms
-export { flipX, flipY, rotate, rotate90, rotate180, rotate270, scale, pad, crop, opacity, outline } from './transform.js';
+export { flipX, flipY, rotate, rotate90, rotate180, rotate270, scale, pad, crop, opacity, outline, silhouette, shiftRows } from './transform.js';
 
 // Animation
 export { reverseFrames, pingPong, pickFrames, setDuration } from './animation.js';
@@ -32,6 +33,10 @@ export { ninePatchMeta, ninePatchResize } from './nine-patch.js';
 
 // Sprite
 export { Sprite, sprite } from './sprite.js';
+
+// Templates
+export { SpriteTemplate, template } from './template.js';
+export type { SlotMap, SlotFill, SpriteTemplateConfig, AnimateSlotsOptions } from './template.js';
 
 // Composition
 export { Composer, compose, type ComposeOptions } from './compose.js';
