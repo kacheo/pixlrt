@@ -915,6 +915,33 @@ const PALETTE_PREVIEWS: Record<string, string> = {
   `,
 };
 
+const PALETTE_PREVIEW_NAMES: Record<string, string> = {
+  pico8: 'tv',
+  gameboy: 'robot',
+  sweetie16: 'flower',
+  cga: 'computer',
+  c64: 'lamp',
+  zxspectrum: 'rainbow',
+  nes: 'ornament',
+  endesga32: 'sword',
+  apollo: 'rocket',
+  resurrect64: 'ghost',
+  virtualboy: 'goggles',
+  msx: 'monitor',
+  endesga16: 'tree',
+  dawnbringer16: 'landscape',
+  dawnbringer32: 'gem',
+  bubblegum16: 'face',
+  oil6: 'gradient',
+  slso8: 'orb',
+  ammo8: 'frame',
+  '1bit': 'alien',
+  nord: 'snowflake',
+  gruvbox: 'box',
+  solarized: 'owl',
+  dracula: 'bat',
+};
+
 const FALLBACK_GRID = `
   ..0000..
   .011110.
@@ -926,70 +953,112 @@ const FALLBACK_GRID = `
   ..0000..
 `;
 
-// Populate palettes UI
+// Populate palettes UI — grouped by category
+const PALETTE_CATEGORIES: { label: string; names: string[] }[] = [
+  {
+    label: 'Retro Consoles',
+    names: ['pico8', 'gameboy', 'cga', 'c64', 'zxspectrum', 'nes', 'virtualboy', 'msx'],
+  },
+  {
+    label: 'Community',
+    names: [
+      'sweetie16', 'endesga32', 'endesga16', 'apollo', 'resurrect64',
+      'dawnbringer16', 'dawnbringer32', 'bubblegum16', 'oil6', 'slso8', 'ammo8', '1bit',
+    ],
+  },
+  {
+    label: 'Modern',
+    names: ['nord', 'gruvbox', 'solarized', 'dracula'],
+  },
+];
+
+const palettesByName = new Map(palettes.map(p => [p.name, p]));
+
 const palettesContainer = document.querySelector('.palettes-container') as HTMLElement;
 if (palettesContainer) {
-  palettes.forEach(p => {
-    const card = document.createElement('div');
-    card.className = 'card';
+  PALETTE_CATEGORIES.forEach(category => {
+    // Category header
+    const header = document.createElement('div');
+    header.className = 'palette-category-header';
+    header.innerHTML = `<span class="chevron">&#9660;</span> ${category.label} <span style="color:var(--text-muted);font-weight:400">(${category.names.length})</span>`;
 
-    const title = document.createElement('div');
-    title.className = 'card-title';
-    title.textContent = p.name;
+    // Category grid
+    const grid = document.createElement('div');
+    grid.className = 'palette-category-grid';
 
-    // Canvas preview with reference sprite
-    const content = document.createElement('div');
-    content.className = 'card-content';
-    try {
-      const previewCanvas = document.createElement('canvas');
-      previewCanvas.style.imageRendering = 'pixelated';
-      const previewSprite = sprite({
-        name: `${p.name}-preview`,
-        palette: paletteFrom(p.name),
-        frames: [PALETTE_PREVIEWS[p.name] ?? FALLBACK_GRID],
-      });
-      renderToCanvas(previewSprite, previewCanvas, { scale: 4 });
-      content.appendChild(previewCanvas);
-    } catch {
-      content.textContent = 'Preview unavailable';
-      content.style.color = 'var(--text-muted)';
-      content.style.fontSize = '0.8rem';
-    }
-
-    // Compact swatches below the preview
-    const swatchSection = document.createElement('div');
-    swatchSection.className = 'card-swatches';
-    const swatchContainer = document.createElement('div');
-    swatchContainer.className = 'palette-swatches';
-    p.colors.forEach(rgba => {
-      const hex = toHex(rgba);
-      const sw = document.createElement('div');
-      sw.className = 'swatch';
-      sw.style.backgroundColor = hex;
-      sw.title = hex;
-      swatchContainer.appendChild(sw);
+    header.addEventListener('click', () => {
+      header.classList.toggle('collapsed');
+      grid.classList.toggle('collapsed');
     });
-    swatchSection.appendChild(swatchContainer);
 
-    card.appendChild(title);
-    card.appendChild(content);
-    card.appendChild(swatchSection);
+    category.names.forEach(name => {
+      const p = palettesByName.get(name);
+      if (!p) return;
 
-    // On click, load palette into editor with example sprite
-    card.addEventListener('click', () => {
-      const grid = PALETTE_PREVIEWS[p.name] ?? FALLBACK_GRID;
-      const code = `sprite({
-  name: 'my-sprite',
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      const title = document.createElement('div');
+      title.className = 'card-title';
+      title.textContent = p.name;
+
+      // Canvas preview with reference sprite
+      const content = document.createElement('div');
+      content.className = 'card-content';
+      try {
+        const previewCanvas = document.createElement('canvas');
+        previewCanvas.style.imageRendering = 'pixelated';
+        const previewSprite = sprite({
+          name: `${p.name}-preview`,
+          palette: paletteFrom(p.name),
+          frames: [PALETTE_PREVIEWS[p.name] ?? FALLBACK_GRID],
+        });
+        renderToCanvas(previewSprite, previewCanvas, { scale: 3 });
+        content.appendChild(previewCanvas);
+      } catch {
+        content.textContent = 'Preview unavailable';
+        content.style.color = 'var(--text-muted)';
+        content.style.fontSize = '0.8rem';
+      }
+
+      // Compact swatches below the preview
+      const swatchSection = document.createElement('div');
+      swatchSection.className = 'card-swatches';
+      const swatchContainer = document.createElement('div');
+      swatchContainer.className = 'palette-swatches';
+      p.colors.forEach(rgba => {
+        const hex = toHex(rgba);
+        const sw = document.createElement('div');
+        sw.className = 'swatch';
+        sw.style.backgroundColor = hex;
+        sw.title = hex;
+        swatchContainer.appendChild(sw);
+      });
+      swatchSection.appendChild(swatchContainer);
+
+      card.appendChild(title);
+      card.appendChild(content);
+      card.appendChild(swatchSection);
+
+      // On click, load palette into editor with example sprite
+      card.addEventListener('click', () => {
+        const grid = PALETTE_PREVIEWS[p.name] ?? FALLBACK_GRID;
+        const code = `sprite({
+  name: '${PALETTE_PREVIEW_NAMES[p.name] ?? p.name}',
   palette: paletteFrom('${p.name}'),
   frames: [\`${grid}\`]
 })`;
-      const editorTabBtn = document.querySelector('.tab-btn[data-target="tab-editor"]') as HTMLElement;
-      editorTabBtn?.click();
-      editor.value = code;
-      updatePreview();
-      showToast(`Loaded palette: ${p.name}`);
+        const editorTabBtn = document.querySelector('.tab-btn[data-target="tab-editor"]') as HTMLElement;
+        editorTabBtn?.click();
+        editor.value = code;
+        updatePreview();
+        showToast(`Loaded palette: ${p.name}`);
+      });
+
+      grid.appendChild(card);
     });
 
-    palettesContainer.appendChild(card);
+    palettesContainer.appendChild(header);
+    palettesContainer.appendChild(grid);
   });
 }
