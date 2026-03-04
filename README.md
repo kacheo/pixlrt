@@ -57,6 +57,10 @@ const hero = sprite({
 toPNG(hero, 'hero.png', { scale: 8 });
 ```
 
+## API Reference
+
+For complete API documentation with full type signatures, see **[API.md](./API.md)**.
+
 ## API Overview
 
 ### Factory Functions
