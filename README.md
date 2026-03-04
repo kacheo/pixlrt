@@ -189,6 +189,23 @@ import { paletteFrom } from 'pixlrt';
 const palette = paletteFrom('pico8');
 ```
 
+## Playground
+
+An interactive browser playground lets you experiment with sprites, tilesets, and palettes in real time.
+
+```bash
+cd playground
+npm install
+npm run dev
+```
+
+Then open the local URL shown in your terminal (usually `http://localhost:5173/`).
+
+The playground has three tabs:
+- **Editor** — write sprite/tileset code with live canvas preview
+- **Examples** — browse pre-built examples with canvas previews; click to load
+- **Palettes** — view all 10 built-in palettes; click to copy a `paletteFrom()` snippet
+
 ## Examples
 
 See the [`examples/`](./examples) directory:
