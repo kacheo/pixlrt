@@ -55,4 +55,6 @@ export { toImageData } from './render/imagedata.js';
 export type { ImageDataResult } from './render/imagedata.js';
 export { toArrayBuffer } from './render/arraybuffer.js';
 export { toDataURL } from './render/dataurl.js';
+export { toCanvas, renderToCanvas } from './render/canvas-render.js';
+export type { CanvasOptions } from './render/canvas-render.js';
 export { paletteSwatch } from './render/palette-preview.js';
