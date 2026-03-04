@@ -5,25 +5,16 @@ import type { AtlasMeta } from '../types.js';
  * Convert AtlasMeta to Godot 4.x SpriteFrames .tres format.
  * Groups frames by sprite name into animations.
  */
-export function toAtlasGodot(
-  metadata: AtlasMeta,
-  path?: string,
-): string {
+export function toAtlasGodot(metadata: AtlasMeta, path?: string): string {
   const lines: string[] = [];
 
   // Header
   const subResourceCount = metadata.frames.length;
-  lines.push(
-    `[gd_resource type="SpriteFrames" load_steps=${subResourceCount + 2} format=3]`,
-    '',
-  );
+  lines.push(`[gd_resource type="SpriteFrames" load_steps=${subResourceCount + 2} format=3]`, '');
 
   // External resource: the atlas texture
   const imagePath = metadata.image || 'atlas.png';
-  lines.push(
-    `[ext_resource type="Texture2D" path="res://${imagePath}" id="1"]`,
-    '',
-  );
+  lines.push(`[ext_resource type="Texture2D" path="res://${imagePath}" id="1"]`, '');
 
   // Sub-resources: one AtlasTexture per frame
   for (let i = 0; i < metadata.frames.length; i++) {
@@ -57,12 +48,9 @@ export function toAtlasGodot(
       .map((i) => `{ "texture": SubResource("${i + 2}"), "duration": 1.0 }`)
       .join(', ');
     animEntries.push(
-      [
-        `"name": &"${name}"`,
-        `"speed": 5.0`,
-        `"loop": true`,
-        `"frames": [${frameObjects}]`,
-      ].join(', '),
+      [`"name": &"${name}"`, `"speed": 5.0`, `"loop": true`, `"frames": [${frameObjects}]`].join(
+        ', ',
+      ),
     );
   }
 

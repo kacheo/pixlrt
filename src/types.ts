@@ -38,8 +38,8 @@ export interface SVGOptions {
 
 /** Render options for GIF output */
 export interface GIFOptions {
-  scale?: number;   // integer upscale (default 1)
-  loop?: number;    // 0 = infinite (default), n = loop n times
+  scale?: number; // integer upscale (default 1)
+  loop?: number; // 0 = infinite (default), n = loop n times
 }
 
 /** Render options for sprite sheet output */
@@ -168,8 +168,8 @@ export type AnimationMode = 'loop' | 'pingpong' | 'once';
 /** A named animation range within a tagged sprite sheet */
 export interface AnimationTag {
   name: string;
-  from: number;  // start frame index in sheet
-  to: number;    // end frame index (inclusive)
+  from: number; // start frame index in sheet
+  to: number; // end frame index (inclusive)
   direction: 'forward' | 'reverse' | 'pingpong';
 }
 
@@ -200,5 +200,5 @@ export interface TaggedSpriteSheetMeta {
 /** Render options for APNG output */
 export interface APNGOptions {
   scale?: number;
-  loop?: number;  // 0 = infinite (default)
+  loop?: number; // 0 = infinite (default)
 }

@@ -7,10 +7,7 @@ export interface ImageDataResult {
   data: Uint8ClampedArray;
 }
 
-export function toImageData(
-  source: Renderable,
-  opts?: { scale?: number },
-): ImageDataResult {
+export function toImageData(source: Renderable, opts?: { scale?: number }): ImageDataResult {
   const scale = opts?.scale ?? 1;
   validateScale(scale);
 

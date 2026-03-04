@@ -36,9 +36,7 @@ describe('fromSpriteSheet()', () => {
     for (let f = 0; f < original.frames.length; f++) {
       for (let y = 0; y < original.height; y++) {
         for (let x = 0; x < original.width; x++) {
-          expect(imported.frames[f]!.getPixel(x, y)).toEqual(
-            original.frames[f]!.getPixel(x, y),
-          );
+          expect(imported.frames[f]!.getPixel(x, y)).toEqual(original.frames[f]!.getPixel(x, y));
         }
       }
     }
@@ -71,9 +69,7 @@ describe('fromSpriteSheet()', () => {
     for (let f = 0; f < original.frames.length; f++) {
       for (let y = 0; y < original.height; y++) {
         for (let x = 0; x < original.width; x++) {
-          expect(imported.frames[f]!.getPixel(x, y)).toEqual(
-            original.frames[f]!.getPixel(x, y),
-          );
+          expect(imported.frames[f]!.getPixel(x, y)).toEqual(original.frames[f]!.getPixel(x, y));
         }
       }
     }

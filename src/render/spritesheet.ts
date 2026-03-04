@@ -1,5 +1,11 @@
 import * as fs from 'node:fs';
-import type { SpriteSheetOptions, SpriteSheetMeta, TaggedSpriteSheetOptions, TaggedSpriteSheetMeta, AnimationTag } from '../types.js';
+import type {
+  SpriteSheetOptions,
+  SpriteSheetMeta,
+  TaggedSpriteSheetOptions,
+  TaggedSpriteSheetMeta,
+  AnimationTag,
+} from '../types.js';
 import { PixelCanvas } from '../canvas.js';
 import { Sprite } from '../sprite.js';
 import { toPNG } from './png.js';

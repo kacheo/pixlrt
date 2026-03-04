@@ -161,7 +161,8 @@ describe('toGIF', () => {
   it('throws when sprite has >256 unique colors', () => {
     // Build a palette with 257 unique opaque colors
     const bigPalette: Record<string, string> = {};
-    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+[]{}|;:,.<>?/~`';
+    const chars =
+      'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+[]{}|;:,.<>?/~`';
     // We need 257 unique colors; generate them programmatically
     const colors: string[] = [];
     for (let r = 0; colors.length < 257; r++) {
@@ -203,7 +204,8 @@ describe('toGIF', () => {
       const r = i & 0xff;
       const g = (i >> 2) & 0xff;
       const b = (i * 7) & 0xff;
-      widePalette[ch] = `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+      widePalette[ch] =
+        `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
       row.push(ch);
       charCode++;
     }

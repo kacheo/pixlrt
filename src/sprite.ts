@@ -1,4 +1,12 @@
-import type { RGBA, ColorInput, PaletteMap, SpriteConfig, NinePatchEdges, Renderable, AnimationMode } from './types.js';
+import type {
+  RGBA,
+  ColorInput,
+  PaletteMap,
+  SpriteConfig,
+  NinePatchEdges,
+  Renderable,
+  AnimationMode,
+} from './types.js';
 import { Frame } from './frame.js';
 import { parseColor } from './color.js';
 import { parseFrames } from './parser.js';
@@ -164,9 +172,7 @@ export class Sprite implements Renderable {
   /** Replace specific rows by index, returning a new Sprite */
   patchRows(patches: Record<number, string>, frameIndex: number = 0): Sprite {
     if (frameIndex < 0 || frameIndex >= this.frames.length) {
-      throw new Error(
-        `Frame index ${frameIndex} out of range (0-${this.frames.length - 1})`,
-      );
+      throw new Error(`Frame index ${frameIndex} out of range (0-${this.frames.length - 1})`);
     }
 
     const newFrames = this.frames.map((frame, i) => {
@@ -177,7 +183,10 @@ export class Sprite implements Renderable {
         if (r in patches) {
           const rowStr = patches[r]!;
           const tokens = rowStr.trim().includes(' ')
-            ? rowStr.trim().split(/\s+/).filter((t) => t.length > 0)
+            ? rowStr
+                .trim()
+                .split(/\s+/)
+                .filter((t) => t.length > 0)
             : [...rowStr.trim()];
 
           if (tokens.length !== frame.width) {
@@ -190,9 +199,7 @@ export class Sprite implements Renderable {
             if (ch === '.') return [0, 0, 0, 0] as RGBA;
             const color = this.palette[ch];
             if (color === undefined) {
-              throw new Error(
-                `Unknown palette character '${ch}' in patch row ${r}`,
-              );
+              throw new Error(`Unknown palette character '${ch}' in patch row ${r}`);
             }
             return parseColor(color);
           });

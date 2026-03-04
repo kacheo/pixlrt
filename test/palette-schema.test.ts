@@ -16,9 +16,9 @@ describe('paletteSchema()', () => {
 
   it('create() throws on missing roles', () => {
     const schema = paletteSchema(['body', 'outline', 'shadow']);
-    expect(() =>
-      schema.create({ body: '#ff0000', outline: '#000000' } as any),
-    ).toThrow('Missing palette roles: shadow');
+    expect(() => schema.create({ body: '#ff0000', outline: '#000000' } as any)).toThrow(
+      'Missing palette roles: shadow',
+    );
   });
 
   it('create() throws on extra roles', () => {

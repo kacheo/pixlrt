@@ -137,9 +137,7 @@ export class SpriteTemplate {
    */
   patchRows(patches: Record<number, string>, frameIndex: number = 0): SpriteTemplate {
     if (frameIndex < 0 || frameIndex >= this._charGrids.length) {
-      throw new Error(
-        `Frame index ${frameIndex} out of range (0-${this._charGrids.length - 1})`,
-      );
+      throw new Error(`Frame index ${frameIndex} out of range (0-${this._charGrids.length - 1})`);
     }
 
     const newGrids = this._charGrids.map((g, i) => {
@@ -257,9 +255,7 @@ export class SpriteTemplate {
       }
       // If the line contains spaces between chars, split on whitespace
       // Otherwise treat each char individually
-      const tokens = line.includes(' ')
-        ? line.split(/\s+/).filter((t) => t.length > 0)
-        : [...line];
+      const tokens = line.includes(' ') ? line.split(/\s+/).filter((t) => t.length > 0) : [...line];
       charRows.push(tokens);
     }
 
@@ -350,9 +346,7 @@ export class SpriteTemplate {
   /** Reconstruct config from modified char grids */
   private _toConfig(charGrids: string[][][]): SpriteTemplateConfig {
     // Convert char grids back to ASCII strings
-    const frames = charGrids.map((grid) =>
-      grid.map((row) => row.join(' ')).join('\n'),
-    );
+    const frames = charGrids.map((grid) => grid.map((row) => row.join(' ')).join('\n'));
 
     return {
       slots: this.slots,

@@ -4,14 +4,10 @@
  * Demonstrates template(), patchRows(), shiftRows(), silhouette(),
  * animateSlots(), and paletteSchema() for game sprite creation.
  */
-import {
-  template, sprite, paletteSchema, toPNG,
-} from '../src/index.js';
+import { template, sprite, paletteSchema, toPNG } from '../src/index.js';
 
 // --- 1. Palette Schema: validated color sets ---
-const shipColors = paletteSchema([
-  'body', 'wing', 'cockpit', 'engine', 'engineHot', 'outline',
-]);
+const shipColors = paletteSchema(['body', 'wing', 'cockpit', 'engine', 'engineHot', 'outline']);
 
 const heroShip = shipColors.create({
   body: '#CCDDFF',
@@ -34,7 +30,8 @@ const bossTemplate = template({
     G: 'glow',
     O: 'outline',
   },
-  frames: [`
+  frames: [
+    `
     . . O O O O O . .
     . O B B B B B O .
     O B B L B L B B O
@@ -43,18 +40,25 @@ const bossTemplate = template({
     O B B B C B B B O
     . O B B B B B O .
     . . O O O O O . .
-  `],
+  `,
+  ],
 });
 
 // Fill with different palettes to create boss variants
 const boss1 = bossTemplate.fill({
-  body: '#CC2244', light: '#FF5566', core: '#FFDD44',
-  glow: '#FFFF88', outline: '#440011',
+  body: '#CC2244',
+  light: '#FF5566',
+  core: '#FFDD44',
+  glow: '#FFFF88',
+  outline: '#440011',
 });
 
 const boss2 = bossTemplate.fill({
-  body: '#2244CC', light: '#5566FF', core: '#44FFDD',
-  glow: '#88FFFF', outline: '#001144',
+  body: '#2244CC',
+  light: '#5566FF',
+  core: '#44FFDD',
+  glow: '#88FFFF',
+  outline: '#001144',
 });
 
 console.log(`Boss 1: ${boss1.width}x${boss1.height}`);
@@ -67,22 +71,28 @@ const bossFrame2 = bossTemplate.patchRows({
   7: '. . O G G G O . .',
 });
 const boss1Flicker = bossFrame2.fill({
-  body: '#CC2244', light: '#FF5566', core: '#FFDD44',
-  glow: '#FFFF88', outline: '#440011',
+  body: '#CC2244',
+  light: '#FF5566',
+  core: '#FFDD44',
+  glow: '#FFFF88',
+  outline: '#440011',
 });
 console.log(`Boss 1 flicker variant: ${boss1Flicker.width}x${boss1Flicker.height}`);
 
 // --- 4. Slot Animation: multi-frame from keyframes ---
 const bossIdle = bossTemplate.animateSlots({
   keyframes: [
-    { core: '#FFDD44', glow: '#FFFF88' },   // normal
-    { core: '#FFFF88', glow: '#FFFFCC' },   // bright
-    { core: '#FFDD44', glow: '#FFFF88' },   // normal
-    { core: '#DDBB33', glow: '#EEDD66' },   // dim
+    { core: '#FFDD44', glow: '#FFFF88' }, // normal
+    { core: '#FFFF88', glow: '#FFFFCC' }, // bright
+    { core: '#FFDD44', glow: '#FFFF88' }, // normal
+    { core: '#DDBB33', glow: '#EEDD66' }, // dim
   ],
   base: {
-    body: '#CC2244', light: '#FF5566', core: '#FFDD44',
-    glow: '#FFFF88', outline: '#440011',
+    body: '#CC2244',
+    light: '#FF5566',
+    core: '#FFDD44',
+    glow: '#FFFF88',
+    outline: '#440011',
   },
   frameDuration: 200,
 });
@@ -97,13 +107,15 @@ const ship = sprite({
     C: '#44DDFF',
     E: '#FF8844',
   },
-  frames: [`
+  frames: [
+    `
     . . B . .
     . B C B .
     B W B W B
     . B B B .
     . . E . .
-  `],
+  `,
+  ],
   name: 'ship',
 });
 

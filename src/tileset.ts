@@ -1,4 +1,11 @@
-import type { PaletteMap, TilesetConfig, Renderable, RGBA, SceneOptions, LayerConfig } from './types.js';
+import type {
+  PaletteMap,
+  TilesetConfig,
+  Renderable,
+  RGBA,
+  SceneOptions,
+  LayerConfig,
+} from './types.js';
 import { Frame } from './frame.js';
 import { PixelCanvas } from './canvas.js';
 import { parseColor } from './color.js';
@@ -153,7 +160,10 @@ export class Tileset implements Renderable {
   /** Build a scene from a text layout of tile names */
   scene(layout: string, options?: SceneOptions): PixelCanvas;
   scene(options: SceneOptions & { layers: LayerConfig[] }): PixelCanvas;
-  scene(layoutOrOptions: string | (SceneOptions & { layers: LayerConfig[] }), maybeOptions?: SceneOptions): PixelCanvas {
+  scene(
+    layoutOrOptions: string | (SceneOptions & { layers: LayerConfig[] }),
+    maybeOptions?: SceneOptions,
+  ): PixelCanvas {
     let layouts: string[];
     let options: SceneOptions | undefined;
 

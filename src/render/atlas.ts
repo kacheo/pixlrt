@@ -17,9 +17,7 @@ function nextPowerOfTwo(n: number): number {
   return p;
 }
 
-function normalizeEntries(
-  sprites: (Sprite | AtlasEntry)[],
-): AtlasEntry[] {
+function normalizeEntries(sprites: (Sprite | AtlasEntry)[]): AtlasEntry[] {
   return sprites.map((s) => {
     if (s instanceof Sprite) {
       return { name: s.name, source: s as Renderable };
@@ -114,9 +112,7 @@ export function toAtlas(
       const shelfY =
         shelves.length === 0
           ? 0
-          : shelves[shelves.length - 1]!.y +
-            shelves[shelves.length - 1]!.height +
-            padding;
+          : shelves[shelves.length - 1]!.y + shelves[shelves.length - 1]!.height + padding;
       const newShelf: Shelf = { y: shelfY, height: h, x: w };
       shelves.push(newShelf);
       placements.push({ entry, x: 0, y: shelfY });

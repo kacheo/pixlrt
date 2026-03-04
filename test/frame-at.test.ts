@@ -121,15 +121,15 @@ describe('Sprite.frameAt', () => {
       // Total: 600ms
       const s = makeSprite(4, [100, 100, 100, 100]);
 
-      expect(s.frameAt(0, 'pingpong')).toBe(s.frames[0]);     // a
-      expect(s.frameAt(150, 'pingpong')).toBe(s.frames[1]);   // b
-      expect(s.frameAt(250, 'pingpong')).toBe(s.frames[2]);   // c
-      expect(s.frameAt(350, 'pingpong')).toBe(s.frames[3]);   // d
+      expect(s.frameAt(0, 'pingpong')).toBe(s.frames[0]); // a
+      expect(s.frameAt(150, 'pingpong')).toBe(s.frames[1]); // b
+      expect(s.frameAt(250, 'pingpong')).toBe(s.frames[2]); // c
+      expect(s.frameAt(350, 'pingpong')).toBe(s.frames[3]); // d
       // Reverse: 400-499 → frame 2 (c), 500-599 → frame 1 (b)
-      expect(s.frameAt(450, 'pingpong')).toBe(s.frames[2]);   // c
-      expect(s.frameAt(550, 'pingpong')).toBe(s.frames[1]);   // b
+      expect(s.frameAt(450, 'pingpong')).toBe(s.frames[2]); // c
+      expect(s.frameAt(550, 'pingpong')).toBe(s.frames[1]); // b
       // Wraps
-      expect(s.frameAt(600, 'pingpong')).toBe(s.frames[0]);   // a
+      expect(s.frameAt(600, 'pingpong')).toBe(s.frames[0]); // a
     });
   });
 });

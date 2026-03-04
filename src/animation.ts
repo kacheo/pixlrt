@@ -29,14 +29,8 @@ export function pingPong(sprite: Sprite): Sprite {
     });
   }
 
-  const frames = [
-    ...sprite.frames,
-    ...sprite.frames.slice(1, -1).reverse(),
-  ];
-  const durations = [
-    ...sprite.frameDuration,
-    ...sprite.frameDuration.slice(1, -1).reverse(),
-  ];
+  const frames = [...sprite.frames, ...sprite.frames.slice(1, -1).reverse()];
+  const durations = [...sprite.frameDuration, ...sprite.frameDuration.slice(1, -1).reverse()];
 
   return new Sprite({
     name: sprite.name,

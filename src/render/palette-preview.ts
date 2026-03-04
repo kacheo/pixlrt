@@ -10,10 +10,7 @@ export interface PaletteSwatchOptions {
 /**
  * Create a Renderable showing each non-transparent palette color as a swatch.
  */
-export function paletteSwatch(
-  palette: PaletteMap,
-  opts?: PaletteSwatchOptions,
-): Renderable {
+export function paletteSwatch(palette: PaletteMap, opts?: PaletteSwatchOptions): Renderable {
   const scale = opts?.scale ?? 1;
 
   // Collect non-transparent colors

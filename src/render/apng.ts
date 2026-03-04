@@ -88,11 +88,11 @@ function buildFcTL(
   delayDen: number,
 ): Buffer {
   const data = Buffer.alloc(26);
-  data.writeUInt32BE(seq, 0);       // sequence_number
-  data.writeUInt32BE(width, 4);     // width
-  data.writeUInt32BE(height, 8);    // height
-  data.writeUInt32BE(0, 12);        // x_offset
-  data.writeUInt32BE(0, 16);        // y_offset
+  data.writeUInt32BE(seq, 0); // sequence_number
+  data.writeUInt32BE(width, 4); // width
+  data.writeUInt32BE(height, 8); // height
+  data.writeUInt32BE(0, 12); // x_offset
+  data.writeUInt32BE(0, 16); // y_offset
   data.writeUInt16BE(delayNum, 20); // delay_num
   data.writeUInt16BE(delayDen, 22); // delay_den
   data[24] = 0; // dispose_op: APNG_DISPOSE_OP_NONE
@@ -142,7 +142,7 @@ export function toAPNG(
   // 3. acTL chunk (animation control)
   const acTLData = Buffer.alloc(8);
   acTLData.writeUInt32BE(numFrames, 0); // num_frames
-  acTLData.writeUInt32BE(loop, 4);      // num_plays (0 = infinite)
+  acTLData.writeUInt32BE(loop, 4); // num_plays (0 = infinite)
   parts.push(writeChunk('acTL', acTLData));
 
   const w = source.width * scale;

@@ -252,8 +252,8 @@ describe('E2E: new transforms → PNG', () => {
     // After opacity(0.5): alpha = round(255 * 0.5) = 128
     const origPixel = px(1, 1);
     expect(origPixel[0]).toBe(255); // r
-    expect(origPixel[1]).toBe(0);   // g
-    expect(origPixel[2]).toBe(0);   // b
+    expect(origPixel[1]).toBe(0); // g
+    expect(origPixel[2]).toBe(0); // b
     expect(origPixel[3]).toBe(128); // a (0.5 of 255)
 
     // Outline pixel: yellow at (0,0) — adjacent to original (0,0) which is at (1,1)
@@ -261,7 +261,7 @@ describe('E2E: new transforms → PNG', () => {
     const outlinePixel = px(0, 0);
     expect(outlinePixel[0]).toBe(255); // r (yellow)
     expect(outlinePixel[1]).toBe(255); // g (yellow)
-    expect(outlinePixel[2]).toBe(0);   // b (yellow)
+    expect(outlinePixel[2]).toBe(0); // b (yellow)
     expect(outlinePixel[3]).toBe(128); // a (0.5 of 255)
 
     // A corner pixel far from any content should remain fully transparent
@@ -293,10 +293,7 @@ describe('E2E: tileset layers + indices → PNG', () => {
     // Layer 1 (background): all red (index 0)
     // Layer 2 (foreground): blue (index 1) top-right only
     const canvas = ts.scene({
-      layers: [
-        { layout: '0 0\n0 0' },
-        { layout: '. 1\n. .' },
-      ],
+      layers: [{ layout: '0 0\n0 0' }, { layout: '. 1\n. .' }],
     });
 
     // 2 columns × 2 rows of 2×2 tiles = 4×4 canvas

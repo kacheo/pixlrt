@@ -234,18 +234,13 @@ export function silhouette(frame: Frame, color: RGBA): Frame {
 }
 
 /** Shift a range of rows laterally by dx pixels. Exposed pixels become transparent. */
-export function shiftRows(
-  frame: Frame,
-  opts: { from: number; to: number; dx: number },
-): Frame {
+export function shiftRows(frame: Frame, opts: { from: number; to: number; dx: number }): Frame {
   const { from, to, dx } = opts;
   if (!Number.isInteger(from) || !Number.isInteger(to) || !Number.isInteger(dx)) {
     throw new Error('shiftRows parameters must be integers');
   }
   if (from < 0 || to >= frame.height || from > to) {
-    throw new Error(
-      `Row range ${from}-${to} is invalid for frame height ${frame.height}`,
-    );
+    throw new Error(`Row range ${from}-${to} is invalid for frame height ${frame.height}`);
   }
   if (dx === 0) return frame;
 

@@ -42,9 +42,7 @@ describe('toAPNG', () => {
   it('starts with PNG signature', () => {
     const s = sprite({ palette, frames: ['x'] });
     const buf = toAPNG(s);
-    expect(buf.subarray(0, 8)).toEqual(
-      Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]),
-    );
+    expect(buf.subarray(0, 8)).toEqual(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]));
   });
 
   it('contains acTL chunk with correct frame count', () => {
