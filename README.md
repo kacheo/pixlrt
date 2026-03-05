@@ -206,6 +206,51 @@ The playground has three tabs:
 - **Examples** — browse pre-built examples with canvas previews; click to load
 - **Palettes** — view all 10 built-in palettes; click to copy a `paletteFrom()` snippet
 
+## AI / Agent Usage
+
+pixlrt is well-suited for AI code-generation agents (Claude, GPT, Codex, etc.) because
+sprites are defined as plain-text ASCII grids — no image model required.
+
+**Keep grids at 24 × 24 pixels or smaller.** LLMs process text as sequential tokens,
+which destroys the 2D spatial relationships that pixel art depends on. Research shows
+accuracy on grid-based spatial tasks drops 40–80% as grid size increases, with models
+falling from near-perfect to below-chance accuracy on large grids.
+
+```ts
+import { sprite, toPNG } from 'pixlrt';
+
+const tree = sprite({
+  name: 'tree',
+  palette: { '.': 'transparent', g: '#38b764', t: '#a0694b' },
+  frames: [
+    `
+    ...g...
+    ..ggg..
+    .ggggg.
+    ggggggg
+    ...t...
+    ...t...
+  `,
+  ],
+});
+
+toPNG(tree, 'tree.png', { scale: 8 });
+```
+
+### Tips for agents
+
+- Use single-character palette keys (`0`–`f`) and `paletteFrom()` for compact grids
+- Start with 8×8 or 10×10 sprites; scale up with `.scale()` for larger output
+- Use `.outline()`, `.recolor()`, and `.pad()` transforms to add detail post-creation
+- Compose complex scenes from multiple small sprites via `compose()` rather than one large grid
+
+### References
+
+- [Stuck in the Matrix: Probing Spatial Reasoning in LLMs](https://arxiv.org/abs/2510.20198) — tested LLMs on 2D grids from 2×2 to 300×300; found ~43% average accuracy loss as grid size increases
+- [Why LLMs Suck at ASCII Art](https://mailitics.com/index.php/2025/01/21/why-llms-suck-at-ascii-art-a9516cb880d5/) — explains how tokenization destroys spatial relationships in text-based grids
+- [Draw me a swordsman: Can tool-calling LLMs draw pixel art?](https://ljvmiranda921.github.io/notebook/2025/07/20/draw-me-a-swordsman/) — practical experiments with LLM-generated pixel art via tool calling
+- [Can Multimodal LLMs Truly "See" Images?](https://blog.skypilot.co/can-multi-modal-llms-truely-see-images/) — deep dive on ASCII art as a probe for LLM spatial understanding
+
 ## Examples
 
 See the [`examples/`](./examples) directory:
