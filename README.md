@@ -237,6 +237,63 @@ const tree = sprite({
 toPNG(tree, 'tree.png', { scale: 8 });
 ```
 
+### Prompt for your agent
+
+Copy this into your AI agent's system prompt or conversation context:
+
+```text
+You have access to the `pixlrt` TypeScript package for creating pixel art as code.
+
+## How it works
+Sprites are ASCII grids where each character maps to a color via a palette:
+
+import { sprite, toPNG } from 'pixlrt';
+
+const s = sprite({
+  name: 'gem',
+  palette: { '.': 'transparent', o: '#3b5dc9', w: '#f4f4f4', d: '#1a1c2c' },
+  frames: [`
+    ..ow..
+    .owwo.
+    owwwwo
+    owwwwo
+    .oddo.
+    ..dd..
+  `],
+});
+toPNG(s, 'gem.png', { scale: 8 });
+
+## Rules
+- One character = one pixel. Every row must be the same width.
+- Keep grids at 24×24 pixels or smaller — LLM spatial accuracy degrades beyond this.
+- Use '.' for transparent pixels by convention.
+- Palette keys are single characters; values are hex colors or 'transparent'.
+
+## Built-in palettes
+Use `paletteFrom(name)` to get a pre-defined palette (keys '0'–'f' for ≤16 colors,
+'0'–'9' then 'a'–'z' for >16 colors). Available palettes:
+pico8 (16), gameboy (4), sweetie16 (16), cga (4), c64 (16), zxspectrum (15),
+nes (55), endesga16 (16), endesga32 (32), apollo (16), resurrect64 (64),
+dawnbringer16 (16), dawnbringer32 (32), bubblegum16 (16), oil6 (6), slso8 (8),
+ammo8 (8), 1bit (2), nord (16), gruvbox (16), solarized (16), dracula (16),
+virtualboy (4), msx (15)
+
+## Transforms (all return new sprites)
+.flipX() .flipY() .rotate(90|180|270) .scale(n) .recolor({key: color})
+.outline(color) .pad(top, right, bottom, left) .crop(x, y, w, h) .opacity(0-1)
+.silhouette(color) .ninePatch(edges, w, h) .shiftRows({from, to, dx})
+
+## Composition
+import { compose } from 'pixlrt';
+const scene = compose().add(tree, 0, 0).add(hero, 10, 5).render(32, 24);
+toPNG(scene, 'scene.png', { scale: 4 });
+
+## Animation
+Pass multiple template strings in the frames array. Export with:
+toGIF(sprite, 'anim.gif', { scale: 4 })
+toSpriteSheet(sprite, 'sheet.png', { scale: 4 })
+```
+
 ### Tips for agents
 
 - Use single-character palette keys (`0`–`f`) and `paletteFrom()` for compact grids
