@@ -7,12 +7,14 @@ We are committed to making participation in this project a harassment-free exper
 ## Our Standards
 
 **Encouraged behavior:**
+
 - Using welcoming and inclusive language
 - Being respectful of differing viewpoints and experiences
 - Gracefully accepting constructive criticism
 - Focusing on what is best for the community
 
 **Unacceptable behavior:**
+
 - Harassment, insults, or derogatory comments
 - Trolling or deliberate disruption
 - Publishing others' private information without consent

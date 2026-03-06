@@ -1,92 +1,102 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pixlrt - Interactive Playground</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pixlrt - Interactive Playground</title>
-  <link rel="stylesheet" href="/src/style.css" />
-</head>
-
-<body>
-  <div id="app">
-    <header>
-      <div class="header-content">
-        <div class="logo">
-          <canvas id="logo-canvas" width="32" height="32"></canvas>
-          <h1>pixlrt <span class="badge">Playground</span></h1>
+  <body>
+    <div id="app">
+      <header>
+        <div class="header-content">
+          <div class="logo">
+            <canvas id="logo-canvas" width="32" height="32"></canvas>
+            <h1>pixlrt <span class="badge">Playground</span></h1>
+          </div>
+          <p class="subtitle">
+            Pixel art framework for programmatic creation of sprites, tilesets, icons, and
+            animations
+          </p>
         </div>
-        <p class="subtitle">
-          Pixel art framework for programmatic creation of sprites, tilesets, icons, and
-          animations
-        </p>
-      </div>
-      <div class="header-actions">
-        <a href="https://github.com/kacheo/pixlrt" target="_blank" class="button button-outline">GitHub</a>
-      </div>
-    </header>
-    <main class="split-pane">
-      <section class="pane left-pane">
-        <div class="pane-header tabs">
-          <button class="tab-btn active" data-target="tab-editor">Editor</button>
-          <button class="tab-btn" data-target="tab-examples">Examples</button>
-          <button class="tab-btn" data-target="tab-palettes">Palettes</button>
+        <div class="header-actions">
+          <a href="https://github.com/kacheo/pixlrt" target="_blank" class="button button-outline"
+            >GitHub</a
+          >
         </div>
+      </header>
+      <main class="split-pane">
+        <section class="pane left-pane">
+          <div class="pane-header tabs">
+            <button class="tab-btn active" data-target="tab-editor">Editor</button>
+            <button class="tab-btn" data-target="tab-examples">Examples</button>
+            <button class="tab-btn" data-target="tab-palettes">Palettes</button>
+          </div>
 
-        <div id="tab-editor" class="tab-content active-tab">
-          <div class="editor-header">
-            <h2>Sprite Definition</h2>
-            <div class="actions">
-              <button id="format-btn" class="button button-small" title="Format Code">
-                Format
-              </button>
-              <button id="reset-btn" class="button button-small button-outline" title="Reset to default">
-                Reset
-              </button>
+          <div id="tab-editor" class="tab-content active-tab">
+            <div class="editor-header">
+              <h2>Sprite Definition</h2>
+              <div class="actions">
+                <button id="format-btn" class="button button-small" title="Format Code">
+                  Format
+                </button>
+                <button
+                  id="reset-btn"
+                  class="button button-small button-outline"
+                  title="Reset to default"
+                >
+                  Reset
+                </button>
+              </div>
+            </div>
+            <div class="editor-container">
+              <textarea id="code-editor" spellcheck="false"></textarea>
+              <div id="error-overlay" class="error-overlay hidden"></div>
             </div>
           </div>
-          <div class="editor-container">
-            <textarea id="code-editor" spellcheck="false"></textarea>
-            <div id="error-overlay" class="error-overlay hidden"></div>
-          </div>
-        </div>
 
-        <div id="tab-examples" class="tab-content hidden-tab">
-          <div class="examples-container">
-            <!-- Populated by TS -->
+          <div id="tab-examples" class="tab-content hidden-tab">
+            <div class="examples-container">
+              <!-- Populated by TS -->
+            </div>
           </div>
-        </div>
 
-        <div id="tab-palettes" class="tab-content hidden-tab">
-          <div class="palettes-container">
-            <!-- Populated by TS -->
+          <div id="tab-palettes" class="tab-content hidden-tab">
+            <div class="palettes-container">
+              <!-- Populated by TS -->
+            </div>
           </div>
-        </div>
-      </section>
-      <section class="pane preview-pane">
-        <div class="pane-header">
-          <h2>Live Preview</h2>
-          <div class="controls">
-            <button id="bg-toggle" class="button button-small button-outline" title="Toggle light/dark background">Dark</button>
-            <label for="scale-select">Scale:</label>
-            <select id="scale-select">
-              <option value="1">1x</option>
-              <option value="2">2x</option>
-              <option value="4">4x</option>
-              <option value="8" selected>8x</option>
-              <option value="16">16x</option>
-            </select>
+        </section>
+        <section class="pane preview-pane">
+          <div class="pane-header">
+            <h2>Live Preview</h2>
+            <div class="controls">
+              <button
+                id="bg-toggle"
+                class="button button-small button-outline"
+                title="Toggle light/dark background"
+              >
+                Dark
+              </button>
+              <label for="scale-select">Scale:</label>
+              <select id="scale-select">
+                <option value="1">1x</option>
+                <option value="2">2x</option>
+                <option value="4">4x</option>
+                <option value="8" selected>8x</option>
+                <option value="16">16x</option>
+              </select>
+            </div>
           </div>
-        </div>
-        <div class="preview-container">
-          <div class="canvas-wrapper">
-            <canvas id="preview-canvas"></canvas>
+          <div class="preview-container">
+            <div class="canvas-wrapper">
+              <canvas id="preview-canvas"></canvas>
+            </div>
           </div>
-        </div>
-      </section>
-    </main>
-  </div>
-  <script type="module" src="/src/main.ts"></script>
-</body>
-
+        </section>
+      </main>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
 </html>

@@ -1,5 +1,18 @@
-import { sprite, Sprite, tileset, paletteFrom, compose, renderToCanvas, PALETTES, toHex,
-  template, pingPong, lighten, darken, mix } from 'pixlrt/core';
+import {
+  sprite,
+  Sprite,
+  tileset,
+  paletteFrom,
+  compose,
+  renderToCanvas,
+  PALETTES,
+  toHex,
+  template,
+  pingPong,
+  lighten,
+  darken,
+  mix,
+} from 'pixlrt/core';
 import type { RGBA } from 'pixlrt/core';
 
 const editor = document.getElementById('code-editor') as HTMLTextAreaElement;
@@ -60,12 +73,28 @@ function animateCanvas(spr: Sprite, cvs: HTMLCanvasElement, scale: number) {
 function safelyEvaluateSprite(code: string) {
   try {
     const evaluate = new Function(
-      'sprite', 'tileset', 'paletteFrom', 'compose',
-      'template', 'pingPong', 'lighten', 'darken', 'mix',
-      `return ${code}`
+      'sprite',
+      'tileset',
+      'paletteFrom',
+      'compose',
+      'template',
+      'pingPong',
+      'lighten',
+      'darken',
+      'mix',
+      `return ${code}`,
     );
-    return evaluate(sprite, tileset, paletteFrom, compose,
-      template, pingPong, lighten, darken, mix);
+    return evaluate(
+      sprite,
+      tileset,
+      paletteFrom,
+      compose,
+      template,
+      pingPong,
+      lighten,
+      darken,
+      mix,
+    );
   } catch (err) {
     throw err;
   }
@@ -165,10 +194,10 @@ if (logoCanvas) {
 const tabButtons = document.querySelectorAll('.tab-btn');
 const tabContents = document.querySelectorAll('.tab-content');
 
-tabButtons.forEach(btn => {
+tabButtons.forEach((btn) => {
   btn.addEventListener('click', () => {
-    tabButtons.forEach(b => b.classList.remove('active'));
-    tabContents.forEach(c => {
+    tabButtons.forEach((b) => b.classList.remove('active'));
+    tabContents.forEach((c) => {
       c.classList.remove('active-tab');
       c.classList.add('hidden-tab');
     });
@@ -527,7 +556,7 @@ const examples: Example[] = [
 // Populate examples UI
 const examplesContainer = document.querySelector('.examples-container') as HTMLElement;
 if (examplesContainer) {
-  examples.forEach(ex => {
+  examples.forEach((ex) => {
     const card = document.createElement('div');
     card.className = 'card';
 
@@ -565,7 +594,9 @@ if (examplesContainer) {
     card.appendChild(desc);
 
     card.addEventListener('click', () => {
-      const editorTabBtn = document.querySelector('.tab-btn[data-target="tab-editor"]') as HTMLElement;
+      const editorTabBtn = document.querySelector(
+        '.tab-btn[data-target="tab-editor"]',
+      ) as HTMLElement;
       editorTabBtn?.click();
       editor.value = ex.code;
       updatePreview();
@@ -962,8 +993,18 @@ const PALETTE_CATEGORIES: { label: string; names: string[] }[] = [
   {
     label: 'Community',
     names: [
-      'sweetie16', 'endesga32', 'endesga16', 'apollo', 'resurrect64',
-      'dawnbringer16', 'dawnbringer32', 'bubblegum16', 'oil6', 'slso8', 'ammo8', '1bit',
+      'sweetie16',
+      'endesga32',
+      'endesga16',
+      'apollo',
+      'resurrect64',
+      'dawnbringer16',
+      'dawnbringer32',
+      'bubblegum16',
+      'oil6',
+      'slso8',
+      'ammo8',
+      '1bit',
     ],
   },
   {
@@ -972,11 +1013,11 @@ const PALETTE_CATEGORIES: { label: string; names: string[] }[] = [
   },
 ];
 
-const palettesByName = new Map(palettes.map(p => [p.name, p]));
+const palettesByName = new Map(palettes.map((p) => [p.name, p]));
 
 const palettesContainer = document.querySelector('.palettes-container') as HTMLElement;
 if (palettesContainer) {
-  PALETTE_CATEGORIES.forEach(category => {
+  PALETTE_CATEGORIES.forEach((category) => {
     // Category header
     const header = document.createElement('div');
     header.className = 'palette-category-header';
@@ -991,7 +1032,7 @@ if (palettesContainer) {
       grid.classList.toggle('collapsed');
     });
 
-    category.names.forEach(name => {
+    category.names.forEach((name) => {
       const p = palettesByName.get(name);
       if (!p) return;
 
@@ -1026,7 +1067,7 @@ if (palettesContainer) {
       swatchSection.className = 'card-swatches';
       const swatchContainer = document.createElement('div');
       swatchContainer.className = 'palette-swatches';
-      p.colors.forEach(rgba => {
+      p.colors.forEach((rgba) => {
         const hex = toHex(rgba);
         const sw = document.createElement('div');
         sw.className = 'swatch';
@@ -1048,7 +1089,9 @@ if (palettesContainer) {
   palette: paletteFrom('${p.name}'),
   frames: [\`${grid}\`]
 })`;
-        const editorTabBtn = document.querySelector('.tab-btn[data-target="tab-editor"]') as HTMLElement;
+        const editorTabBtn = document.querySelector(
+          '.tab-btn[data-target="tab-editor"]',
+        ) as HTMLElement;
         editorTabBtn?.click();
         editor.value = code;
         updatePreview();
