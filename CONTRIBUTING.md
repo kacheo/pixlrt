@@ -7,6 +7,7 @@ Thank you for your interest in contributing! This document covers how to report 
 Use the [GitHub issue tracker](https://github.com/kacheo/pixlrt/issues) to report bugs or request features.
 
 **For bugs**, include:
+
 - Node.js version and OS
 - Minimal reproduction case
 - Expected vs actual behavior
@@ -21,6 +22,7 @@ npm test
 ```
 
 Key commands:
+
 - `npm run build` — compile with tsup
 - `npm test` — run Vitest tests
 - `npm run test:watch` — watch mode

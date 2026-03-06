@@ -202,6 +202,7 @@ npm run dev
 Then open the local URL shown in your terminal (usually `http://localhost:5173/`).
 
 The playground has three tabs:
+
 - **Editor** — write sprite/tileset code with live canvas preview
 - **Examples** — browse pre-built examples with canvas previews; click to load
 - **Palettes** — view all 10 built-in palettes; click to copy a `paletteFrom()` snippet

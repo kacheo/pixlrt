@@ -303,7 +303,11 @@ header {
     linear-gradient(45deg, transparent 75%, #161822 75%),
     linear-gradient(-45deg, transparent 75%, #161822 75%);
   background-size: 10px 10px;
-  background-position: 0 0, 0 5px, 5px -5px, -5px 0;
+  background-position:
+    0 0,
+    0 5px,
+    5px -5px,
+    -5px 0;
 }
 
 .palettes-container .card-content {
@@ -446,7 +450,9 @@ select {
   font-weight: 600;
   font-family: var(--font-mono);
   opacity: 0;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
   z-index: 100;
   pointer-events: none;
 }
