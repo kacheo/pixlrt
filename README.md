@@ -2,7 +2,7 @@
 
 Pixel art as code. Define sprites as ASCII grids, transform them, and export to PNG, SVG, GIF, APNG, sprite sheets, and game engine formats.
 
-**Built for AI coding agents** — sprites are plain text, so no image model or design tool required. Works best for small sprites (8×8 to 24×24 pixels).
+No design tool required — just text and TypeScript.
 
 ## Install
 
@@ -39,7 +39,7 @@ const hero = sprite({
 toPNG(hero, 'hero.png', { scale: 8 });
 ```
 
-One character = one pixel. Each character in the grid maps to a color in the palette.
+One character = one pixel. Each character maps to a color in the palette.
 
 ## What it can do
 
@@ -65,31 +65,11 @@ const s = sprite({ palette: paletteFrom('pico8'), frames: ['0123\n4567'] });
 
 → Full palette list: **[API.md#built-in-palettes](./API.md#built-in-palettes)**
 
-## For AI Agents
+## Using with AI Agents
 
-pixlrt is designed to be used by AI coding agents. Sprites are defined as plain-text ASCII grids — no image model, no design tool, no binary files.
+pixlrt works well with AI coding agents — sprites are plain text, so an agent can write them without any image model or design tool.
 
-**Keep grids at 24×24 pixels or smaller.** LLMs process text as tokens, which destroys 2D spatial relationships. Research shows accuracy on grid-based spatial tasks drops 40–80% as grid size increases.
-
-```ts
-import { sprite, toPNG } from 'pixlrt';
-
-const tree = sprite({
-  palette: { '.': 'transparent', g: '#38b764', t: '#a0694b' },
-  frames: [
-    `
-    ...g...
-    ..ggg..
-    .ggggg.
-    ggggggg
-    ...t...
-    ...t...
-  `,
-  ],
-});
-
-toPNG(tree, 'tree.png', { scale: 8 });
-```
+**One important caveat:** LLMs process text as tokens, which destroys 2D spatial relationships in grids. Research shows accuracy on grid-based spatial tasks drops 40–80% as grid size increases. Keep grids at **24×24 or smaller** when an AI is authoring them. For human-authored grids, there's no size limit.
 
 ### System prompt
 
@@ -148,14 +128,7 @@ toGIF(sprite, 'anim.gif', { scale: 4 })
 toSpriteSheet(sprite, 'sheet.png', { scale: 4 })
 ```
 
-### Tips for agents
-
-- Start with 8×8 or 10×10 sprites; use `.scale()` for larger output
-- Use `paletteFrom()` for compact single-character keys
-- Build complex scenes from multiple small sprites via `compose()`, not one large grid
-- Use `.outline()`, `.recolor()`, and `.pad()` to add detail post-creation
-
-### References
+### References on LLM spatial reasoning
 
 - [Stuck in the Matrix: Probing Spatial Reasoning in LLMs](https://arxiv.org/abs/2510.20198) — tested LLMs on grids 2×2 to 300×300; ~43% average accuracy loss as size increases
 - [Why LLMs Suck at ASCII Art](https://mailitics.com/index.php/2025/01/21/why-llms-suck-at-ascii-art-a9516cb880d5/) — how tokenization destroys spatial relationships
