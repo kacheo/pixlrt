@@ -233,6 +233,7 @@ describe('SpriteTemplate.animateSlots()', () => {
     expect(() =>
       t.animateSlots({
         keyframes: [{ core: '#ff0000' }],
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         base: { core: '#ff0000', glow: '#ffff00' } as any,
       }),
     ).toThrow('Missing base slot fills');

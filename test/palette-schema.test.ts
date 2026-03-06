@@ -16,6 +16,7 @@ describe('paletteSchema()', () => {
 
   it('create() throws on missing roles', () => {
     const schema = paletteSchema(['body', 'outline', 'shadow']);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expect(() => schema.create({ body: '#ff0000', outline: '#000000' } as any)).toThrow(
       'Missing palette roles: shadow',
     );
@@ -24,6 +25,7 @@ describe('paletteSchema()', () => {
   it('create() throws on extra roles', () => {
     const schema = paletteSchema(['body', 'outline']);
     expect(() =>
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       schema.create({ body: '#ff0000', outline: '#000000', extra: '#ffffff' } as any),
     ).toThrow('Unknown palette roles: extra');
   });

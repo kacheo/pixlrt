@@ -363,7 +363,7 @@ export function toGIF(
   }
 
   // 6. Trailer
-  buf[offset++] = 0x3b;
+  buf[offset] = 0x3b;
 
   if (path) {
     fs.writeFileSync(path, buf);

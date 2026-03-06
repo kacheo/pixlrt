@@ -13,6 +13,7 @@ const mockCtx = { putImageData };
 
 beforeAll(() => {
   // Mock OffscreenCanvas globally
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (globalThis as any).OffscreenCanvas = class {
     width: number;
     height: number;
@@ -27,6 +28,7 @@ beforeAll(() => {
 
   // Mock ImageData globally (not available in Node)
   if (typeof globalThis.ImageData === 'undefined') {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (globalThis as any).ImageData = class {
       data: Uint8ClampedArray;
       width: number;
@@ -87,6 +89,7 @@ describe('renderToCanvas', () => {
     const { renderToCanvas } = await import('../src/render/canvas-render.js');
     const s = sprite({ palette, frames: ['xo\nox'] });
     const target = { width: 0, height: 0, getContext: () => mockCtx };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     renderToCanvas(s, target as any);
     expect(target.width).toBe(2);
     expect(target.height).toBe(2);
@@ -98,6 +101,7 @@ describe('renderToCanvas', () => {
     const { renderToCanvas } = await import('../src/render/canvas-render.js');
     const s = sprite({ palette, frames: ['x'] });
     const target = { width: 0, height: 0, getContext: () => mockCtx };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     renderToCanvas(s, target as any, { scale: 3 });
     expect(target.width).toBe(3);
     expect(target.height).toBe(3);
