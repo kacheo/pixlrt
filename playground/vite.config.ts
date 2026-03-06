@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import { resolve } from 'path';
 
 export default defineConfig({
+  base: '/pixlrt/',
   resolve: {
     alias: {
       'pixlrt/core': resolve(__dirname, '../src/core.ts'),

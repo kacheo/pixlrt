@@ -154,7 +154,11 @@ toSpriteSheet(sprite, 'sheet.png', { scale: 4 })
 
 ## Playground
 
-A local browser playground for experimenting with sprites and palettes in real time — live preview as you type, with built-in examples and a palette browser.
+**[Try it online →](https://kacheo.github.io/pixlrt/)**
+
+A browser playground for experimenting with sprites and palettes in real time — live preview as you type, with built-in examples and a palette browser.
+
+To run locally:
 
 ```bash
 cd playground && npm install && npm run dev
