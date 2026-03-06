@@ -41,6 +41,8 @@ toPNG(hero, 'hero.png', { scale: 8 });
 
 One character = one pixel. Each character maps to a color in the palette.
 
+![hero sprite](docs/hero.png)
+
 ## What it can do
 
 - **Transforms** — `flipX`, `flipY`, `rotate`, `scale`, `recolor`, `pad`, `crop`, `opacity`, `outline`, `silhouette`
@@ -58,10 +60,25 @@ One character = one pixel. Each character maps to a color in the palette.
 24 palettes including `pico8`, `gameboy`, `sweetie16`, `c64`, `zxspectrum`, `nes`, `apollo`, `nord`, `dracula`, and more.
 
 ```ts
-import { sprite, paletteFrom } from 'pixlrt';
+import { sprite, paletteFrom, toPNG } from 'pixlrt';
 
-const s = sprite({ palette: paletteFrom('pico8'), frames: ['0123\n4567'] });
+const heart = sprite({
+  palette: paletteFrom('pico8'),
+  frames: [
+    `
+    .8.8.
+    88888
+    88888
+    .888.
+    ..8..
+  `,
+  ],
+});
+
+toPNG(heart, 'heart.png', { scale: 8 });
 ```
+
+![pico8 heart](docs/pico8-heart.png)
 
 → Full palette list: **[API.md#built-in-palettes](./API.md#built-in-palettes)**
 
@@ -137,7 +154,7 @@ toSpriteSheet(sprite, 'sheet.png', { scale: 4 })
 
 ## Playground
 
-An interactive browser playground for experimenting with sprites and palettes in real time.
+A local browser playground for experimenting with sprites and palettes in real time — live preview as you type, with built-in examples and a palette browser.
 
 ```bash
 cd playground && npm install && npm run dev
