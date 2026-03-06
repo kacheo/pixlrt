@@ -57,7 +57,7 @@
   },
   "homepage": "https://github.com/kacheo/pixlrt#readme",
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "sideEffects": false,
   "dependencies": {
