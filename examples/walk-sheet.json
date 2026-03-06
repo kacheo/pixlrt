@@ -1,0 +1,40 @@
+{
+  "image": "/Users/kaloncheong/workspace/pixlrt/examples/walk-sheet.png",
+  "frameWidth": 5,
+  "frameHeight": 6,
+  "scale": 4,
+  "frames": [
+    {
+      "index": 0,
+      "x": 0,
+      "y": 0,
+      "w": 5,
+      "h": 6,
+      "duration": 150
+    },
+    {
+      "index": 1,
+      "x": 5,
+      "y": 0,
+      "w": 5,
+      "h": 6,
+      "duration": 150
+    },
+    {
+      "index": 2,
+      "x": 10,
+      "y": 0,
+      "w": 5,
+      "h": 6,
+      "duration": 150
+    },
+    {
+      "index": 3,
+      "x": 15,
+      "y": 0,
+      "w": 5,
+      "h": 6,
+      "duration": 150
+    }
+  ]
+}

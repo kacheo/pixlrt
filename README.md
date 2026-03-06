@@ -41,7 +41,7 @@ toPNG(hero, 'hero.png', { scale: 8 });
 
 One character = one pixel. Each character maps to a color in the palette.
 
-![hero sprite](docs/hero.png)
+![hero sprite](examples/quickstart-hero.png)
 
 ## What it can do
 
@@ -78,7 +78,7 @@ const heart = sprite({
 toPNG(heart, 'heart.png', { scale: 8 });
 ```
 
-![pico8 heart](docs/pico8-heart.png)
+![pico8 heart](examples/pico8-heart.png)
 
 → Full palette list: **[API.md#built-in-palettes](./API.md#built-in-palettes)**
 

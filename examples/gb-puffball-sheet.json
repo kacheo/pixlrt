@@ -1,0 +1,24 @@
+{
+  "image": "/Users/kaloncheong/workspace/pixlrt/examples/gb-puffball-sheet.png",
+  "frameWidth": 16,
+  "frameHeight": 16,
+  "scale": 8,
+  "frames": [
+    {
+      "index": 0,
+      "x": 0,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "duration": 200
+    },
+    {
+      "index": 1,
+      "x": 16,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "duration": 200
+    }
+  ]
+}
