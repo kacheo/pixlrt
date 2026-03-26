@@ -1,5 +1,7 @@
 # pixlrt
 
+[![npm downloads](https://img.shields.io/npm/dt/pixlrt)](https://www.npmjs.com/package/pixlrt)
+
 Pixel art as code. Define sprites as ASCII grids, transform them, and export to PNG, SVG, GIF, APNG, sprite sheets, and game engine formats.
 
 No design tool required — just text and TypeScript.
