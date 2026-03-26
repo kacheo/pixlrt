@@ -170,6 +170,10 @@ cd playground && npm install && npm run dev
 
 See [`examples/`](./examples) for working scripts — basic sprites, animation, tilesets, and game engine export.
 
+### Built with pixlrt
+
+- **[Space Invaders](https://github.com/kacheo/space-invaders)** — A browser-based Space Invaders clone where all 17 sprites (aliens, cannon, UFO, shields, bullets, explosion) are defined as ASCII grids in pixlrt, packed into a sprite atlas at build time. [Play it →](https://kacheo.github.io/space-invaders/)
+
 ## Contributing
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md).
